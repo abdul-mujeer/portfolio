@@ -2,14 +2,17 @@ import {
   FaGithub,
   FaInstagram,
   FaLinkedinIn,
-  FaXTwitter,
 } from "react-icons/fa6";
+import { SiLeetcode } from "react-icons/si"; // ✅ LeetCode icon
 import "./styles/SocialIcons.css";
 import { TbNotes } from "react-icons/tb";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import HoverLinks from "./HoverLinks";
 
 const SocialIcons = () => {
+  const animFrames = useRef<number[]>([]);
+  const listeners = useRef<{ handler: (e: MouseEvent) => void }[]>([]);
+
   useEffect(() => {
     const social = document.getElementById("social") as HTMLElement;
 
@@ -30,7 +33,8 @@ const SocialIcons = () => {
         link.style.setProperty("--siLeft", `${currentX}px`);
         link.style.setProperty("--siTop", `${currentY}px`);
 
-        requestAnimationFrame(updatePosition);
+        const id = requestAnimationFrame(updatePosition);
+        animFrames.current.push(id);
       };
 
       const onMouseMove = (e: MouseEvent) => {
@@ -47,35 +51,41 @@ const SocialIcons = () => {
       };
 
       document.addEventListener("mousemove", onMouseMove);
+      listeners.current.push({ handler: onMouseMove });
 
       updatePosition();
-
-      return () => {
-        elem.removeEventListener("mousemove", onMouseMove);
-      };
     });
+
+    // ✅ Proper cleanup — runs when component unmounts
+    return () => {
+      animFrames.current.forEach(cancelAnimationFrame);
+      listeners.current.forEach(({ handler }) =>
+        document.removeEventListener("mousemove", handler)
+      );
+    };
   }, []);
 
   return (
     <div className="icons-section">
       <div className="social-icons" data-cursor="icons" id="social">
         <span>
-          <a href="https://github.com" target="_blank">
+          <a href="https://github.com/abdul-mujeer" target="_blank" rel="noreferrer">
             <FaGithub />
           </a>
         </span>
         <span>
-          <a href="https://www.linkedin.com" target="_blank">
+          <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
             <FaLinkedinIn />
           </a>
         </span>
+        {/* ✅ LeetCode replaces X/Twitter */}
         <span>
-          <a href="https://x.com" target="_blank">
-            <FaXTwitter />
+          <a href="https://leetcode.com/u/Abdul_Mujeer/" target="_blank" rel="noreferrer">
+            <SiLeetcode />
           </a>
         </span>
         <span>
-          <a href="https://www.instagram.com" target="_blank">
+          <a href="https://www.instagram.com/abdul__mujeer/" target="_blank" rel="noreferrer">
             <FaInstagram />
           </a>
         </span>
