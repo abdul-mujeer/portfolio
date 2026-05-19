@@ -43,14 +43,14 @@ const Navbar = () => {
     <>
       <div className="header">
         <a href="/#" className="navbar-title" data-cursor="disable">
-          Logo
+          QAM
         </a>
         <a
-          href="mailto:example@mail.com"
+          href="mailto:abdul.mujeer98@gmail.com"
           className="navbar-connect"
           data-cursor="disable"
         >
-          example@mail.com
+          abdul.mujeer98@gmail.com
         </a>
         <ul>
           <li>
