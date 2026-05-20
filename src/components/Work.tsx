@@ -27,13 +27,13 @@ const projects = [
     image: "/images/project3.png",
   },
   {
-    name: "Responsive Shopify-Clone",
+    name: "Face Recognition System",
     category: "AI Deep Learning",
     tools: "Python, Keras(CNN), Numpy, Tensorflow",
     image: "/images/project5.png",
   },
   {
-    name: "Responsive Shopify-Clone",
+    name: "Responsive Shopify Clone",
     category: "Frontend",
     tools: "HTMl, CSS , JavaScript",
     image: "/images/project4.png",
