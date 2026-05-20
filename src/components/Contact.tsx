@@ -21,41 +21,23 @@ const Contact = () => {
               </a>
             </p>
           </div>
+
           <div className="contact-box">
             <h4>Social</h4>
-            <a
-              href="https://github.com/abdul-mujeer"
-              target="_blank"
-              data-cursor="disable"
-              className="contact-social"
-            >
+            <a href="https://github.com/abdul-mujeer" target="_blank" rel="noreferrer" data-cursor="disable" className="contact-social">
               Github <MdArrowOutward />
             </a>
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              data-cursor="disable"
-              className="contact-social"
-            >
+            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" data-cursor="disable" className="contact-social">
               Linkedin <MdArrowOutward />
             </a>
-            <a
-              href="https://x.com"
-              target="_blank"
-              data-cursor="disable"
-              className="contact-social"
-            >
-              Twitter <MdArrowOutward />
+            <a href="https://leetcode.com/u/Abdul_Mujeer/" target="_blank" rel="noreferrer" data-cursor="disable" className="contact-social">
+              LeetCode <MdArrowOutward />
             </a>
-            <a
-              href="https://www.instagram.com/abdul__mujeer/"
-              target="_blank"
-              data-cursor="disable"
-              className="contact-social"
-            >
+            <a href="https://www.instagram.com/abdul__mujeer/" target="_blank" rel="noreferrer" data-cursor="disable" className="contact-social">
               Instagram <MdArrowOutward />
             </a>
           </div>
+
           <div className="contact-box">
             <h2>
               Designed and Developed <br /> by <span>Qazi Abdul Mujeer</span>
@@ -64,6 +46,7 @@ const Contact = () => {
               <MdCopyright /> 2025 Qazi Abdul Mujeer. All rights reserved.
             </h5>
           </div>
+
         </div>
       </div>
     </div>

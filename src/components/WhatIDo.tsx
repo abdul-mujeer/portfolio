@@ -92,7 +92,7 @@ const WhatIDo = () => {
               <p>
                 Full Stack Developer experienced in Python (Django/Flask) and React/Next.js. Passionate about building scalable APIs, clean web apps, and efficient data solutions.
               </p>
-              <h5>Skillset & tools</h5>
+              <h5>Languages & Libraries</h5>
               <div className="what-content-flex">
                 <div className="what-tags">Python</div>
                 <div className="what-tags">Flask</div>
@@ -132,8 +132,9 @@ const WhatIDo = () => {
               <p>
                 Building intelligent, data-driven systems by leveraging Python's robust AI/ML ecosystem. Focused on statistical data processing, predictive modeling, and quantitative analysis.
               </p>
-              <h5>Skillset & tools</h5>
+              <h5>Languages & Libraries</h5>
               <div className="what-content-flex">
+                <div className="what-tags">Python</div>
                 <div className="what-tags">Pandas</div>
                 <div className="what-tags">Numpy</div>
                 <div className="what-tags">Scikit-learn</div>

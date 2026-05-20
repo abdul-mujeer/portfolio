@@ -78,7 +78,6 @@ const SocialIcons = () => {
             <FaLinkedinIn />
           </a>
         </span>
-        {/* ✅ LeetCode replaces X/Twitter */}
         <span>
           <a href="https://leetcode.com/u/Abdul_Mujeer/" target="_blank" rel="noreferrer">
             <SiLeetcode />
