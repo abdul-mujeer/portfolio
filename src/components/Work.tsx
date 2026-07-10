@@ -15,6 +15,12 @@ const projects = [
     image: "/images/PROJECT1.png",
   },
   {
+    name: "AI-Powered Interview Preparation Platform",
+    category: "Generative AI",
+    tools: "Python, FastAPI, Nextjs, OpenAI API, Docker, MongoDB, Generative AI, Speech Recognition",
+    image: "/images/Project6.png",
+  },
+  {
     name: "Hybrid Legal Text Summarization System ",
     category: "Natural Language Processing (NLP)",
     tools: "Python, NLTK, Scikit-learn, Transformers, NumPy",
