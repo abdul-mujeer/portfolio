@@ -27,7 +27,7 @@ const Contact = () => {
             <a href="https://github.com/abdul-mujeer" target="_blank" rel="noreferrer" data-cursor="disable" className="contact-social">
               Github <MdArrowOutward />
             </a>
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" data-cursor="disable" className="contact-social">
+            <a href="https://www.linkedin.com/in/qazi-abdul-mujeer/" target="_blank" rel="noreferrer" data-cursor="disable" className="contact-social">
               Linkedin <MdArrowOutward />
             </a>
             <a href="https://leetcode.com/u/Abdul_Mujeer/" target="_blank" rel="noreferrer" data-cursor="disable" className="contact-social">
