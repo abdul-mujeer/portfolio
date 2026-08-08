@@ -6,8 +6,7 @@ const About = () => {
       <div className="about-me">
         <h3 className="title">About Me</h3>
         <p className="para">
-          Full Stack Software Engineer specializing in AI-powered web applications, backend systems, and scalable cloud solutions. Experienced in Python, Flask, FastAPI, React, Next.js, Docker, and Google Cloud Platform, with hands-on industry experience building production-ready applications.
-          
+          Computer Science graduate with foundational knowledge of Software Quality Assurance and Manual Testing. Familiar with test case design, defect reporting, SDLC/STLC, functional testing, regression testing, API testing, and basic SQL/Python. Seeking an entry-level QA/QC position to apply testing skills and grow in a professional software development environment.
         </p>
       </div>
     </div>
