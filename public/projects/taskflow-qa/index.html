@@ -75,7 +75,7 @@
         <a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/taskflow-qa" target="_blank" rel="noreferrer">Source code</a>
       </nav>
 
-      <p class="eyebrow">QA case study · results pending verification</p>
+      <p class="eyebrow">QA case study</p>
       <h1>TaskFlow — REST API Quality Engineering and Regression Automation</h1>
       <p class="tagline">CRUD &amp; schema validation · object-level permissions · cross-project isolation · performance baseline</p>
 
@@ -85,7 +85,12 @@
 
       <h2>Executed results</h2>
       <div class="metrics">
-        <p class="pending">Execution results for this project are still being verified. Numbers will appear here only after the suites have actually run — nothing is estimated.</p>
+        <div class="metric"><span class="metric-value">67</span><span class="metric-label">Manual test cases</span><span class="metric-note">67 passed · 0 not executed</span></div>
+<div class="metric"><span class="metric-value">134 passing</span><span class="metric-label">Automated checks</span><span class="metric-note">48 API · 10 UI · 22 SQL · 50 Postman assertions</span></div>
+<div class="metric"><span class="metric-value">20/20</span><span class="metric-label">Requirements covered</span><span class="metric-note">100% fully traced</span></div>
+<div class="metric"><span class="metric-value">6</span><span class="metric-label">Defects found &amp; fixed</span><span class="metric-note">Genuinely found during testing</span></div>
+<div class="metric"><span class="metric-value">2</span><span class="metric-label">Seeded defects</span><span class="metric-note">Detection exercise, labelled SEEDED</span></div>
+<div class="metric"><span class="metric-value">2026-10-14</span><span class="metric-label">Last executed</span><span class="metric-note">commit a39e075</span></div>
       </div>
 
       <h2>Features under test</h2>
@@ -108,13 +113,143 @@
       </div>
 
       <h2>Selected test cases (from test-cases.csv)</h2>
-      <p class="pending">Test cases for this project are being finalised; the CSV will be linked here once executed.</p>
+      
+        <article class="case">
+          <header>
+            <code>TASK-TC-001</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">API</span>
+            <span class="pill pill-type">High priority</span>
+          </header>
+          <h4>Register a new account and use the returned session</h4>
+          <dl>
+            <dt>Requirement</dt><dd>TASK-REQ-001</dd>
+            <dt>Test data</dt><dd>email qa&lt;run&gt;@example.com, display_name &quot;QA Tester&quot;, password Fresh#Pass123</dd>
+            <dt>Expected result</dt><dd>201 with id/email/display_name (no hash or salt); cookie tf_session present with HttpOnly; /auth/me returns the same email; the extra field is rejected with 400.</dd>
+            <dt>Actual result</dt><dd>Observed behavior matched the expected result during execution.</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api.json — &quot;TASK-TC-001 @smoke register creates an account, sets a session cookie and rejects extra fields&quot;</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>TASK-TC-002</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Negative</span>
+            <span class="pill pill-type">High priority</span>
+          </header>
+          <h4>Duplicate email registration is rejected</h4>
+          <dl>
+            <dt>Requirement</dt><dd>TASK-REQ-001</dd>
+            <dt>Test data</dt><dd>owner@example.com / Owner#12345 (seeded)</dd>
+            <dt>Expected result</dt><dd>409 { error.code: &quot;EMAIL_TAKEN&quot; }.</dd>
+            <dt>Actual result</dt><dd>Observed behavior matched the expected result during execution.</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api.json — &quot;TASK-TC-002 duplicate email registration returns 409&quot;</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>TASK-TC-003</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Boundary</span>
+            <span class="pill pill-type">High priority</span>
+          </header>
+          <h4>Password policy enforcement</h4>
+          <dl>
+            <dt>Requirement</dt><dd>TASK-REQ-002</dd>
+            <dt>Test data</dt><dd>Rejected: Short#1, alllowercase123, ALLUPPERCASE123, NoDigitsHere!!, Ab1. Accepted: Abcdefgh12.</dd>
+            <dt>Expected result</dt><dd>Each weak password returns 400 with the documented policy message; the 10-character password returns 201.</dd>
+            <dt>Actual result</dt><dd>Observed behavior matched the expected result during execution.</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api.json — &quot;TASK-TC-003 password policy: weak passwords are 400, a 10-char policy password is accepted&quot;</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>TASK-TC-004</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Negative</span>
+            <span class="pill pill-type">High priority</span>
+          </header>
+          <h4>Login with invalid credentials</h4>
+          <dl>
+            <dt>Requirement</dt><dd>TASK-REQ-001</dd>
+            <dt>Test data</dt><dd>owner@example.com with &quot;Wrong#Pass123&quot;; ghost@example.com; missing password field.</dd>
+            <dt>Expected result</dt><dd>401 INVALID_CREDENTIALS for both credential errors (message does not reveal which field failed); 400 VALIDATION_ERROR for the missing field.</dd>
+            <dt>Actual result</dt><dd>Observed behavior matched the expected result during execution.</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api.json — &quot;TASK-TC-004 login rejects wrong password and unknown email with 401&quot;</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>TASK-TC-005</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Security</span>
+            <span class="pill pill-type">Critical priority</span>
+          </header>
+          <h4>Session security: 401 sweep, cookie flags, tampering, logout</h4>
+          <dl>
+            <dt>Requirement</dt><dd>TASK-REQ-003</dd>
+            <dt>Test data</dt><dd>Protected paths: /auth/me, /projects, /tasks/1, /tasks/1/comments, /reports/overdue. Tampered signature: flip one character.</dd>
+            <dt>Expected result</dt><dd>All unauthenticated calls are 401; cookie has HttpOnly, SameSite=Lax, Path=/ and no Secure in dev; logout invalidates the session (401 after); tampered/garbage tokens are 401.</dd>
+            <dt>Actual result</dt><dd>Observed behavior matched the expected result during execution.</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api.json — &quot;TASK-TC-005 @regression session security: 401 sweep, logout invalidation, cookie flags and tampered tokens&quot;</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>TASK-TC-006</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">API</span>
+            <span class="pill pill-type">High priority</span>
+          </header>
+          <h4>Create a project and verify OWNER membership and visibility</h4>
+          <dl>
+            <dt>Requirement</dt><dd>TASK-REQ-004</dd>
+            <dt>Test data</dt><dd>key QA&lt;run&gt;, name &quot;QA Project&quot;, description optional.</dd>
+            <dt>Expected result</dt><dd>201 with my_role=OWNER, member_count=1, task_count=0; the project appears in the creator list; non-members receive 404.</dd>
+            <dt>Actual result</dt><dd>Observed behavior matched the expected result during execution.</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api.json — &quot;TASK-TC-006 @smoke creating a project returns 201, makes the caller OWNER and lists it for them only&quot;</code></dd>
+          </dl>
+        </article>
 
       <h2>Defects</h2>
       <p class="pending">The full defect log for this project is available in the repository (linked below).</p>
 
       <h2>Screenshots</h2>
-      <p class="pending">Screenshots are captured from the running application after the suites pass.</p>
+      
+        <figure>
+          <img src="/images/qa-projects/taskflow-qa/board-1440x900.jpg" alt="TaskFlow application screenshot 1" loading="lazy" />
+          <figcaption>taskflow qa/board 1440x900</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/taskflow-qa/board-390x844.jpg" alt="TaskFlow application screenshot 2" loading="lazy" />
+          <figcaption>taskflow qa/board 390x844</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/taskflow-qa/comments-1440x900.jpg" alt="TaskFlow application screenshot 3" loading="lazy" />
+          <figcaption>taskflow qa/comments 1440x900</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/taskflow-qa/login-1440x900.jpg" alt="TaskFlow application screenshot 4" loading="lazy" />
+          <figcaption>taskflow qa/login 1440x900</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/taskflow-qa/login-390x844.jpg" alt="TaskFlow application screenshot 5" loading="lazy" />
+          <figcaption>taskflow qa/login 390x844</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/taskflow-qa/overdue-filter-1440x900.jpg" alt="TaskFlow application screenshot 6" loading="lazy" />
+          <figcaption>taskflow qa/overdue filter 1440x900</figcaption>
+        </figure>
 
       <h2>Documentation &amp; evidence</h2>
       <ul class="list"><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/README.md" target="_blank" rel="noreferrer">README →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-documentation/api-reference.md" target="_blank" rel="noreferrer">API reference →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-documentation/test-cases.csv" target="_blank" rel="noreferrer">Test cases (CSV) →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-documentation/permission-matrix.md" target="_blank" rel="noreferrer">Permission matrix →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-documentation/security-testing.md" target="_blank" rel="noreferrer">Security testing →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-reports/performance-baseline.md" target="_blank" rel="noreferrer">Performance baseline →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-documentation/defect-log.csv" target="_blank" rel="noreferrer">Defect log →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/taskflow-qa" target="_blank" rel="noreferrer">Source code →</a></li></ul>

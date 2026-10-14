@@ -75,7 +75,7 @@
         <a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/peoplecore-qa" target="_blank" rel="noreferrer">Source code</a>
       </nav>
 
-      <p class="eyebrow">QA case study · results pending verification</p>
+      <p class="eyebrow">QA case study</p>
       <h1>PeopleCore — HRMS Workflow and Role-Based Access Testing</h1>
       <p class="tagline">Multi-module workflows · permission matrix · date &amp; salary boundaries · audit-trail validation</p>
 
@@ -85,7 +85,12 @@
 
       <h2>Executed results</h2>
       <div class="metrics">
-        <p class="pending">Execution results for this project are still being verified. Numbers will appear here only after the suites have actually run — nothing is estimated.</p>
+        <div class="metric"><span class="metric-value">69</span><span class="metric-label">Manual test cases</span><span class="metric-note">65 passed · 4 not executed</span></div>
+<div class="metric"><span class="metric-value">189 passing</span><span class="metric-label">Automated checks</span><span class="metric-note">58 API · 20 UI · 12 SQL · 96 Postman assertions</span></div>
+<div class="metric"><span class="metric-value">16/16</span><span class="metric-label">Requirements covered</span><span class="metric-note">100% fully traced</span></div>
+<div class="metric"><span class="metric-value">12</span><span class="metric-label">Defects found &amp; fixed</span><span class="metric-note">Genuinely found during testing</span></div>
+<div class="metric"><span class="metric-value">2</span><span class="metric-label">Seeded defects</span><span class="metric-note">Detection exercise, labelled SEEDED</span></div>
+<div class="metric"><span class="metric-value">2026-10-14</span><span class="metric-label">Last executed</span><span class="metric-note">commit 9b6fc8a</span></div>
       </div>
 
       <h2>Features under test</h2>
@@ -108,13 +113,143 @@
       </div>
 
       <h2>Selected test cases (from test-cases.csv)</h2>
-      <p class="pending">Test cases for this project are being finalised; the CSV will be linked here once executed.</p>
+      
+        <article class="case">
+          <header>
+            <code>HR-TC-001</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">API</span>
+            <span class="pill pill-type">P1 priority</span>
+          </header>
+          <h4>Sign in with valid credentials and read the issued session</h4>
+          <dl>
+            <dt>Requirement</dt><dd>HR-REQ-001</dd>
+            <dt>Test data</dt><dd>admin@example.com / Admin#12345</dd>
+            <dt>Expected result</dt><dd>200 with a 64-character hex token, role ADMIN and expiresAt ≈ issuedAt + 8h; the cookie is HttpOnly and SameSite=Lax; the session endpoint returns the same actor.</dd>
+            <dt>Actual result</dt><dd>200, token length 64, cookie HttpOnly; SameSite=Lax; TTL 8h; /api/auth/session returns the ADMIN actor.</dd>
+            <dt>Evidence</dt><dd><code>test-evidence/logs/api.txt</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>HR-TC-002</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">API</span>
+            <span class="pill pill-type">P2 priority</span>
+          </header>
+          <h4>Session lifetime and expiry are reported by the API</h4>
+          <dl>
+            <dt>Requirement</dt><dd>HR-REQ-001</dd>
+            <dt>Test data</dt><dd>hr@example.com / Hr#1234567</dd>
+            <dt>Expected result</dt><dd>200 with user.role HR, sessionTtlHours 8 and expiresAt in the future.</dd>
+            <dt>Actual result</dt><dd>sessionTtlHours = 8, expiresAt in the future, role HR.</dd>
+            <dt>Evidence</dt><dd><code>test-evidence/logs/api.txt</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>HR-TC-003</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Usability/Accessibility</span>
+            <span class="pill pill-type">P3 priority</span>
+          </header>
+          <h4>The page header shows the signed-in user and role badge</h4>
+          <dl>
+            <dt>Requirement</dt><dd>HR-REQ-015</dd>
+            <dt>Test data</dt><dd>admin@example.com / Admin#12345</dd>
+            <dt>Expected result</dt><dd>role-badge shows ADMIN and current-user shows the full name “Amara Okafor”.</dd>
+            <dt>Actual result</dt><dd>Header renders ADMIN · Amara Okafor (before the fix it rendered “undefined undefined” — see HR-BUG-007).</dd>
+            <dt>Evidence</dt><dd><code>test-evidence/logs/ui.txt · test-evidence/screenshots/02-dashboard-admin.jpg</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>HR-TC-004</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Security</span>
+            <span class="pill pill-type">P1 priority</span>
+          </header>
+          <h4>Wrong password is rejected without revealing whether the account exists</h4>
+          <dl>
+            <dt>Requirement</dt><dd>HR-REQ-001</dd>
+            <dt>Test data</dt><dd>admin@example.com with a wrong password; ghost.user@example.com with the same password</dd>
+            <dt>Expected result</dt><dd>Both return 401 with the identical code INVALID_CREDENTIALS and the identical message.</dd>
+            <dt>Actual result</dt><dd>Both responses were 401 INVALID_CREDENTIALS with the same message; no account enumeration possible.</dd>
+            <dt>Evidence</dt><dd><code>test-evidence/logs/api.txt</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>HR-TC-005</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Negative</span>
+            <span class="pill pill-type">P2 priority</span>
+          </header>
+          <h4>Login payload validation returns 400 with field details</h4>
+          <dl>
+            <dt>Requirement</dt><dd>HR-REQ-014</dd>
+            <dt>Test data</dt><dd>{ &quot;email&quot;: &quot;admin@example.com&quot; } (no password); { &quot;email&quot;: &quot;not-an-email&quot;, &quot;password&quot;: &quot;x&quot; }</dd>
+            <dt>Expected result</dt><dd>Both return 400 VALIDATION_ERROR with details[].path naming password / email.</dd>
+            <dt>Actual result</dt><dd>400 with details path &quot;password&quot; and, after the fix, 400 for the malformed email (was 401 — HR-BUG-003).</dd>
+            <dt>Evidence</dt><dd><code>test-evidence/logs/api.txt</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>HR-TC-006</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Functional</span>
+            <span class="pill pill-type">P1 priority</span>
+          </header>
+          <h4>Signing out invalidates the server-side session</h4>
+          <dl>
+            <dt>Requirement</dt><dd>HR-REQ-001</dd>
+            <dt>Test data</dt><dd>admin@example.com / Admin#12345</dd>
+            <dt>Expected result</dt><dd>204 on logout, then 401 UNAUTHENTICATED on the session call.</dd>
+            <dt>Actual result</dt><dd>204 then 401 — the sessions row is deleted, not merely the cookie cleared.</dd>
+            <dt>Evidence</dt><dd><code>test-evidence/logs/api.txt</code></dd>
+          </dl>
+        </article>
 
       <h2>Defects</h2>
       <p class="pending">The full defect log for this project is available in the repository (linked below).</p>
 
       <h2>Screenshots</h2>
-      <p class="pending">Screenshots are captured from the running application after the suites pass.</p>
+      
+        <figure>
+          <img src="/images/qa-projects/peoplecore-qa/01-login.jpg" alt="PeopleCore application screenshot 1" loading="lazy" />
+          <figcaption>peoplecore qa/01 login</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/peoplecore-qa/02-dashboard-admin.jpg" alt="PeopleCore application screenshot 2" loading="lazy" />
+          <figcaption>peoplecore qa/02 dashboard admin</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/peoplecore-qa/03-employees-list.jpg" alt="PeopleCore application screenshot 3" loading="lazy" />
+          <figcaption>peoplecore qa/03 employees list</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/peoplecore-qa/04-employee-detail-attendance.jpg" alt="PeopleCore application screenshot 4" loading="lazy" />
+          <figcaption>peoplecore qa/04 employee detail attendance</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/peoplecore-qa/05-employee-detail-leave.jpg" alt="PeopleCore application screenshot 5" loading="lazy" />
+          <figcaption>peoplecore qa/05 employee detail leave</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/peoplecore-qa/06-audit-log.jpg" alt="PeopleCore application screenshot 6" loading="lazy" />
+          <figcaption>peoplecore qa/06 audit log</figcaption>
+        </figure>
 
       <h2>Documentation &amp; evidence</h2>
       <ul class="list"><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/peoplecore-qa/README.md" target="_blank" rel="noreferrer">README →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/peoplecore-qa/test-documentation/test-strategy.md" target="_blank" rel="noreferrer">Test strategy →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/peoplecore-qa/test-documentation/test-cases.csv" target="_blank" rel="noreferrer">Test cases (CSV) →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/peoplecore-qa/test-documentation/role-permission-matrix.md" target="_blank" rel="noreferrer">Role permission matrix →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/peoplecore-qa/test-documentation/defect-log.csv" target="_blank" rel="noreferrer">Defect log →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/peoplecore-qa" target="_blank" rel="noreferrer">Source code →</a></li></ul>

@@ -26,6 +26,8 @@ dist-ssr
 backup/
 .env
 .env.*
+# ...but the committed environment templates must stay in the repository.
+!projects/**/.env.example
 
 # ---------------------------------------------------------------------------
 # QA portfolio projects (projects/*): generated artefacts and local databases.

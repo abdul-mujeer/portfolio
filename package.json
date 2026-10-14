@@ -9,8 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "verify:site": "node scripts/verify-site.mjs",
-    "verify:links": "node scripts/verify-links.mjs",
-    "build:projects": "node scripts/build-project-pages.mjs"
+    "build:projects": "node scripts/build-project-pages.mjs",
+    "docs:handover": "node scripts/build-handover.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.1",

@@ -1,8 +1,8 @@
 # Portfolio site verification
 
-- Executed: 2026-10-14T00:27:17.470Z
+- Executed: 2026-10-14T00:42:33.386Z
 - Command: `npm run verify:site` (production build served by `vite preview`, driven by Playwright Chromium)
-- Result: **23/24 checks passed**
+- Result: **24/24 checks passed**
 
 | ID | Check | Result | Detail |
 |----|-------|--------|--------|
@@ -16,7 +16,7 @@
 | SITE-SEC-CONTACT | section "Contact" exists (#contact) | PASS | found 1 |
 | SITE-SEC-FOOTER | section "Footer" exists (#footer) | PASS | found 1 |
 | SITE-01 | Featured QA project cards render | PASS | found 3 cards |
-| SITE-02 | Project card thumbnails load (no broken images) | FAIL | [{"src":"/images/qa-projects/shopsure-qa-card.jpg","width":1440},{"src":"/images/qa-projects/peoplecore-qa-card.jpg","width":0},{"src":"/images/qa-projects/taskflow-qa-card.jpg","width":0}] |
+| SITE-02 | Project card thumbnails load (no broken images) | PASS | [{"src":"/images/qa-projects/shopsure-qa-card.jpg","width":1440},{"src":"/images/qa-projects/peoplecore-qa-card.jpg","width":1440},{"src":"/images/qa-projects/taskflow-qa-card.jpg","width":1440}] |
 | SITE-03 | Case-study links exist | PASS | ["/projects/shopsure-qa/","/projects/shopsure-qa/","/projects/peoplecore-qa/","/projects/peoplecore-qa/","/projects/taskflow-qa/","/projects/taskflow-qa/"] |
 | SITE-04 | Navigation targets resolve to real sections | PASS | ["#about","#qa-projects","#work","#contact"] |
 | SITE-05 | Résumé button points to the generated resume page (not '#') | PASS | /resume.html |

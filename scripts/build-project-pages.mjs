@@ -17,6 +17,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { collectProjectMetrics, readJson, parseCsv } from "./lib/project-metrics.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const PUBLIC = path.join(ROOT, "public");
@@ -161,49 +162,8 @@ const configs = [
 
 // --------------------------------------------------------------------------- helpers
 
-function parseCsv(file) {
-  if (!fs.existsSync(file)) return [];
-  const text = fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "");
-  const rows = [];
-  let row = [];
-  let field = "";
-  let inQuotes = false;
-  for (let index = 0; index < text.length; index += 1) {
-    const char = text[index];
-    if (inQuotes) {
-      if (char === '"') {
-        if (text[index + 1] === '"') {
-          field += '"';
-          index += 1;
-        } else {
-          inQuotes = false;
-        }
-      } else {
-        field += char;
-      }
-    } else if (char === '"') {
-      inQuotes = true;
-    } else if (char === ",") {
-      row.push(field);
-      field = "";
-    } else if (char === "\n") {
-      row.push(field);
-      rows.push(row);
-      row = [];
-      field = "";
-    } else if (char !== "\r") {
-      field += char;
-    }
-  }
-  if (field.length > 0 || row.length > 0) {
-    row.push(field);
-    rows.push(row);
-  }
-  if (rows.length === 0) return [];
-  const [header, ...body] = rows;
-  return body
-    .filter((values) => values.some((value) => value.trim() !== ""))
-    .map((values) => Object.fromEntries(header.map((key, index) => [key.trim(), (values[index] ?? "").trim()])));
+function readJsonSafe(file) {
+  return readJson(file);
 }
 
 function escapeHtml(value) {
@@ -212,14 +172,6 @@ function escapeHtml(value) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
-}
-
-function readJson(file) {
-  try {
-    return JSON.parse(fs.readFileSync(file, "utf8"));
-  } catch {
-    return null;
-  }
 }
 
 function copyScreenshots(projectDir, slug, limit) {
@@ -250,37 +202,39 @@ function metricCard(label, value, note = "") {
 
 function buildPage(config) {
   const projectDir = path.join(PROJECTS, config.slug);
-  const summary = readJson(path.join(projectDir, "test-reports/summary.json"));
+  const summary = readJsonSafe(path.join(projectDir, "test-reports/summary.json"));
+  const metricsData = collectProjectMetrics(projectDir);
   const testCases = parseCsv(path.join(projectDir, "test-documentation/test-cases.csv"));
   const defects = parseCsv(path.join(projectDir, "test-documentation/defect-log.csv"));
   const screenshots = copyScreenshots(projectDir, config.slug, 6);
 
   const verified = Boolean(summary);
-  const api = summary?.automation?.api;
-  const ui = summary?.automation?.ui;
-  const db = summary?.automation?.database;
-  const postman = summary?.automation?.postman;
-  const manual = summary?.manualTestCases;
-  const genuineDefects = defects.filter((defect) => !/-1\d\d$/.test(defect.DefectID ?? ""));
-  const seededDefects = defects.filter((defect) => /-1\d\d$/.test(defect.DefectID ?? ""));
-
-  const autoTotal = summary?.totals?.passed ?? null;
-  const coverage = summary?.requirementCoverage;
+  const manual = { total: metricsData.manualTotal, passed: metricsData.manualPassed, notExecuted: metricsData.manualNotExecuted };
+  const autoTotal = summary ? metricsData.automatedPassed : null;
+  const coverage = metricsData.requirements
+    ? { requirements: metricsData.requirements, fullyCovered: metricsData.requirementsCovered }
+    : null;
+  void metricsData;
 
   const metrics = verified
     ? [
-        metricCard("Manual test cases", manual?.total ?? "—", manual ? `${manual.byStatus?.Pass ?? 0} passed · ${manual.byStatus?.["Not Executed"] ?? 0} not executed` : ""),
+        metricCard("Manual test cases", manual.total ?? "—", manual.total ? `${manual.passed ?? 0} passed · ${manual.notExecuted ?? 0} not executed` : ""),
         metricCard(
           "Automated checks",
           autoTotal !== null ? `${autoTotal} passing` : "—",
-          [api ? `${api.total} API` : null, ui ? `${ui.total} UI` : null, db ? `${db.total} SQL` : null, postman ? `${postman.assertions} Postman assertions` : null]
+          [
+            metricsData.apiTests ? `${metricsData.apiTests} API` : null,
+            metricsData.uiTests ? `${metricsData.uiTests} UI` : null,
+            metricsData.sqlChecks ? `${metricsData.sqlChecks} SQL` : null,
+            metricsData.postmanAssertions ? `${metricsData.postmanAssertions} Postman assertions` : null,
+          ]
             .filter(Boolean)
             .join(" · ")
         ),
         metricCard("Requirements covered", coverage ? `${coverage.fullyCovered}/${coverage.requirements}` : "—", coverage ? `${Math.round((coverage.fullyCovered / coverage.requirements) * 100)}% fully traced` : ""),
-        metricCard("Defects found & fixed", genuineDefects.length ? String(genuineDefects.length) : "0", "Genuinely found during testing"),
-        metricCard("Seeded defects", seededDefects.length ? String(seededDefects.length) : "0", "Detection exercise, labelled SEEDED"),
-        metricCard("Last executed", summary?.generatedAt ? new Date(summary.generatedAt).toISOString().slice(0, 10) : "—", summary?.gitCommit ? `commit ${summary.gitCommit}` : ""),
+        metricCard("Defects found & fixed", metricsData.genuineDefects ? String(metricsData.genuineDefects) : "0", "Genuinely found during testing"),
+        metricCard("Seeded defects", metricsData.seededDefects ? String(metricsData.seededDefects) : "0", "Detection exercise, labelled SEEDED"),
+        metricCard("Last executed", summary?.generatedAt ? new Date(summary.generatedAt).toISOString().slice(0, 10) : "—", metricsData.commit ? `commit ${metricsData.commit}` : ""),
       ].join("\n")
     : `<p class="pending">Execution results for this project are still being verified. Numbers will appear here only after the suites have actually run — nothing is estimated.</p>`;
 
@@ -481,32 +435,36 @@ for (const config of configs) {
   console.log(`generated public/projects/${config.slug}/index.html`);
 
   // ------------------------------------------------------------------ metrics manifest
-  const projectDir = path.join(PROJECTS, config.slug);
-  const summary = readJson(path.join(projectDir, "test-reports/summary.json"));
-  const defects = parseCsv(path.join(projectDir, "test-documentation/defect-log.csv"));
-  const genuine = defects.filter((defect) => !/-1\d\d$/.test(defect.DefectID ?? "")).length;
-  const seeded = defects.filter((defect) => /-1\d\d$/.test(defect.DefectID ?? "")).length;
+  const metricsData = collectProjectMetrics(path.join(PROJECTS, config.slug));
 
-  metricsManifest[config.slug] = summary
+  metricsManifest[config.slug] = metricsData.hasSummary
     ? {
         verified: true,
-        manualCases: summary.manualTestCases?.total ?? 0,
-        manualPassed: summary.manualTestCases?.byStatus?.Pass ?? 0,
-        manualNotExecuted: summary.manualTestCases?.byStatus?.["Not Executed"] ?? 0,
-        automatedPassing: summary.totals?.passed ?? 0,
-        automatedFailed: summary.totals?.failed ?? 0,
-        apiTests: summary.automation?.api?.total ?? 0,
-        uiTests: summary.automation?.ui?.total ?? 0,
-        sqlChecks: summary.automation?.database?.total ?? 0,
-        postmanAssertions: summary.automation?.postman?.assertions ?? 0,
-        requirements: summary.requirementCoverage?.requirements ?? 0,
-        requirementsCovered: summary.requirementCoverage?.fullyCovered ?? 0,
-        defectsFound: genuine,
-        seededDefects: seeded,
-        lastRunAt: summary.generatedAt ?? null,
-        commit: summary.gitCommit ?? null,
+        manualCases: metricsData.manualTotal ?? 0,
+        manualPassed: metricsData.manualPassed ?? 0,
+        manualNotExecuted: metricsData.manualNotExecuted ?? 0,
+        automatedPassing: metricsData.automatedPassed,
+        automatedFailed: metricsData.automatedFailed,
+        apiTests: metricsData.apiTests ?? 0,
+        uiTests: metricsData.uiTests ?? 0,
+        sqlChecks: metricsData.sqlChecks ?? 0,
+        postmanAssertions: metricsData.postmanAssertions ?? 0,
+        requirements: metricsData.requirements ?? 0,
+        requirementsCovered: metricsData.requirementsCovered ?? 0,
+        defectsFound: metricsData.genuineDefects,
+        seededDefects: metricsData.seededDefects,
+        screenshots: metricsData.screenshots,
+        lastRunAt: metricsData.generatedAt,
+        commit: metricsData.commit,
       }
-    : { verified: false, defectsFound: genuine, seededDefects: seeded, lastRunAt: null, commit: null };
+    : {
+        verified: false,
+        defectsFound: metricsData.genuineDefects,
+        seededDefects: metricsData.seededDefects,
+        screenshots: metricsData.screenshots,
+        lastRunAt: null,
+        commit: null,
+      };
 }
 
 fs.mkdirSync(path.join(ROOT, "src/data"), { recursive: true });

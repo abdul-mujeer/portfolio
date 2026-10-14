@@ -13,11 +13,15 @@ I am an entry-level QA / SQA candidate: Computer Science graduate, self-taught i
 the work below is **portfolio practice built on demo applications I wrote myself** — it is not commercial
 QA employment experience, and no number in it is estimated.
 
-| Project | Testing focus | Executed results | Source |
+| Project | Testing focus | Executed results (verified) | Source |
 |---------|---------------|------------------|--------|
-| **ShopSure** — e-commerce QA | Manual, boundary/decision-table, API, UI automation, SQL validation | 101 manual cases · 202 automated checks passing · 3 defects found & fixed | [`projects/shopsure-qa`](projects/shopsure-qa) |
-| **PeopleCore** — HRMS workflow & RBAC | Multi-role workflows, permission matrix, date/salary boundaries, audit trails | see project README for the verified run | [`projects/peoplecore-qa`](projects/peoplecore-qa) |
-| **TaskFlow** — API quality engineering | CRUD/schema validation, object-level authorization, isolation, performance baseline | see project README for the verified run | [`projects/taskflow-qa`](projects/taskflow-qa) |
+| **ShopSure** — e-commerce QA | Manual, boundary/decision-table, API, UI automation, SQL validation | 101 manual cases (99 executed) · **202 automated checks passing** (72 API · 31 UI · 23 SQL · 76 Postman assertions) · 3 defects found & fixed · 3 seeded | [`projects/shopsure-qa`](projects/shopsure-qa) |
+| **PeopleCore** — HRMS workflow & RBAC | Multi-role workflows, permission matrix, date/salary boundaries, audit trails | 69 manual cases (65 executed) · **189 automated checks passing** (58 API · 20 UI · 12 SQL · 96 Postman assertions · 3 perf targets) · 12 defects found & fixed · 2 seeded | [`projects/peoplecore-qa`](projects/peoplecore-qa) |
+| **TaskFlow** — API quality engineering | CRUD/schema validation, object-level authorization, isolation, performance baseline | 67 manual cases (all executed) · **134 automated checks passing** (48 API · 10 UI · 22 SQL · 50 Postman assertions · 4 manual probes) · 6 defects found & fixed · 2 seeded | [`projects/taskflow-qa`](projects/taskflow-qa) |
+
+**Totals: 525 automated checks passing, 0 failing · 237 manual test cases · 21 defects found and fixed · 7 deliberately seeded defects with proven detection.**
+Every figure is read from the projects' own generated `test-reports/summary.json` — see
+[`docs/HANDOVER.md`](docs/HANDOVER.md) for the generated handover and `npm run docs:handover` to refresh it.
 
 Portfolio case studies (generated from each project's own executed artefacts):
 `/projects/shopsure-qa/` · `/projects/peoplecore-qa/` · `/projects/taskflow-qa/`
@@ -100,12 +104,20 @@ GitHub Actions.
 | Workflow | What it does |
 |----------|--------------|
 | `portfolio-site.yml` | Install, lint, type-check, build the site, run `verify:site`, upload the verification evidence |
-| `shopsure-qa.yml` | Install, lint, build the SPA, run API + UI + SQL + Postman suites, upload reports |
-| `peoplecore-qa.yml` | Install, lint, run API + UI + SQL + Postman suites, upload reports |
-| `taskflow-qa.yml` | Install, lint, run API + UI + SQL + Postman + performance baseline, upload reports |
+| `shopsure-qa.yml` | Install, lint, build the SPA, run API + UI + SQL + Postman suites, prove seeded-defect detection, upload reports |
+| `peoplecore-qa.yml` | Install, lint, run API + UI + SQL + Postman + performance suites, upload reports |
+| `taskflow-qa.yml` | Install, lint, run API + UI + SQL + Postman suites, run the performance baseline, upload reports |
 
-Workflow badges above report the real status of the latest run. Tests that need a real browser run on
-Chromium in CI; anything that cannot run in CI is documented in the project README.
+Local verification status at handover time: portfolio site **24/24 checks passed**
+(`npm run verify:site`), and the three projects totalled **525 passed / 0 failed**. Workflow badges above
+report the real status of the latest GitHub run; they only show green once that run has happened.
+
+Helper scripts:
+
+```powershell
+npm run build:projects   # regenerate case-study pages + card metrics from each project's summary.json
+npm run docs:handover    # regenerate docs/HANDOVER.md from real artefacts
+```
 
 ## Deployment
 
