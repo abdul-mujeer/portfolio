@@ -1,0 +1,78 @@
+name: Portfolio site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "public/**"
+      - "scripts/**"
+      - "index.html"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig*.json"
+      - "eslint.config.js"
+      - "vite.config.ts"
+      - "projects/**"
+      - ".github/workflows/portfolio-site.yml"
+  pull_request:
+    paths:
+      - "src/**"
+      - "public/**"
+      - "scripts/**"
+      - "index.html"
+      - "package.json"
+      - "projects/**"
+      - ".github/workflows/portfolio-site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portfolio-site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Build and verify the portfolio site
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Regenerate case-study pages from the projects' real reports
+        run: npm run build:projects
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build (includes the TypeScript check)
+        run: npm run build
+
+      - name: Install the Chromium used by the verification script
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify the built site in a real browser
+        run: npm run verify:site
+
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-site-evidence
+          path: test-evidence/
+          if-no-files-found: warn
+          retention-days: 30

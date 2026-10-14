@@ -77,7 +77,22 @@ try {
   });
 
   await page.goto(BASE, { waitUntil: "domcontentloaded" });
-  await page.waitForTimeout(4500); // allow the GSAP intro to finish
+
+  // The site shows a loading screen (progress bar) until the 3D character model has finished
+  // loading; it then unmounts itself. Wait for that before asserting or capturing screenshots,
+  // otherwise the evidence shows the loading overlay instead of the site.
+  let loaderDismissed = false;
+  try {
+    await page.waitForSelector(".loading-screen", { state: "detached", timeout: 90_000 });
+    loaderDismissed = true;
+  } catch {
+    loaderDismissed = false;
+  }
+  await page.waitForTimeout(2500); // allow the GSAP intro to settle
+
+  if (!loaderDismissed) {
+    console.warn("WARNING: the loading overlay was still present after 90s (headless WebGL may be slow).");
+  }
 
   const sections = [
     ["#about", "About"],
@@ -152,6 +167,11 @@ try {
   const mobile = await context.newPage();
   await mobile.setViewportSize({ width: 390, height: 844 });
   await mobile.goto(BASE, { waitUntil: "domcontentloaded" });
+  try {
+    await mobile.waitForSelector(".loading-screen", { state: "detached", timeout: 90_000 });
+  } catch {
+    console.warn("WARNING: mobile viewport capture ran before the loader dismissed.");
+  }
   await mobile.waitForTimeout(1500);
   const mobileCards = await mobile.locator("#qa-projects article").count();
   record("SITE-12", "Mobile viewport renders the project cards", mobileCards === 3, `${mobileCards} cards`);
@@ -159,6 +179,7 @@ try {
 
   record("SITE-13", "No uncaught console errors", consoleErrors.length === 0, consoleErrors.slice(0, 3).join(" | "));
   record("SITE-14", "No failed internal requests (>=400)", failedRequests.length === 0, failedRequests.slice(0, 3).join(" | "));
+  record("SITE-15", "Loading screen dismissed and the site is interactive", loaderDismissed, "loading overlay still present after 90s");
 
   await browser.close();
 } catch (error) {

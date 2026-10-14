@@ -179,6 +179,31 @@
   font-family: "Geist", sans-serif;
 }
 
+/* QA positioning line added for the QA portfolio redesign (not part of the original template). */
+.landing-tagline {
+  max-width: 34ch;
+  margin: 14px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  font-weight: 300;
+  letter-spacing: 0.2px;
+  color: rgba(234, 229, 236, 0.72);
+}
+
+@media only screen and (min-width: 1025px) {
+  .landing-tagline {
+    max-width: 38ch;
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .landing-tagline {
+    max-width: 30ch;
+    font-size: 12.5px;
+  }
+}
+
 /* .landing-intro h1 span {
    font-weight: 200; 
 } */

@@ -1,8 +1,8 @@
 # Portfolio site verification
 
-- Executed: 2026-10-14T00:08:52.673Z
+- Executed: 2026-10-14T00:27:17.470Z
 - Command: `npm run verify:site` (production build served by `vite preview`, driven by Playwright Chromium)
-- Result: **22/23 checks passed**
+- Result: **23/24 checks passed**
 
 | ID | Check | Result | Detail |
 |----|-------|--------|--------|
@@ -29,6 +29,7 @@
 | SITE-12 | Mobile viewport renders the project cards | PASS | 3 cards |
 | SITE-13 | No uncaught console errors | PASS |  |
 | SITE-14 | No failed internal requests (>=400) | PASS |  |
+| SITE-15 | Loading screen dismissed and the site is interactive | PASS | loading overlay still present after 90s |
 
 Screenshots captured by this run: `portfolio-home-desktop.jpg`, `portfolio-qa-projects.jpg`,
 `portfolio-case-study.jpg`, `portfolio-home-mobile.jpg` (in this folder).
