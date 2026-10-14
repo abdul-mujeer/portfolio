@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShopSure — E-commerce Quality Assurance and Test Automation — Qazi Abdul Mujeer</title>
+    <meta name="description" content="Manual functional testing · boundary analysis · REST API testing · Playwright UI automation · SQL validation" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      :root {
+        --bg: #0b080c;
+        --surface: rgba(255, 255, 255, 0.03);
+        --line: rgba(255, 255, 255, 0.12);
+        --text: #eae5ec;
+        --muted: rgba(234, 229, 236, 0.68);
+        --accent: #c2a4ff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Geist, "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.65;
+      }
+      a { color: var(--accent); }
+      a:hover { text-decoration: underline; }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 28px 20px 90px; }
+      .topnav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 14px; }
+      .topnav a { font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-size: 12.5px; }
+      .eyebrow { margin: 48px 0 10px; font-size: 12.5px; letter-spacing: 6px; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+      h1 { margin: 0 0 14px; font-size: clamp(30px, 4.6vw, 50px); line-height: 1.1; letter-spacing: -0.5px; }
+      .tagline { margin: 0 0 34px; font-size: 16px; color: var(--muted); max-width: 80ch; }
+      h2 { margin: 56px 0 16px; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); }
+      h3 { margin: 0 0 8px; font-size: 17px; }
+      h4 { margin: 0 0 10px; font-size: 15.5px; line-height: 1.4; }
+      p { margin: 0 0 14px; }
+      .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+      .metric { padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+      .metric-value { display: block; font-size: 24px; font-weight: 700; }
+      .metric-label { display: block; font-size: 11.5px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+      .metric-note { display: block; font-size: 12px; color: var(--muted); margin-top: 6px; }
+      .columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 26px; }
+      .card { padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+      .list { margin: 0; padding-left: 20px; font-size: 14.5px; color: var(--muted); }
+      .list li { margin-bottom: 8px; }
+      .case { padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); margin-bottom: 14px; }
+      .case header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+      .case code { font-size: 12.5px; }
+      .pill { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); }
+      .pill-pass { color: #9ff0c4; border-color: rgba(159, 240, 196, 0.4); }
+      .pill-fail { color: #ffa8a8; border-color: rgba(255, 168, 168, 0.45); }
+      .pill-not-executed { color: #ffd08a; border-color: rgba(255, 208, 138, 0.4); }
+      .pill-type { color: var(--muted); }
+      .case dl { display: grid; grid-template-columns: 132px 1fr; gap: 6px 14px; margin: 0; font-size: 14px; }
+      .case dt { color: var(--muted); font-size: 12.5px; letter-spacing: 0.6px; text-transform: uppercase; padding-top: 2px; }
+      .case dd { margin: 0; }
+      .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+      .gallery figure { margin: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--surface); }
+      .gallery img { display: block; width: 100%; height: auto; }
+      .gallery figcaption { padding: 10px 14px; font-size: 12.5px; color: var(--muted); text-transform: capitalize; }
+      .pending { padding: 14px 18px; border-left: 3px solid var(--accent); background: rgba(255, 255, 255, 0.03); border-radius: 0 10px 10px 0; color: var(--muted); }
+      .honesty { margin-top: 44px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); font-size: 14px; color: var(--muted); }
+      footer { margin-top: 60px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; }
+      @media (max-width: 620px) {
+        .case dl { grid-template-columns: 1fr; }
+        .case dt { padding-top: 8px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <nav class="topnav">
+        <a href="/">← Back to portfolio</a>
+        <a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/shopsure-qa" target="_blank" rel="noreferrer">Source code</a>
+      </nav>
+
+      <p class="eyebrow">QA case study</p>
+      <h1>ShopSure — E-commerce Quality Assurance and Test Automation</h1>
+      <p class="tagline">Manual functional testing · boundary analysis · REST API testing · Playwright UI automation · SQL validation</p>
+
+      <h2>Overview</h2>
+      <p>ShopSure is a demo e-commerce storefront (React SPA + Express REST API + SQLite) built to be tested rather than sold. It contains the rules that make online stores risky: cart quantity and stock limits, a pricing decision table (10% discount from a subtotal of 100.00, free shipping from 50.00), a checkout that must re-validate stock, and an order state machine (PENDING → PAID → SHIPPED → DELIVERED, CANCELED only before shipping) with role-based administration.</p>
+<p>I treated it as a real assignment: wrote requirements with acceptance criteria, designed 101 manual test cases with boundary values, decision tables and negative paths, automated the API and UI layers with Playwright, validated the database with SQL, ran a recorded exploratory/security session, and reported the outcome with a release recommendation. Everything in this case study is generated from the project's own executed artefacts.</p>
+
+      <h2>Executed results</h2>
+      <div class="metrics">
+        <div class="metric"><span class="metric-value">101</span><span class="metric-label">Manual test cases</span><span class="metric-note">99 passed · 2 not executed</span></div>
+<div class="metric"><span class="metric-value">202 passing</span><span class="metric-label">Automated checks</span><span class="metric-note">72 API · 31 UI · 23 SQL · 76 Postman assertions</span></div>
+<div class="metric"><span class="metric-value">24/24</span><span class="metric-label">Requirements covered</span><span class="metric-note">100% fully traced</span></div>
+<div class="metric"><span class="metric-value">3</span><span class="metric-label">Defects found &amp;amp; fixed</span><span class="metric-note">Genuinely found during testing</span></div>
+<div class="metric"><span class="metric-value">3</span><span class="metric-label">Seeded defects</span><span class="metric-note">Detection exercise, labelled SEEDED</span></div>
+<div class="metric"><span class="metric-value">2026-10-13</span><span class="metric-label">Last executed</span><span class="metric-note">commit 1f9605a</span></div>
+      </div>
+
+      <h2>Features under test</h2>
+      <ul class="list"><li>Registration, login, logout and session handling with scrypt password hashing and throttled failed logins</li><li>Catalog listing with search, sorting, filtering, pagination and empty states</li><li>Cart add/merge with a 10-unit line limit and stock guards; update, remove and clear</li><li>Checkout with field-level validation and server-side stock re-validation</li><li>Pricing rules applied consistently and verified in the database</li><li>Order history, customer isolation, cancellation with stock restoration</li><li>Admin order workflow and inventory management behind role-based access control</li><li>SQL-verified constraints, referential integrity and order status audit events</li></ul>
+
+      <h2>Testing approach</h2>
+      <div class="columns">
+        <article class="card">
+          <h3>API testing</h3>
+          <p>24 documented endpoints with an explicit error-code contract. 72 Playwright API tests drive real sessions and cookies against a seeded database, covering happy paths, missing/invalid payloads, unknown ids, duplicates, authorization boundaries (401/403), object ownership (404) and business-rule violations (422). A 35-request Postman collection with 76 assertions mirrors the critical flows and runs head-less through Newman.</p>
+        </article>
+        <article class="card">
+          <h3>UI automation</h3>
+          <p>31 Playwright UI tests cover the customer journeys (browse, search, cart, checkout, order history, cancellation) and the admin console, plus accessibility smoke checks. The suites use data-testid hooks, web-first assertions, no arbitrary sleeps, traces and screenshots on failure, and @smoke/@regression tags for fast versus full runs.</p>
+        </article>
+        <article class="card">
+          <h3>Database validation</h3>
+          <p>23 SQL checks validate what the API cannot prove: CHECK and UNIQUE constraints, foreign-key integrity, orphan detection, pricing consistency for every stored order, order-number format and uniqueness, credential storage (salted scrypt hashes, never plaintext), session expiry and audit-event completeness. They run after the functional suites so they also inspect real user-generated data.</p>
+        </article>
+      </div>
+
+      <h2>Selected test cases (from test-cases.csv)</h2>
+      
+        <article class="case">
+          <header>
+            <code>SHOP-TC-023</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Boundary</span>
+            <span class="pill pill-type">High priority</span>
+          </header>
+          <h4>minPrice boundary is inclusive (boundary)</h4>
+          <dl>
+            <dt>Requirement</dt><dd>SHOP-REQ-007</dd>
+            <dt>Test data</dt><dd>minPrice=50</dd>
+            <dt>Expected result</dt><dd>The 50.00 product is present and all prices are &gt;= 50</dd>
+            <dt>Actual result</dt><dd>Product priced 50.00 is included</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api-results.json › products.spec.ts › minPrice boundary is inclusive</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>SHOP-TC-050</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Boundary</span>
+            <span class="pill pill-type">Critical priority</span>
+          </header>
+          <h4>Shipping boundary: 49.99 charges 5.00, 50.00 is free (boundary)</h4>
+          <dl>
+            <dt>Requirement</dt><dd>SHOP-REQ-014</dd>
+            <dt>Test data</dt><dd>1 x product 2 (49.99); 1 x product 3 (50.00)</dd>
+            <dt>Expected result</dt><dd>Shipping 5.00 for 49.99 and 0.00 for 50.00</dd>
+            <dt>Actual result</dt><dd>49.99 -&gt; shipping 5.00, total 54.99; 50.00 -&gt; shipping 0.00, total 50.00</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api-results.json › orders.spec.ts › pricing decision table: subtotal 49.99 charges shipping, 50.00 does not</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>SHOP-TC-051</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Boundary</span>
+            <span class="pill pill-type">Critical priority</span>
+          </header>
+          <h4>Discount boundary: 99.99 has no discount, 100.00 receives 10% (boundary)</h4>
+          <dl>
+            <dt>Requirement</dt><dd>SHOP-REQ-014</dd>
+            <dt>Test data</dt><dd>1 x product 6 (99.99); 1 x product 7 (100.00)</dd>
+            <dt>Expected result</dt><dd>Discount 0.00 for 99.99 and 10.00 for 100.00</dd>
+            <dt>Actual result</dt><dd>99.99 -&gt; discount 0.00, total 99.99; 100.00 -&gt; discount 10.00, total 90.00</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api-results.json › orders.spec.ts › pricing decision table: discount applies from exactly 100.00</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>SHOP-TC-065</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Regression</span>
+            <span class="pill pill-type">Critical priority</span>
+          </header>
+          <h4>Cancelling a PENDING order restores stock and records the transition (regression)</h4>
+          <dl>
+            <dt>Requirement</dt><dd>SHOP-REQ-018</dd>
+            <dt>Test data</dt><dd>-</dd>
+            <dt>Expected result</dt><dd>Order CANCELED; stock back to 10; events [PENDING, CANCELED]</dd>
+            <dt>Actual result</dt><dd>CANCELED, stock restored 6 -&gt; 10, events [PENDING, CANCELED]</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api-results.json › orders.spec.ts › cancelling a PENDING order restores stock</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>SHOP-TC-078</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Security</span>
+            <span class="pill pill-type">Critical priority</span>
+          </header>
+          <h4>Customers receive 403 on every admin endpoint (security)</h4>
+          <dl>
+            <dt>Requirement</dt><dd>SHOP-REQ-021</dd>
+            <dt>Test data</dt><dd>-</dd>
+            <dt>Expected result</dt><dd>403 FORBIDDEN for all six endpoints</dd>
+            <dt>Actual result</dt><dd>All six admin endpoints returned 403 for the customer</dd>
+            <dt>Evidence</dt><dd><code>test-reports/playwright/api-results.json › admin.spec.ts › a customer receives 403 on every admin endpoint</code></dd>
+          </dl>
+        </article>
+
+        <article class="case">
+          <header>
+            <code>SHOP-TC-085</code>
+            <span class="pill pill-pass">Pass</span>
+            <span class="pill pill-type">Regression</span>
+            <span class="pill pill-type">High priority</span>
+          </header>
+          <h4>Malformed JSON returns 400 instead of 500 (regression)</h4>
+          <dl>
+            <dt>Requirement</dt><dd>SHOP-REQ-022</dd>
+            <dt>Test data</dt><dd>Body: '{&quot;email&quot;: &quot;a@example.com&quot;, ' (truncated)</dd>
+            <dt>Expected result</dt><dd>400 VALIDATION_ERROR, not a 5xx</dd>
+            <dt>Actual result</dt><dd>400 VALIDATION_ERROR after fix (was 500 before SHOP-BUG-002 was resolved)</dd>
+            <dt>Evidence</dt><dd><code>test-evidence/logs/manual-execution-latest.md (MAN-SEC-05)</code></dd>
+          </dl>
+        </article>
+
+      <h2>Defects</h2>
+      <ul class="list"><li>SHOP-BUG-001 — the seeded DELIVERED order had an incomplete status-event history; found by SQL check DB-22, fixed in the seed, retested.</li><li>SHOP-BUG-002 — malformed JSON returned HTTP 500 instead of 400; found in the exploratory session, fixed in the error handler, retested.</li><li>SHOP-BUG-003 — oversized request bodies returned 500 instead of 413; fixed together with SHOP-BUG-002.</li><li>Three further defects are deliberately seeded behind SEED_DEFECTS=1 to prove the suite detects the stock guard, stock restoration and boundary-filter rules; the detection run is kept as evidence.</li></ul>
+
+      <h2>Screenshots</h2>
+      
+        <figure>
+          <img src="/images/qa-projects/shopsure-qa/01-catalog-desktop.jpg" alt="ShopSure application screenshot 1" loading="lazy" />
+          <figcaption>shopsure qa/01 catalog desktop</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/shopsure-qa/02-catalog-search.jpg" alt="ShopSure application screenshot 2" loading="lazy" />
+          <figcaption>shopsure qa/02 catalog search</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/shopsure-qa/03-product-detail.jpg" alt="ShopSure application screenshot 3" loading="lazy" />
+          <figcaption>shopsure qa/03 product detail</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/shopsure-qa/04-out-of-stock.jpg" alt="ShopSure application screenshot 4" loading="lazy" />
+          <figcaption>shopsure qa/04 out of stock</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/shopsure-qa/05-cart.jpg" alt="ShopSure application screenshot 5" loading="lazy" />
+          <figcaption>shopsure qa/05 cart</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/images/qa-projects/shopsure-qa/06-checkout-validation.jpg" alt="ShopSure application screenshot 6" loading="lazy" />
+          <figcaption>shopsure qa/06 checkout validation</figcaption>
+        </figure>
+
+      <h2>Documentation &amp; evidence</h2>
+      <ul class="list"><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/shopsure-qa/README.md" target="_blank" rel="noreferrer">README (all 18 sections) →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/shopsure-qa/test-documentation/test-strategy.md" target="_blank" rel="noreferrer">Test strategy →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/shopsure-qa/test-documentation/test-cases.csv" target="_blank" rel="noreferrer">Test cases (CSV) →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/shopsure-qa/test-documentation/traceability-matrix.csv" target="_blank" rel="noreferrer">Traceability matrix →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/shopsure-qa/test-documentation/defect-log.csv" target="_blank" rel="noreferrer">Defect log →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/shopsure-qa/test-documentation/risk-assessment.md" target="_blank" rel="noreferrer">Risk assessment →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/shopsure-qa/test-documentation/interview-preparation.md" target="_blank" rel="noreferrer">Interview preparation →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/shopsure-qa" target="_blank" rel="noreferrer">Source code →</a></li></ul>
+
+      <h2>Limitations</h2>
+      <ul class="list"><li>Concurrency of the checkout path is not tested (single-writer SQLite demo database).</li><li>UI automation runs on Chromium only; Firefox/WebKit are not installed in this environment.</li><li>Two manual cases (cross-browser run, screen-reader announcement) are documented but not executed.</li><li>Accessibility coverage is targeted smoke testing, not a full WCAG audit.</li></ul>
+
+      <h2>Future improvements</h2>
+      <ul class="list"><li>Run the checkout race tests against PostgreSQL with parallel workers.</li><li>Add @axe-core/playwright and a scripted screen-reader pass.</li><li>Add JSON-schema contract assertions so response-shape regressions fail fast.</li></ul>
+
+      <p class="honesty">
+        <strong>Honesty statement.</strong> ShopSure is a demo application built by me
+        specifically as a testing target for this portfolio. It is not a commercial product and contains no
+        real customer data. Every number on this page is read from the project's machine-generated
+        <code>test-reports/summary.json</code> produced by executed suites; incomplete results are marked as
+        pending rather than estimated.
+      </p>
+
+      <footer>
+        <span>Qazi Abdul Mujeer — QA / SQA portfolio</span>
+        <a href="/">Back to portfolio</a>
+      </footer>
+    </div>
+  </body>
+</html>

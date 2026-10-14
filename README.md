@@ -1,65 +1,138 @@
-# My Portfolio Website - Overview 🚀
+# QA / SQA Portfolio — Qazi Abdul Mujeer
 
-This repository contains the open-source version of my personal portfolio website.  
-Feel free to explore the code and use it for learning and inspiration.
+[![Verify portfolio site](https://github.com/abdul-mujeer/portfolio/actions/workflows/portfolio-site.yml/badge.svg)](https://github.com/abdul-mujeer/portfolio/actions/workflows/portfolio-site.yml)
+[![ShopSure QA](https://github.com/abdul-mujeer/portfolio/actions/workflows/shopsure-qa.yml/badge.svg)](https://github.com/abdul-mujeer/portfolio/actions/workflows/shopsure-qa.yml)
+[![PeopleCore QA](https://github.com/abdul-mujeer/portfolio/actions/workflows/peoplecore-qa.yml/badge.svg)](https://github.com/abdul-mujeer/portfolio/actions/workflows/peoplecore-qa.yml)
+[![TaskFlow QA](https://github.com/abdul-mujeer/portfolio/actions/workflows/taskflow-qa.yml/badge.svg)](https://github.com/abdul-mujeer/portfolio/actions/workflows/taskflow-qa.yml)
 
----
+This repository contains my personal portfolio plus **three complete, runnable software-testing
+projects**. Each project ships a real demo application, a full QA lifecycle documentation package,
+automated test suites, executed evidence and a release report.
 
-## ⚠️ Usage Notice
+I am an entry-level QA / SQA candidate: Computer Science graduate, self-taught in software testing, and
+the work below is **portfolio practice built on demo applications I wrote myself** — it is not commercial
+QA employment experience, and no number in it is estimated.
 
-This project is shared for learning purposes only.
+| Project | Testing focus | Executed results | Source |
+|---------|---------------|------------------|--------|
+| **ShopSure** — e-commerce QA | Manual, boundary/decision-table, API, UI automation, SQL validation | 101 manual cases · 202 automated checks passing · 3 defects found & fixed | [`projects/shopsure-qa`](projects/shopsure-qa) |
+| **PeopleCore** — HRMS workflow & RBAC | Multi-role workflows, permission matrix, date/salary boundaries, audit trails | see project README for the verified run | [`projects/peoplecore-qa`](projects/peoplecore-qa) |
+| **TaskFlow** — API quality engineering | CRUD/schema validation, object-level authorization, isolation, performance baseline | see project README for the verified run | [`projects/taskflow-qa`](projects/taskflow-qa) |
 
-Please do NOT:
-- Clone or replicate the full website or design
-- Repost it with minor content changes
-- Use this project for commercial/client work
-- Create tutorials or content using this exact project
-
-If you use parts of the code, you must provide proper credit linking back to the original repository.
-
-Build your own version — don’t just copy.
-
-— Moncy Yohannan
-
----
-
-## 🛠️ Instructions
-
-I have modified the GSAP Club plugins using trial versions.  
-⚠️ Note: Trial plugins cannot be used for production or hosting.
-
-For official GSAP Club plugins, refer here:  
-https://gsap.com/docs/v3/Installation/
+Portfolio case studies (generated from each project's own executed artefacts):
+`/projects/shopsure-qa/` · `/projects/peoplecore-qa/` · `/projects/taskflow-qa/`
 
 ---
 
-## ⚙️ Tech Stack
+## Repository layout
 
-React • TypeScript • GSAP • Three.js • WebGL • HTML • CSS • JavaScript
+```
+.
+├── src/                      # portfolio site (React 18 + TypeScript + Vite + GSAP + three.js)
+├── public/
+│   ├── projects/<slug>/      # generated QA case-study pages
+│   ├── images/qa-projects/   # real application screenshots used as thumbnails
+│   └── resume.html           # printable résumé (generated from portfolio content)
+├── scripts/
+│   ├── build-project-pages.mjs   # case-study pages + metrics from real test-reports/summary.json
+│   └── verify-site.mjs           # Playwright verification of the built site
+├── projects/
+│   ├── shopsure-qa/          # app + tests + QA documentation + evidence + reports
+│   ├── peoplecore-qa/
+│   └── taskflow-qa/
+├── docs/
+│   ├── BUILD-PLAN.md         # how this portfolio was built, milestone by milestone
+│   └── PROJECT-STANDARD.md   # the shared engineering/QA contract for the three projects
+└── .github/workflows/        # CI: site verification + one workflow per QA project
+```
 
----
+## Quick start (portfolio site)
 
-## 🎨 Assets Usage
+```powershell
+npm install
+npm run dev            # http://localhost:5173
+npm run build          # type-check + production build
+npm run verify:site    # Playwright verification of the built site (needs `npm run build` first)
+npm run build:projects # regenerate case-study pages + card metrics from each project's summary.json
+```
 
-Some 3D assets included in this repository are free to use for learning purposes.
+## Running the QA projects
 
-However:
+Each project is a self-contained Node package (no compilers, no Docker, no external database — SQLite
+comes from Node's built-in `node:sqlite`):
 
-- The original 3D avatar used on my live portfolio is NOT included in this repository
-- That avatar is a custom asset created over ~1 month
-- It is not open source and not available for reuse
+```powershell
+cd projects/shopsure-qa
+npm install
+npm run build          # ShopSure only (React SPA)
+npm run db:reset       # deterministic synthetic seed data
+npm start              # http://127.0.0.1:4100
+npm run test:all       # every suite + generated execution report
+```
 
-Any usage, extraction, or redistribution of that avatar from my live website is strictly prohibited.
+The same shape applies to `projects/peoplecore-qa` (port 4200) and `projects/taskflow-qa` (port 4300);
+see each project README for its exact commands, demo credentials and verified results.
 
----
+## What each QA project contains
 
-![Protfolio-Preview](https://github.com/user-attachments/assets/3c4557e7-6392-4928-b8a9-7b2476ef4edd)
+Every project follows the shared contract in [`docs/PROJECT-STANDARD.md`](docs/PROJECT-STANDARD.md):
 
----
+- **Requirements & acceptance criteria** with stable IDs and a traceability matrix.
+- **40–110 manual test cases** in Excel-safe CSV with steps, test data, expected/actual results, status,
+  priority, type, defect link and evidence link.
+- **Automated suites**: Playwright API + UI tests, SQL database validation checks, Postman collections
+  executed with Newman, plus a seeded-defect detection exercise.
+- **Defect management**: reproducible bug reports with severity, priority, root cause, retest and
+  regression results.
+- **Executed evidence**: raw logs, machine-generated `summary.json`, screenshots of the running
+  applications, and an execution report with actual counts and a release recommendation.
+- **Honesty rules**: results that were not executed are labelled `Not Executed` with the exact command to
+  reproduce them; deliberately seeded defects are always labelled `SEEDED`.
 
-## 📄 License
+## Tech stack across the projects
 
-This project is licensed under the Personal Portfolio License (PPL) v1.0.
+Node.js 24 · Express 4 · `node:sqlite` (SQLite) · Zod · React 18 + Vite 5 (ShopSure SPA) · EJS
+(PeopleCore views) · Playwright (UI + API) · Postman + Newman · autocannon (local performance baseline) ·
+GitHub Actions.
 
-See the LICENSE file for full details
+## Verification and CI
 
+| Workflow | What it does |
+|----------|--------------|
+| `portfolio-site.yml` | Install, lint, type-check, build the site, run `verify:site`, upload the verification evidence |
+| `shopsure-qa.yml` | Install, lint, build the SPA, run API + UI + SQL + Postman suites, upload reports |
+| `peoplecore-qa.yml` | Install, lint, run API + UI + SQL + Postman suites, upload reports |
+| `taskflow-qa.yml` | Install, lint, run API + UI + SQL + Postman + performance baseline, upload reports |
+
+Workflow badges above report the real status of the latest run. Tests that need a real browser run on
+Chromium in CI; anything that cannot run in CI is documented in the project README.
+
+## Deployment
+
+The site is a static Vite build (`dist/`). It is not currently deployed. To deploy it:
+
+```powershell
+npm run build
+npx vercel deploy --prod dist          # or: npx netlify deploy --prod --dir dist
+```
+
+After deploying, set the correct canonical/OG URLs in `index.html` and add the live link here.
+
+## License, attribution and usage
+
+This repository is my personal portfolio, built on top of the open-source portfolio template by
+**Moncy Yohannan** ([original repository](https://github.com/moncyy/portfolio)). Credit and thanks to the
+original author; parts of the application shell and animation approach come from that template.
+
+Per the template's [Personal Portfolio License (PPL) v1.0](LICENSE):
+
+- Do not clone or replicate this website or its design as your own.
+- Do not repost it with minor content changes or use it for commercial/client work.
+- If you reuse parts of the code, provide proper credit linking back to the original repository.
+
+The 3D avatar used on the original live site is **not** included here (only a placeholder model), and it
+is not open source. GSAP plugins used by this project (`ScrollSmoother`, `SplitText`) are part of the free
+public GSAP 3.13+ package — no Club/trial plugins are required.
+
+The QA projects under `projects/` are my own work and are shared for review and learning. All data in
+them is synthetic: no real customer, employee or payment data is used anywhere.

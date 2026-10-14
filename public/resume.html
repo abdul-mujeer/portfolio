@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Qazi Abdul Mujeer — QA / SQA Engineer Résumé</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      :root {
+        --ink: #14121a;
+        --muted: #5b5766;
+        --line: #e2dff0;
+        --accent: #6b4ee6;
+        --bg: #ffffff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f4f3f8;
+        color: var(--ink);
+        font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+      }
+      .sheet {
+        max-width: 900px;
+        margin: 28px auto;
+        background: var(--bg);
+        padding: 44px 48px 52px;
+        border-radius: 10px;
+        box-shadow: 0 18px 50px rgba(20, 18, 26, 0.12);
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 3px solid var(--accent);
+        padding-bottom: 18px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 30px;
+        letter-spacing: -0.4px;
+      }
+      .role {
+        margin: 6px 0 0;
+        font-size: 14px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .contact {
+        font-size: 13.5px;
+        text-align: right;
+        color: var(--muted);
+      }
+      .contact a {
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .contact a:hover {
+        border-color: var(--accent);
+      }
+      h2 {
+        margin: 30px 0 12px;
+        font-size: 13px;
+        letter-spacing: 2.6px;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+      h3 {
+        margin: 0 0 2px;
+        font-size: 15.5px;
+      }
+      .meta {
+        margin: 0 0 8px;
+        font-size: 12.5px;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      p {
+        margin: 0 0 10px;
+        font-size: 14px;
+      }
+      ul {
+        margin: 0 0 10px 18px;
+        padding: 0;
+        font-size: 13.8px;
+      }
+      li {
+        margin-bottom: 4px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 8px 26px;
+      }
+      .skill-row {
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        gap: 12px;
+        padding: 7px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 13.5px;
+      }
+      .skill-row strong {
+        font-weight: 700;
+      }
+      .project {
+        padding: 14px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .project:last-child {
+        border-bottom: none;
+      }
+      .tags {
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+      .notice {
+        margin: 0 0 26px;
+        padding: 12px 16px;
+        border-left: 3px solid var(--accent);
+        background: #f2effe;
+        font-size: 13px;
+        color: #3d3556;
+        border-radius: 0 8px 8px 0;
+      }
+      .toolbar {
+        max-width: 900px;
+        margin: 22px auto 0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 0 12px;
+      }
+      .toolbar button,
+      .toolbar a {
+        font: inherit;
+        font-size: 13.5px;
+        font-weight: 600;
+        padding: 9px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--accent);
+        background: var(--accent);
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .toolbar a.ghost {
+        background: transparent;
+        color: var(--accent);
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .sheet {
+          box-shadow: none;
+          margin: 0;
+          max-width: none;
+          padding: 0 8mm;
+          border-radius: 0;
+        }
+        .toolbar,
+        .notice {
+          display: none;
+        }
+        h2 {
+          page-break-after: avoid;
+        }
+        .project {
+          page-break-inside: avoid;
+        }
+      }
+      @media (max-width: 640px) {
+        .sheet {
+          padding: 26px 20px;
+        }
+        .contact {
+          text-align: left;
+        }
+        .skill-row {
+          grid-template-columns: 1fr;
+          gap: 2px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <button type="button" onclick="window.print()">Print / save as PDF</button>
+      <a class="ghost" href="/">Back to portfolio</a>
+    </div>
+
+    <main class="sheet">
+      <p class="notice">
+        This résumé page is generated from the content already published in my portfolio repository.
+        Replace it with your own PDF when ready by saving the print output as <code>resume.pdf</code>.
+      </p>
+
+      <header>
+        <div>
+          <h1>Qazi Abdul Mujeer</h1>
+          <p class="role">Aspiring QA / SQA Engineer · Manual &amp; Automation Testing</p>
+        </div>
+        <div class="contact">
+          <div><a href="mailto:abdul.mujeer98@gmail.com">abdul.mujeer98@gmail.com</a></div>
+          <div><a href="tel:+92-316-2454316">+92-316-2454316</a></div>
+          <div><a href="https://github.com/abdul-mujeer" target="_blank" rel="noreferrer">github.com/abdul-mujeer</a></div>
+          <div><a href="https://www.linkedin.com/in/qazi-abdul-mujeer/" target="_blank" rel="noreferrer">linkedin.com/in/qazi-abdul-mujeer</a></div>
+          <div><a href="https://leetcode.com/u/Abdul_Mujeer/" target="_blank" rel="noreferrer">leetcode.com/u/Abdul_Mujeer</a></div>
+        </div>
+      </header>
+
+      <h2>Summary</h2>
+      <p>
+        Computer Science graduate with foundational knowledge of Software Quality Assurance and manual
+        testing, plus hands-on practice in API testing, SQL validation and UI/API automation through three
+        self-built testing projects. Familiar with test case design, defect reporting, SDLC/STLC,
+        functional and regression testing. Seeking an entry-level QA / SQC position to apply testing skills
+        and grow in a professional software development environment.
+      </p>
+
+      <h2>QA &amp; technical skills</h2>
+      <div class="skill-row"><strong>Test design</strong><span>Test cases, scenarios, equivalence partitioning, boundary values, decision tables, state transitions, negative testing, exploratory charters, smoke/regression suites</span></div>
+      <div class="skill-row"><strong>API testing</strong><span>REST APIs, Postman collections, Newman CLI runs, status codes, headers, payload validation, authentication and authorization errors</span></div>
+      <div class="skill-row"><strong>Automation</strong><span>Playwright (UI + API), reliable selectors, assertions, traces and screenshots, test isolation, GitHub Actions CI</span></div>
+      <div class="skill-row"><strong>Database</strong><span>SQL queries and joins, constraint and uniqueness checks, referential integrity, business-rule validation, persistence checks</span></div>
+      <div class="skill-row"><strong>Process</strong><span>SDLC/STLC, Agile ceremonies, risk-based testing, defect lifecycle, severity vs priority, test reports and release recommendations</span></div>
+      <div class="skill-row"><strong>Tools &amp; languages</strong><span>Playwright, Postman/Newman, Git/GitHub, GitHub Actions, JavaScript/TypeScript, Python, Node.js, Express, React, SQLite, MySQL, PostgreSQL, Docker</span></div>
+
+      <h2>QA portfolio projects</h2>
+
+      <div class="project">
+        <h3>ShopSure — E-commerce QA and Test Automation</h3>
+        <p class="meta">Manual · API · UI · database testing · 2026</p>
+        <p>
+          Demo storefront (React + Express + SQLite) covering registration, catalog search/filter/sort,
+          cart quantity and stock rules, checkout pricing rules, order lifecycle and role-based admin
+          access. Produced 24 requirements, 101 manual test cases, 202 passing automated checks
+          (72 API · 31 UI · 23 SQL · 76 Postman assertions), a traceability matrix and an execution
+          report. Found and fixed three defects with retest and regression evidence.
+        </p>
+        <p class="tags">Playwright · Postman · Newman · SQL · Node.js · Express · React · SQLite</p>
+      </div>
+
+      <div class="project">
+        <h3>PeopleCore — HRMS Workflow and Role-Based Access Testing</h3>
+        <p class="meta">Workflow · permissions · audit testing · 2026</p>
+        <p>
+          HR management system (Express + EJS + SQLite) covering employees, departments, attendance and
+          leave approval across administrator, HR, manager and employee roles. Tested workflow
+          transitions, permission boundaries (including direct API access), date and salary validation,
+          duplicate handling and audit history, with SQL consistency checks and automated regression suites.
+        </p>
+        <p class="tags">Playwright · Postman · SQL · Node.js · Express · EJS · SQLite</p>
+      </div>
+
+      <div class="project">
+        <h3>TaskFlow — REST API Quality Engineering and Regression Automation</h3>
+        <p class="meta">API-first testing · security · performance baseline · 2026</p>
+        <p>
+          API-first project management service (Express + SQLite) with projects, membership, tasks,
+          comments and activity history. Deep API coverage of CRUD operations, schema validation,
+          object-level permissions, cross-project isolation, pagination edges and security probes, plus a
+          local performance baseline and repeatable automated regression runs.
+        </p>
+        <p class="tags">Playwright · Postman · autocannon · Node.js · Express · SQLite</p>
+      </div>
+
+      <h2>Experience</h2>
+      <div class="project">
+        <h3>Freelance Software Developer (Remote)</h3>
+        <p class="meta">2025 – 2026</p>
+        <p>
+          Collaborated with distributed client teams to build and optimize modern web applications using
+          Python and React. Developed REST APIs, integrated frontend components with backend services and
+          debugged production issues — the experience that motivated my move toward quality assurance.
+        </p>
+      </div>
+      <div class="project">
+        <h3>Full-Stack Developer — CYPHION</h3>
+        <p class="meta">2024 – 2025</p>
+        <p>
+          Built AI-powered web applications with Python, React, Flask, Django, Next.js and Node.js,
+          covering frontend and backend development, API integrations, database systems and cloud
+          deployments with a focus on performance and maintainability.
+        </p>
+      </div>
+      <div class="project">
+        <h3>AI-Crypto Trading Dashboard — personal project</h3>
+        <p class="meta">Current</p>
+        <p>Next.js dashboard providing market data, technical analysis and virtual trading capabilities.</p>
+      </div>
+
+      <h2>Education &amp; learning</h2>
+      <p><strong>Computer Science graduate</strong> — programming, databases, software engineering.</p>
+      <p>
+        Self-directed QA study: software testing lifecycle, test design techniques, defect management,
+        API testing with Postman/Newman, SQL validation, Playwright automation, Git/GitHub and CI with
+        GitHub Actions.
+      </p>
+
+      <h2>Other projects</h2>
+      <ul>
+        <li>AI-Powered Crypto Trading platform — Python, Flask, Next.js, GCP, Docker, JWT</li>
+        <li>AI Interview Preparation Platform — Python, FastAPI, Next.js, OpenAI API, MongoDB</li>
+        <li>Hybrid Legal Text Summarization — Python, NLTK, scikit-learn, Transformers</li>
+        <li>Real-Time Human Detection &amp; Pose Estimation — Python, YOLOv5, PyTorch</li>
+        <li>Face Recognition System — Python, Keras (CNN), TensorFlow</li>
+        <li>Responsive Shopify Clone — HTML, CSS, JavaScript</li>
+      </ul>
+    </main>
+  </body>
+</html>

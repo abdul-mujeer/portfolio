@@ -3,9 +3,14 @@ import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
 import Cursor from "./Cursor";
+import Education from "./Education";
+import Footer from "./Footer";
 import Landing from "./Landing";
 import Navbar from "./Navbar";
+import QAProjects from "./QAProjects";
+import QASkills from "./QASkills";
 import SocialIcons from "./SocialIcons";
+import TestingApproach from "./TestingApproach";
 import WhatIDo from "./WhatIDo";
 import Work from "./Work";
 import setSplitText from "./utils/splitText";
@@ -41,6 +46,9 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <Landing>{!isDesktopView && children}</Landing>
             <About />
             <WhatIDo />
+            <QASkills />
+            <QAProjects />
+            <TestingApproach />
             <Career />
             <Work />
             {isDesktopView && (
@@ -48,7 +56,9 @@ const MainContainer = ({ children }: PropsWithChildren) => {
                 <TechStack />
               </Suspense>
             )}
+            <Education />
             <Contact />
+            <Footer />
           </div>
         </div>
       </div>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskFlow — REST API Quality Engineering and Regression Automation — Qazi Abdul Mujeer</title>
+    <meta name="description" content="CRUD &amp; schema validation · object-level permissions · cross-project isolation · performance baseline" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      :root {
+        --bg: #0b080c;
+        --surface: rgba(255, 255, 255, 0.03);
+        --line: rgba(255, 255, 255, 0.12);
+        --text: #eae5ec;
+        --muted: rgba(234, 229, 236, 0.68);
+        --accent: #ffd08a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Geist, "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.65;
+      }
+      a { color: var(--accent); }
+      a:hover { text-decoration: underline; }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 28px 20px 90px; }
+      .topnav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 14px; }
+      .topnav a { font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-size: 12.5px; }
+      .eyebrow { margin: 48px 0 10px; font-size: 12.5px; letter-spacing: 6px; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+      h1 { margin: 0 0 14px; font-size: clamp(30px, 4.6vw, 50px); line-height: 1.1; letter-spacing: -0.5px; }
+      .tagline { margin: 0 0 34px; font-size: 16px; color: var(--muted); max-width: 80ch; }
+      h2 { margin: 56px 0 16px; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); }
+      h3 { margin: 0 0 8px; font-size: 17px; }
+      h4 { margin: 0 0 10px; font-size: 15.5px; line-height: 1.4; }
+      p { margin: 0 0 14px; }
+      .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+      .metric { padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+      .metric-value { display: block; font-size: 24px; font-weight: 700; }
+      .metric-label { display: block; font-size: 11.5px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+      .metric-note { display: block; font-size: 12px; color: var(--muted); margin-top: 6px; }
+      .columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 26px; }
+      .card { padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+      .list { margin: 0; padding-left: 20px; font-size: 14.5px; color: var(--muted); }
+      .list li { margin-bottom: 8px; }
+      .case { padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); margin-bottom: 14px; }
+      .case header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+      .case code { font-size: 12.5px; }
+      .pill { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); }
+      .pill-pass { color: #9ff0c4; border-color: rgba(159, 240, 196, 0.4); }
+      .pill-fail { color: #ffa8a8; border-color: rgba(255, 168, 168, 0.45); }
+      .pill-not-executed { color: #ffd08a; border-color: rgba(255, 208, 138, 0.4); }
+      .pill-type { color: var(--muted); }
+      .case dl { display: grid; grid-template-columns: 132px 1fr; gap: 6px 14px; margin: 0; font-size: 14px; }
+      .case dt { color: var(--muted); font-size: 12.5px; letter-spacing: 0.6px; text-transform: uppercase; padding-top: 2px; }
+      .case dd { margin: 0; }
+      .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+      .gallery figure { margin: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--surface); }
+      .gallery img { display: block; width: 100%; height: auto; }
+      .gallery figcaption { padding: 10px 14px; font-size: 12.5px; color: var(--muted); text-transform: capitalize; }
+      .pending { padding: 14px 18px; border-left: 3px solid var(--accent); background: rgba(255, 255, 255, 0.03); border-radius: 0 10px 10px 0; color: var(--muted); }
+      .honesty { margin-top: 44px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); font-size: 14px; color: var(--muted); }
+      footer { margin-top: 60px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; }
+      @media (max-width: 620px) {
+        .case dl { grid-template-columns: 1fr; }
+        .case dt { padding-top: 8px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <nav class="topnav">
+        <a href="/">← Back to portfolio</a>
+        <a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/taskflow-qa" target="_blank" rel="noreferrer">Source code</a>
+      </nav>
+
+      <p class="eyebrow">QA case study · results pending verification</p>
+      <h1>TaskFlow — REST API Quality Engineering and Regression Automation</h1>
+      <p class="tagline">CRUD &amp; schema validation · object-level permissions · cross-project isolation · performance baseline</p>
+
+      <h2>Overview</h2>
+      <p>TaskFlow is an API-first project management service (Express + SQLite with a minimal browser console): users create projects, invite members with owner/admin/member roles, then create tasks, move them through a status workflow, comment and read an activity feed.</p>
+<p>Because there is almost no UI, the QA effort concentrates on the API contract itself: request/response schemas, HTTP semantics, pagination and filtering edges, duplicate and conflicting operations, and the authorization rules that decide who may see or change which object.</p>
+
+      <h2>Executed results</h2>
+      <div class="metrics">
+        <p class="pending">Execution results for this project are still being verified. Numbers will appear here only after the suites have actually run — nothing is estimated.</p>
+      </div>
+
+      <h2>Features under test</h2>
+      <ul class="list"><li>Registration, login and session handling with role-based project membership</li><li>Projects with unique keys, membership management and archiving rules</li><li>Tasks with title/description bounds, priorities, assignees, estimates and due dates</li><li>Status workflow TODO → IN_PROGRESS → IN_REVIEW → DONE (CANCELED from any non-DONE state)</li><li>Comments and an activity feed recording every meaningful change</li><li>Search, filtering, sorting, pagination and overdue reporting</li><li>Cross-project isolation: members of one project cannot read or mutate another project's data</li></ul>
+
+      <h2>Testing approach</h2>
+      <div class="columns">
+        <article class="card">
+          <h3>API testing</h3>
+          <p>The primary test surface: Playwright API suites cover CRUD, HTTP method and status-code validation, malformed and missing payloads, type errors, duplicate/conflicting operations, invalid workflow transitions, date boundaries (including overdue and due-today), pagination and filtering edges, persistence, and object-level permission checks — including 404-instead-of-403 behaviour that avoids leaking existence.</p>
+        </article>
+        <article class="card">
+          <h3>UI automation</h3>
+          <p>Playwright provides both the API suites and a small UI console suite (board, task creation, status change, comments, validation banners). Every run is repeatable from a deterministic seed.</p>
+        </article>
+        <article class="card">
+          <h3>Database validation</h3>
+          <p>SQL checks prove the schema itself protects data: unique project keys, foreign keys, member-role integrity, activity rows for mutations, archived-project exclusions, overdue-query correctness and consistency between API counts and stored rows.</p>
+        </article>
+      </div>
+
+      <h2>Selected test cases (from test-cases.csv)</h2>
+      <p class="pending">Test cases for this project are being finalised; the CSV will be linked here once executed.</p>
+
+      <h2>Defects</h2>
+      <p class="pending">The full defect log for this project is available in the repository (linked below).</p>
+
+      <h2>Screenshots</h2>
+      <p class="pending">Screenshots are captured from the running application after the suites pass.</p>
+
+      <h2>Documentation &amp; evidence</h2>
+      <ul class="list"><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/README.md" target="_blank" rel="noreferrer">README →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-documentation/api-reference.md" target="_blank" rel="noreferrer">API reference →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-documentation/test-cases.csv" target="_blank" rel="noreferrer">Test cases (CSV) →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-documentation/permission-matrix.md" target="_blank" rel="noreferrer">Permission matrix →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-documentation/security-testing.md" target="_blank" rel="noreferrer">Security testing →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-reports/performance-baseline.md" target="_blank" rel="noreferrer">Performance baseline →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/blob/main/projects/taskflow-qa/test-documentation/defect-log.csv" target="_blank" rel="noreferrer">Defect log →</a></li><li><a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/taskflow-qa" target="_blank" rel="noreferrer">Source code →</a></li></ul>
+
+      <h2>Limitations</h2>
+      <ul class="list"><li>See the project README and risk assessment in the repository.</li></ul>
+
+      <h2>Future improvements</h2>
+      <ul class="list"><li>See the project README for the current improvement list.</li></ul>
+
+      <p class="honesty">
+        <strong>Honesty statement.</strong> TaskFlow is a demo application built by me
+        specifically as a testing target for this portfolio. It is not a commercial product and contains no
+        real customer data. Every number on this page is read from the project's machine-generated
+        <code>test-reports/summary.json</code> produced by executed suites; incomplete results are marked as
+        pending rather than estimated.
+      </p>
+
+      <footer>
+        <span>Qazi Abdul Mujeer — QA / SQA portfolio</span>
+        <a href="/">Back to portfolio</a>
+      </footer>
+    </div>
+  </body>
+</html>

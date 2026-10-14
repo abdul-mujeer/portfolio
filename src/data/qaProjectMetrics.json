@@ -1,0 +1,34 @@
+{
+  "shopsure-qa": {
+    "verified": true,
+    "manualCases": 101,
+    "manualPassed": 99,
+    "manualNotExecuted": 2,
+    "automatedPassing": 202,
+    "automatedFailed": 0,
+    "apiTests": 72,
+    "uiTests": 31,
+    "sqlChecks": 23,
+    "postmanAssertions": 76,
+    "requirements": 24,
+    "requirementsCovered": 24,
+    "defectsFound": 3,
+    "seededDefects": 3,
+    "lastRunAt": "2026-10-13T23:59:57.707Z",
+    "commit": "1f9605a"
+  },
+  "peoplecore-qa": {
+    "verified": false,
+    "defectsFound": 0,
+    "seededDefects": 0,
+    "lastRunAt": null,
+    "commit": null
+  },
+  "taskflow-qa": {
+    "verified": false,
+    "defectsFound": 0,
+    "seededDefects": 0,
+    "lastRunAt": null,
+    "commit": null
+  }
+}
