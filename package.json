@@ -11,7 +11,8 @@
     "verify:site": "node scripts/verify-site.mjs",
     "build:projects": "node scripts/build-project-pages.mjs",
     "docs:handover": "node scripts/build-handover.mjs",
-    "build:cv": "node scripts/build-cv.mjs"
+    "build:cv": "node scripts/build-cv.mjs",
+    "build:linkedin": "node scripts/build-linkedin-kit.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.1",

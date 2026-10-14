@@ -29,8 +29,9 @@ const About = () => {
           three applications built as test targets: 60 requirements with acceptance criteria, 237
           manual test cases, 525 executed automated checks (Playwright API and UI suites, SQL
           validation, Postman collections run with Newman), a requirements traceability matrix and an
-          evidence-based release report. I found, fixed and regression-verified 21 defects — including
-          a critical authorization gap that let any employee write attendance records for anyone.
+          evidence-based release report. I found, fixed and regression-verified 18 defects in those
+          applications — plus 3 more in my own test automation — including a critical authorization
+          gap that let any employee write attendance records for anyone.
         </p>
 
         <div className="about-proof">

@@ -73,6 +73,11 @@ export function isSeededDefect(row) {
   return /^SEEDED/i.test(id) || /-1\d\d$/.test(id) || /\bseeded\b/i.test(type);
 }
 
+/** A defect found in the test automation itself (kept honest: those are logged separately). */
+export function isTestCodeDefect(row) {
+  return /automation|test code|test-code/i.test(row.Type ?? "");
+}
+
 function suiteFromObject(key, suite) {
   const total = suite.total ?? suite.executed ?? 0;
   const passed = suite.passed ?? 0;
@@ -139,8 +144,10 @@ export function collectProjectMetrics(projectDir) {
     (traceability.length > 0 ? traceability.filter((row) => /covered|verified/i.test(row.CoverageStatus ?? "")).length : null);
 
   // ---------------------------------------------------------------- defects
-  const genuineDefects = defects.filter((row) => !isSeededDefect(row)).length;
   const seededDefects = defects.filter(isSeededDefect).length;
+  const testCodeDefects = defects.filter((row) => !isSeededDefect(row) && isTestCodeDefect(row)).length;
+  const applicationDefects = defects.filter((row) => !isSeededDefect(row) && !isTestCodeDefect(row)).length;
+  const genuineDefects = defects.filter((row) => !isSeededDefect(row)).length;
 
   return {
     projectDir,
@@ -160,6 +167,8 @@ export function collectProjectMetrics(projectDir) {
     requirements,
     requirementsCovered,
     genuineDefects,
+    applicationDefects,
+    testCodeDefects,
     seededDefects,
     screenshots,
   };

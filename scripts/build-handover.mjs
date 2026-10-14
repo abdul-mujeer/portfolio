@@ -52,7 +52,9 @@ const projectSection = (project) => {
     `- Manual cases: ${project.manualTotal ?? "not reported"} documented, ${project.manualPassed ?? "—"} passed, ${project.manualNotExecuted ?? "—"} not executed`
   );
   lines.push(`- Requirements traced: ${project.requirementsCovered ?? "—"}/${project.requirements ?? "—"}`);
-  lines.push(`- Defects: ${project.genuineDefects} genuinely found; ${project.seededDefects} deliberately seeded (detection exercise)`);
+  lines.push(
+    `- Defects: ${project.applicationDefects} in the applications under test, ${project.testCodeDefects} in my own automation, ${project.seededDefects} deliberately seeded (detection exercise)`
+  );
   lines.push(`- Evidence: ${project.screenshots} application screenshots, raw logs and reports under \`test-evidence/\` and \`test-reports/\``);
   lines.push("");
   return lines.join("\n");
@@ -62,7 +64,9 @@ const totalFailed = projects.reduce((sum, project) => sum + project.automatedFai
 const totalPassed = projects.reduce((sum, project) => sum + project.automatedPassed, 0);
 const totalNotExecuted = projects.reduce((sum, project) => sum + (project.manualNotExecuted ?? 0), 0);
 const totalManual = projects.reduce((sum, project) => sum + (project.manualTotal ?? 0), 0);
-const totalGenuineDefects = projects.reduce((sum, project) => sum + project.genuineDefects, 0);
+const totalGenuineDefects = projects.reduce((sum, project) => sum + (project.genuineDefects ?? 0), 0);
+const totalApplicationDefects = projects.reduce((sum, project) => sum + (project.applicationDefects ?? 0), 0);
+const totalTestCodeDefects = projects.reduce((sum, project) => sum + (project.testCodeDefects ?? 0), 0);
 const totalSeeded = projects.reduce((sum, project) => sum + project.seededDefects, 0);
 const totalScreenshots = projects.reduce((sum, project) => sum + project.screenshots, 0);
 
@@ -93,7 +97,8 @@ const content = `# Handover — QA portfolio build
 | Automated checks passed | **${totalPassed}** (${totalFailed} failed) |
 | Manual test cases documented | ${totalManual} |
 | Manual cases not executed (documented with commands) | ${totalNotExecuted} |
-| Defects genuinely found | ${totalGenuineDefects} |
+| Defects in the applications under test | ${totalApplicationDefects} |
+| Defects found in my own automation | ${totalTestCodeDefects} |
 | Deliberately seeded defects (detection proven) | ${totalSeeded} |
 | Application screenshots captured from running apps | ${totalScreenshots} |
 

@@ -232,7 +232,7 @@ function buildPage(config) {
             .join(" · ")
         ),
         metricCard("Requirements covered", coverage ? `${coverage.fullyCovered}/${coverage.requirements}` : "—", coverage ? `${Math.round((coverage.fullyCovered / coverage.requirements) * 100)}% fully traced` : ""),
-        metricCard("Defects found & fixed", metricsData.genuineDefects ? String(metricsData.genuineDefects) : "0", "Genuinely found during testing"),
+        metricCard("Defects found & fixed", metricsData.applicationDefects ? String(metricsData.applicationDefects) : "0", `In the application under test${metricsData.testCodeDefects ? ` (+${metricsData.testCodeDefects} in my own automation)` : ""}`),
         metricCard("Seeded defects", metricsData.seededDefects ? String(metricsData.seededDefects) : "0", "Detection exercise, labelled SEEDED"),
         metricCard("Last executed", summary?.generatedAt ? new Date(summary.generatedAt).toISOString().slice(0, 10) : "—", metricsData.commit ? `commit ${metricsData.commit}` : ""),
       ].join("\n")
@@ -451,7 +451,8 @@ for (const config of configs) {
         postmanAssertions: metricsData.postmanAssertions ?? 0,
         requirements: metricsData.requirements ?? 0,
         requirementsCovered: metricsData.requirementsCovered ?? 0,
-        defectsFound: metricsData.genuineDefects,
+        defectsFound: metricsData.applicationDefects,
+        testCodeDefects: metricsData.testCodeDefects,
         seededDefects: metricsData.seededDefects,
         screenshots: metricsData.screenshots,
         lastRunAt: metricsData.generatedAt,
@@ -459,7 +460,8 @@ for (const config of configs) {
       }
     : {
         verified: false,
-        defectsFound: metricsData.genuineDefects,
+        defectsFound: metricsData.applicationDefects,
+        testCodeDefects: metricsData.testCodeDefects,
         seededDefects: metricsData.seededDefects,
         screenshots: metricsData.screenshots,
         lastRunAt: null,

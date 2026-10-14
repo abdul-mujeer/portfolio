@@ -19,7 +19,7 @@ QA employment experience, and no number in it is estimated.
 | **PeopleCore** — HRMS workflow & RBAC | Multi-role workflows, permission matrix, date/salary boundaries, audit trails | 69 manual cases (65 executed) · **189 automated checks passing** (58 API · 20 UI · 12 SQL · 96 Postman assertions · 3 perf targets) · 12 defects found & fixed · 2 seeded | [`projects/peoplecore-qa`](projects/peoplecore-qa) |
 | **TaskFlow** — API quality engineering | CRUD/schema validation, object-level authorization, isolation, performance baseline | 67 manual cases (all executed) · **134 automated checks passing** (48 API · 10 UI · 22 SQL · 50 Postman assertions · 4 manual probes) · 6 defects found & fixed · 2 seeded | [`projects/taskflow-qa`](projects/taskflow-qa) |
 
-**Totals: 525 automated checks passing, 0 failing · 237 manual test cases · 21 defects found and fixed · 7 deliberately seeded defects with proven detection.**
+**Totals: 525 automated checks passing, 0 failing · 237 manual test cases · 18 defects found and fixed in the applications under test (plus 3 in my own test automation) · 7 deliberately seeded defects with proven detection.**
 Every figure is read from the projects' own generated `test-reports/summary.json` — see
 [`docs/HANDOVER.md`](docs/HANDOVER.md) for the generated handover and `npm run docs:handover` to refresh it.
 

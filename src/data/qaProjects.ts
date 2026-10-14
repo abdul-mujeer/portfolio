@@ -28,6 +28,7 @@ interface ProjectMetrics {
   requirements?: number;
   requirementsCovered?: number;
   defectsFound?: number;
+  testCodeDefects?: number;
   seededDefects?: number;
   lastRunAt?: string | null;
   commit?: string | null;
@@ -59,7 +60,7 @@ function buildMetrics(slug: string): QAProjectMetric[] {
     {
       label: "Defects found",
       value: `${data.defectsFound ?? 0} fixed`,
-      note: `${data.seededDefects ?? 0} seeded (detection exercise)`,
+      note: `${data.testCodeDefects ? `${data.testCodeDefects} in my automation · ` : ""}${data.seededDefects ?? 0} seeded`,
     },
   ];
 }
