@@ -1,0 +1,102 @@
+{
+  "suite": "db",
+  "startedAt": "2026-10-14T00:32:46.407Z",
+  "finishedAt": "2026-10-14T00:33:33.143Z",
+  "seedSummary": {
+    "reference": "2026-10-14",
+    "departments": 3,
+    "employees": 10,
+    "attendance": 60,
+    "leaveRequests": 6,
+    "auditLogs": 2
+  },
+  "executed": 12,
+  "passed": 12,
+  "failed": 0,
+  "results": [
+    {
+      "id": "DB-01",
+      "title": "UNIQUE constraints: employee_code, email, department name/code and one attendance row per employee per day",
+      "status": "passed",
+      "detail": "13 indexes present (attendance UNIQUE on employee_id+work_date), 5 duplicate probes rejected",
+      "durationMs": 2
+    },
+    {
+      "id": "DB-02",
+      "title": "Foreign keys are enforced (PRAGMA foreign_keys=ON) for every relationship",
+      "status": "passed",
+      "detail": "PRAGMA foreign_keys=1, 4 FK probes rejected, foreign_key_check clean",
+      "durationMs": 0
+    },
+    {
+      "id": "DB-03",
+      "title": "CHECK constraints: salary range, role, employee status, attendance status, leave type/status and leave days",
+      "status": "passed",
+      "detail": "8 CHECK-constraint probes rejected, upper salary boundary accepted",
+      "durationMs": 130
+    },
+    {
+      "id": "DB-04",
+      "title": "Data rules: salary precision and hire-date window hold for every seeded row",
+      "status": "passed",
+      "detail": "10 employees verified: salary in (0, 1000000] with <=2 decimals, hire_date within [1990-01-01, today]",
+      "durationMs": 1
+    },
+    {
+      "id": "DB-05",
+      "title": "Attendance: 60 seeded rows, one per employee per work day, duplicate insert rejected",
+      "status": "passed",
+      "detail": "60 rows / 10 employees / 6 work days, no duplicates, no weekends",
+      "durationMs": 0
+    },
+    {
+      "id": "DB-06",
+      "title": "Attendance time rules: LEAVE and ABSENT rows carry no times, PRESENT/REMOTE always do, check-out is after check-in",
+      "status": "passed",
+      "detail": "statuses: ABSENT=2, LEAVE=3, PRESENT=48, REMOTE=7",
+      "durationMs": 0
+    },
+    {
+      "id": "DB-07",
+      "title": "Leave data: days match the inclusive date difference, 6 seeded requests cover all four statuses",
+      "status": "passed",
+      "detail": "6 requests, statuses APPROVED/CANCELLED/PENDING/REJECTED, overlap scenario #5 (2026-10-24 → 2026-10-26)",
+      "durationMs": 0
+    },
+    {
+      "id": "DB-08",
+      "title": "Overlap detection query catches an intersecting PENDING/APPROVED booking and ignores cancelled/adjacent ones",
+      "status": "passed",
+      "detail": "overlap query verified on employee 4 (request #1), 5 boundary probes",
+      "durationMs": 137
+    },
+    {
+      "id": "DB-09",
+      "title": "Audit rows are present, well formed and carry the seeded before/after payloads",
+      "status": "passed",
+      "detail": "2 rows, JSON payloads parse, creation has no before state, approve transition recorded",
+      "durationMs": 0
+    },
+    {
+      "id": "DB-10",
+      "title": "Orphan check: no child row references a missing parent (attendance, leave, sessions, employees, reviewers)",
+      "status": "passed",
+      "detail": "6 orphan queries + self-manager + manager chain (EMP-003 → 7 reports) + PRAGMA foreign_key_check all clean",
+      "durationMs": 0
+    },
+    {
+      "id": "DB-11",
+      "title": "Seeding is deterministic: two runs with the same reference date produce byte-identical rows",
+      "status": "passed",
+      "detail": "5 tables identical across two seeds, 10 unique scrypt hashes, dates pinned to 2026-01-15",
+      "durationMs": 32156
+    },
+    {
+      "id": "DB-12",
+      "title": "Failed (negative) API calls leave no partial rows — row counts and referential integrity unchanged",
+      "status": "passed",
+      "detail": "10 negative calls rejected (409 POST /api/employees · 409 POST /api/employees · 422 POST /api/employees · 422 POST /api/employees · 422 POST /api/employees · 400 POST /api/employees · 409 POST /api/attendance · 409 POST /api/leave-requests · 403 POST /api/departments · 403 POST /api/employees); counts unchanged at 3/10/60/6/2",
+      "durationMs": 1055
+    }
+  ]
+}

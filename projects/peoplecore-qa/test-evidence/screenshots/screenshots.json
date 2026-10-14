@@ -1,0 +1,62 @@
+{
+  "capturedAt": "2026-10-14T00:20:05.281Z",
+  "baseUrl": "http://127.0.0.1:4220",
+  "seed": {
+    "reference": "2026-10-14",
+    "departments": 3,
+    "employees": 10,
+    "attendance": 60,
+    "leaveRequests": 6,
+    "auditLogs": 2
+  },
+  "captured": [
+    {
+      "file": "test-evidence\\screenshots\\01-login.jpg",
+      "bytes": 34203
+    },
+    {
+      "file": "test-evidence\\screenshots\\02-dashboard-admin.jpg",
+      "bytes": 62869
+    },
+    {
+      "file": "test-evidence\\screenshots\\03-employees-list.jpg",
+      "bytes": 108575
+    },
+    {
+      "file": "test-evidence\\screenshots\\04-employee-detail-attendance.jpg",
+      "bytes": 66807
+    },
+    {
+      "file": "test-evidence\\screenshots\\05-employee-detail-leave.jpg",
+      "bytes": 53938
+    },
+    {
+      "file": "test-evidence\\screenshots\\06-audit-log.jpg",
+      "bytes": 54611
+    },
+    {
+      "file": "test-evidence\\screenshots\\07-leave-submitted-employee.jpg",
+      "bytes": 35850
+    },
+    {
+      "file": "test-evidence\\screenshots\\08-forbidden-403-employee.jpg",
+      "bytes": 31955
+    },
+    {
+      "file": "test-evidence\\screenshots\\09-leave-review-queue-manager.jpg",
+      "bytes": 70319
+    },
+    {
+      "file": "test-evidence\\screenshots\\10-mobile-login.jpg",
+      "bytes": 57557
+    },
+    {
+      "file": "test-evidence\\screenshots\\11-mobile-dashboard.jpg",
+      "bytes": 52456
+    },
+    {
+      "file": "test-evidence\\screenshots\\12-mobile-employees-list.jpg",
+      "bytes": 71100
+    }
+  ]
+}

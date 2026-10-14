@@ -1,0 +1,36 @@
+{
+  "note": "Two historical audit rows so the audit page and /api/audit-logs are never empty on a fresh seed. before/after payloads mirror what the application writes at runtime.",
+  "entries": [
+    {
+      "actorCode": "EMP-001",
+      "action": "EMPLOYEE_CREATE",
+      "entityType": "EMPLOYEE",
+      "entityId": "10",
+      "createdOffsetDays": -5,
+      "before": null,
+      "after": {
+        "id": 10,
+        "employeeCode": "EMP-010",
+        "firstName": "Grace",
+        "lastName": "Mensah",
+        "email": "employee7@example.com",
+        "role": "EMPLOYEE",
+        "departmentId": 3,
+        "position": "Sales Development Representative",
+        "salary": 54000,
+        "hireDate": "2024-04-01",
+        "status": "ACTIVE",
+        "managerId": 3
+      }
+    },
+    {
+      "actorCode": "EMP-002",
+      "action": "LEAVE_APPROVE",
+      "entityType": "LEAVE_REQUEST",
+      "entityId": "2",
+      "createdOffsetDays": -3,
+      "before": { "id": 2, "status": "PENDING", "days": 2, "leaveType": "SICK" },
+      "after": { "id": 2, "status": "APPROVED", "reviewedBy": 2, "days": 2, "leaveType": "SICK" }
+    }
+  ]
+}

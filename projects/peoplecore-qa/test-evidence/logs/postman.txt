@@ -1,0 +1,277 @@
+# suite      : Postman collection via newman
+# command    : C:\Program Files\nodejs\node.exe scripts/newman-run.mjs
+# started at : 2026-10-14T00:35:23.696Z
+# log file   : test-evidence\logs\postman.txt
+[newman] seeded D:\projects\portfolio\projects\peoplecore-qa\.data\peoplecore.newman.db ({"reference":"2026-10-14","departments":3,"employees":10,"attendance":60,"leaveRequests":6,"auditLogs":2})
+(node:15396) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[server] [peoplecore] PeopleCore HRMS listening on http://127.0.0.1:4210 (env=test, db=D:\projects\portfolio\projects\peoplecore-qa\.data\peoplecore.newman.db)
+[newman] server healthy on http://127.0.0.1:4210 with 10 employees — running the collection
+newman
+
+PeopleCore HRMS API
+
+□ 01 · Health
+└ GET /api/health
+  GET http://127.0.0.1:4210/api/health [200 OK, 406B, 19ms]
+  √  status is 200
+  √  service reports ok with a healthy database
+  √  the seeded database holds at least 10 employees
+
+└ GET /api/employees without a session (401) — runs before any login
+  GET http://127.0.0.1:4210/api/employees [401 Unauthorized, 353B, 3ms]
+  √  anonymous access is refused
+  √  the code is UNAUTHENTICATED and no data is returned
+
+□ 02 · Authentication
+└ POST /api/auth/login (admin)
+  POST http://127.0.0.1:4210/api/auth/login [200 OK, 710B, 240ms]
+  √  login succeeds with a 200
+  √  an opaque 64 character session token is returned
+  √  the actor is the seeded administrator
+  √  the clock starts a stable run id for unique fixtures
+
+└ GET /api/auth/session (bearer token)
+  GET http://127.0.0.1:4210/api/auth/session [200 OK, 459B, 5ms]
+  √  the bearer token authenticates the caller
+  √  the session belongs to the administrator
+  √  sessions expire after eight hours
+
+└ POST /api/auth/login — wrong password (401)
+  POST http://127.0.0.1:4210/api/auth/login [401 Unauthorized, 329B, 231ms]
+  √  wrong credentials are rejected with 401
+  √  the error envelope uses the documented code
+
+└ POST /api/auth/login — missing password (400)
+  POST http://127.0.0.1:4210/api/auth/login [400 Bad Request, 409B, 4ms]
+  √  a missing field is a validation error
+  √  the offending field is listed in details
+
+□ 03 · Employees (ADMIN)
+└ GET /api/employees (paginated + X-Total-Count)
+  GET http://127.0.0.1:4210/api/employees?limit=5&sort=employeeCode&order=asc [200 OK, 2.46kB, 4ms]
+  √  the list is paginated
+  √  five rows are returned for limit=5
+  √  X-Total-Count matches the body total
+  √  salary never leaks the password hash
+
+└ POST /api/employees (201)
+  POST http://127.0.0.1:4210/api/employees [201 Created, 711B, 303ms]
+  √  the employee is created
+  √  the response echoes the unique employee code
+  √  a Location header points at the new record
+
+└ GET /api/employees/{{newEmployeeId}} (200)
+  GET http://127.0.0.1:4210/api/employees/11 [200 OK, 677B, 8ms]
+  √  the created employee can be read back
+  √  the payload matches what was sent
+
+└ PUT /api/employees/{{newEmployeeId}} (200)
+  PUT http://127.0.0.1:4210/api/employees/11 [200 OK, 681B, 267ms]
+  √  the update succeeds
+  √  only the supplied fields change
+
+└ POST /api/employees — duplicate code (409)
+  POST http://127.0.0.1:4210/api/employees [409 Conflict, 343B, 3ms]
+  √  a duplicate employee code is a conflict
+  √  the conflict names the unique field
+
+└ POST /api/employees — salary above the maximum (422)
+  POST http://127.0.0.1:4210/api/employees [422 Unprocessable Entity, 356B, 2ms]
+  √  a business-rule violation answers 422
+  √  the code identifies the salary rule
+
+└ GET /api/employees?limit=101 (400)
+  GET http://127.0.0.1:4210/api/employees?limit=101 [400 Bad Request, 424B, 2ms]
+  √  limit is capped at 100
+  √  the pagination failure is a validation error
+
+□ 04 · Departments
+└ GET /api/departments (200)
+  GET http://127.0.0.1:4210/api/departments [200 OK, 568B, 2ms]
+  √  departments are listed
+  √  the three seeded departments are present
+
+└ POST /api/departments (201)
+  POST http://127.0.0.1:4210/api/departments [201 Created, 381B, 232ms]
+  √  HR/ADMIN can create a department
+  √  the code is normalised to upper case
+
+└ PUT /api/departments/{{departmentId}} (200)
+  PUT http://127.0.0.1:4210/api/departments/4 [200 OK, 356B, 236ms]
+  √  the department can be renamed
+  √  the rename is persisted
+
+└ POST /api/departments — duplicate name (409)
+  POST http://127.0.0.1:4210/api/departments [409 Conflict, 353B, 3ms]
+  √  a duplicate department name is a conflict
+  √  the error code names the rule
+
+□ 05 · Attendance
+└ POST /api/attendance (201)
+  POST http://127.0.0.1:4210/api/attendance [201 Created, 510B, 255ms]
+  √  attendance is recorded for the new employee
+  √  the stored values match the request
+
+└ POST /api/attendance — duplicate day (409)
+  POST http://127.0.0.1:4210/api/attendance [409 Conflict, 357B, 2ms]
+  √  one row per employee per day is enforced
+  √  the conflict code is DUPLICATE_ATTENDANCE
+
+└ POST /api/attendance — check-out before check-in (422)
+  POST http://127.0.0.1:4210/api/attendance [422 Unprocessable Entity, 341B, 2ms]
+  √  an impossible time range is a business-rule violation
+  √  the code is INVALID_TIME_RANGE
+
+└ POST /api/attendance — LEAVE with times (422)
+  POST http://127.0.0.1:4210/api/attendance [422 Unprocessable Entity, 382B, 1ms]
+  √  LEAVE rows must not carry working hours
+  √  the code is INVALID_ATTENDANCE_PAYLOAD
+
+└ PATCH /api/attendance/{{attendanceId}} (200)
+  PATCH http://127.0.0.1:4210/api/attendance/61 [200 OK, 494B, 235ms]
+  √  the record can be updated
+  √  the status change is persisted
+
+└ GET /api/attendance?employeeId={{newEmployeeId}} (200)
+  GET http://127.0.0.1:4210/api/attendance?employeeId=11 [200 OK, 560B, 3ms]
+  √  the list is filtered to one employee
+  √  exactly one row exists for the new fixture
+
+□ 06 · Leave workflow
+└ POST /api/auth/login (employee fixture)
+  POST http://127.0.0.1:4210/api/auth/login [200 OK, 724B, 125ms]
+  √  the freshly created employee can sign in with the documented policy
+  √  the employee role is scoped
+
+└ POST /api/leave-requests (201)
+  POST http://127.0.0.1:4210/api/leave-requests [201 Created, 635B, 260ms]
+  √  the leave request is created
+  √  days are computed inclusively (3rd to 5th = 3 days)
+  √  new requests start as PENDING
+
+└ POST /api/leave-requests — overlap (409)
+  POST http://127.0.0.1:4210/api/leave-requests [409 Conflict, 371B, 2ms]
+  √  an overlapping request is rejected
+  √  the overlap code is documented
+
+└ POST /api/leave-requests — reason too short (400)
+  POST http://127.0.0.1:4210/api/leave-requests [400 Bad Request, 433B, 2ms]
+  √  the reason minimum length is enforced
+  √  the reason field is reported
+
+└ PATCH /api/leave-requests/{{leaveId}}/approve (200, HR)
+  PATCH http://127.0.0.1:4210/api/leave-requests/7/approve [200 OK, 662B, 256ms]
+  √  HR can approve a pending request
+  √  the decision and reviewer are stored
+
+└ PATCH /api/leave-requests/{{leaveId}}/reject — not pending (422)
+  PATCH http://127.0.0.1:4210/api/leave-requests/7/reject [422 Unprocessable Entity, 382B, 9ms]
+  √  an approved request cannot be rejected later
+  √  the transition guard is reported
+
+└ DELETE /api/leave-requests/{{leaveId}} — approved cannot be cancelled (422)
+  DELETE http://127.0.0.1:4210/api/leave-requests/7 [422 Unprocessable Entity, 383B, 3ms]
+  √  the owner may not cancel an approved request
+  √  the state guard is reported
+
+□ 07 · RBAC probes
+└ POST /api/auth/login (hr)
+  POST http://127.0.0.1:4210/api/auth/login [200 OK, 704B, 145ms]
+  √  HR signs in
+  √  the role is HR
+
+└ POST /api/auth/login (manager)
+  POST http://127.0.0.1:4210/api/auth/login [200 OK, 717B, 127ms]
+  √  the manager signs in
+  √  the role is MANAGER
+
+└ GET /api/employees/1 as EMPLOYEE (403)
+  GET http://127.0.0.1:4210/api/employees/1 [403 Forbidden, 332B, 2ms]
+  √  an employee cannot read another record
+  √  no data is leaked
+
+└ POST /api/employees as EMPLOYEE (403)
+  POST http://127.0.0.1:4210/api/employees [403 Forbidden, 371B, 2ms]
+  √  an employee cannot create employees
+  √  the role is named in the error code
+
+└ GET /api/audit-logs as EMPLOYEE (403)
+  GET http://127.0.0.1:4210/api/audit-logs [403 Forbidden, 371B, 3ms]
+  √  audit logs are ADMIN/HR only
+  √  the refusal uses the role code
+
+└ POST /api/attendance as EMPLOYEE (403)
+  POST http://127.0.0.1:4210/api/attendance [403 Forbidden, 359B, 2ms]
+  √  attendance writes are limited to ADMIN/HR/MANAGER
+  √  the refusal is auditable
+
+└ DELETE /api/employees/{{newEmployeeId}} as HR (403)
+  DELETE http://127.0.0.1:4210/api/employees/11 [403 Forbidden, 359B, 2ms]
+  √  HR cannot delete employees
+  √  the record still exists
+
+└ GET /api/audit-logs as MANAGER (403)
+  GET http://127.0.0.1:4210/api/audit-logs [403 Forbidden, 370B, 1ms]
+  √  managers cannot read the audit trail
+
+└ GET /api/employees — MANAGER direct reports only (200)
+  GET http://127.0.0.1:4210/api/employees?limit=100 [200 OK, 3.82kB, 4ms]
+  √  the manager receives a scoped list
+  √  every row is the manager or a direct report
+
+□ 08 · Audit, reports and error handling
+└ GET /api/audit-logs?entityId={{newEmployeeId}} (200)
+  GET http://127.0.0.1:4210/api/audit-logs?entityType=EMPLOYEE&entityId=11 [200 OK, 1.96kB, 4ms]
+  √  the audit trail answers for ADMIN
+  √  create and update rows exist for the fixture
+  √  salary is visible in audit payloads for ADMIN/HR only
+
+└ GET /api/reports/summary (200)
+  GET http://127.0.0.1:4210/api/reports/summary [200 OK, 1.07kB, 3ms]
+  √  the summary is available
+  √  headcount and attendance rate are present
+
+└ GET /api/does-not-exist (404)
+  GET http://127.0.0.1:4210/api/does-not-exist [404 Not Found, 331B, 3ms]
+  √  unknown routes return the documented envelope
+  √  the error code is NOT_FOUND and no stack is leaked
+
+□ 09 · Cleanup
+└ DELETE /api/employees/{{newEmployeeId}} (204)
+  DELETE http://127.0.0.1:4210/api/employees/11 [204 No Content, 140B, 255ms]
+  √  ADMIN deletes the fixture employee
+  √  the response body is empty
+
+└ GET /api/employees/{{newEmployeeId}} after delete (404)
+  GET http://127.0.0.1:4210/api/employees/11 [404 Not Found, 317B, 2ms]
+  √  the removed employee is gone
+
+└ POST /api/auth/logout (204)
+  POST http://127.0.0.1:4210/api/auth/logout [204 No Content, 236B, 131ms]
+  √  logout closes the server-side session
+
+┌─────────────────────────┬───────────────────┬───────────────────┐
+│                         │          executed │            failed │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              iterations │                 1 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│                requests │                45 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│            test-scripts │                45 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│      prerequest-scripts │                 0 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              assertions │                96 │                 0 │
+├─────────────────────────┴───────────────────┴───────────────────┤
+│ total run duration: 7.1s                                        │
+├─────────────────────────────────────────────────────────────────┤
+│ total data received: 15.78kB (approx)                           │
+├─────────────────────────────────────────────────────────────────┤
+│ average response time: 75ms [min: 1ms, max: 303ms, s.d.: 106ms] │
+└─────────────────────────────────────────────────────────────────┘
+[newman] requests 45 (failed 0) · assertions 96 (failed 0)
+[newman] JSON report: test-reports\newman\newman-report.json
+
+# finished at: 2026-10-14T00:35:50.440Z
+# exit code  : 0

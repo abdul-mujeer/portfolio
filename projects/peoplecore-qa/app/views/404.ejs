@@ -1,0 +1,12 @@
+<%- include('partials/head', { title: title || 'Not found' }) %>
+
+<div class="panel" data-testid="not-found-page">
+  <h1>404 — Not found</h1>
+  <p data-testid="not-found-message">
+    <%= typeof errorMessage !== 'undefined' && errorMessage ? errorMessage : 'The page you requested does not exist.' %>
+  </p>
+  <p class="small muted">Error code: <code data-testid="error-code"><%= typeof errorCode !== 'undefined' && errorCode ? errorCode : 'NOT_FOUND' %></code></p>
+  <p><a class="button" href="/dashboard" data-testid="back-to-dashboard">Back to dashboard</a></p>
+</div>
+
+<%- include('partials/foot') %>

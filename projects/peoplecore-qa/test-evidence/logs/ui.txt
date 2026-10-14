@@ -1,0 +1,32 @@
+# suite      : Playwright UI suite (Chromium)
+# command    : C:\Program Files\nodejs\node.exe D:\projects\portfolio\projects\peoplecore-qa\node_modules\@playwright\test\cli.js test --project=ui
+# started at : 2026-10-14T00:34:36.195Z
+# log file   : test-evidence\logs\ui.txt
+
+Running 20 tests using 1 worker
+
+  ok  1 [ui] › tests\ui\employees.spec.ts:5:3 › Employee list › search, department filter and empty state all work @smoke (1.1s)
+  ok  2 [ui] › tests\ui\employees.spec.ts:38:3 › Employee list › sorting and pagination navigate the list without losing filters (892ms)
+  ok  3 [ui] › tests\ui\employees.spec.ts:61:3 › Employee list › creating an employee shows inline validation errors first and then succeeds @smoke (1.7s)
+  ok  4 [ui] › tests\ui\employees.spec.ts:95:3 › Employee list › editing an employee updates the record and the detail page (2.0s)
+  ok  5 [ui] › tests\ui\employees.spec.ts:119:3 › Employee list › employee detail exposes attendance and leave tabs with real rows (617ms)
+  ok  6 [ui] › tests\ui\employees.spec.ts:139:3 › Attendance page › a reviewer can record attendance and filter the grid result (1.3s)
+  ok  7 [ui] › tests\ui\employees.spec.ts:173:3 › Audit page › an administrator filters the audit log and reads the before/after payload (918ms)
+  ok  8 [ui] › tests\ui\leave.spec.ts:5:3 › Leave workflow › an employee validates, submits and cancels their own leave request @smoke (1.9s)
+  ok  9 [ui] › tests\ui\leave.spec.ts:42:3 › Leave workflow › a manager rejects a request with a short comment, then reviews it properly @smoke (1.9s)
+  ok 10 [ui] › tests\ui\leave.spec.ts:74:3 › Leave workflow › an employee never sees the review queue and cannot review anything @regression (509ms)
+  ok 11 [ui] › tests\ui\login.spec.ts:5:3 › Login page › valid credentials land on the role-aware dashboard @smoke (542ms)
+  ok 12 [ui] › tests\ui\login.spec.ts:23:3 › Login page › invalid credentials show an inline error and keep the typed email (491ms)
+  ok 13 [ui] › tests\ui\login.spec.ts:35:3 › Login page › account lockout is surfaced after five failed attempts @regression (2.1s)
+  ok 14 [ui] › tests\ui\login.spec.ts:53:3 › Login page › anonymous visitors are redirected to the login page and returned to the requested page @regression (514ms)
+  ok 15 [ui] › tests\ui\login.spec.ts:65:3 › Login page › signing out returns to the login page and clears the session (653ms)
+  ok 16 [ui] › tests\ui\rbac.spec.ts:5:3 › Role-based visibility in the UI › EMPLOYEE sees a single-row list, no admin nav and 403 pages for restricted routes @smoke (739ms)
+  ok 17 [ui] › tests\ui\rbac.spec.ts:29:3 › Role-based visibility in the UI › MANAGER only sees direct reports in the list and gets a 403 outside the team @smoke (460ms)
+  ok 18 [ui] › tests\ui\rbac.spec.ts:47:3 › Role-based visibility in the UI › HR can edit but cannot change role, change the employee code or delete (599ms)
+  ok 19 [ui] › tests\ui\rbac.spec.ts:67:3 › Role-based visibility in the UI › ADMIN sees delete, role editing and the audit navigation (1.1s)
+  ok 20 [ui] › tests\ui\rbac.spec.ts:83:3 › Role-based visibility in the UI › an EMPLOYEE gets a read-only attendance page and a 404 page for unknown records @regression (1.1s)
+
+  20 passed (47.0s)
+
+# finished at: 2026-10-14T00:35:23.696Z
+# exit code  : 0

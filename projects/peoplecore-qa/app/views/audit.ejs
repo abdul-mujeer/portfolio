@@ -1,0 +1,79 @@
+<%- include('partials/head', { title: 'Audit log' }) %>
+
+<h1 data-testid="audit-heading">Audit log</h1>
+<p class="muted small">
+  Every employee change, department change and leave decision is recorded with before/after payloads.
+  Salary values are visible only to ADMIN and HR readers.
+</p>
+
+<form class="panel filters" method="get" action="/audit" data-testid="audit-filters">
+  <div class="field">
+    <label for="entityType">Entity type</label>
+    <select id="entityType" name="entityType" data-testid="audit-filter-entity-type">
+      <option value="">Any entity</option>
+      <% ['EMPLOYEE', 'DEPARTMENT', 'ATTENDANCE', 'LEAVE_REQUEST'].forEach(function (value) { %>
+      <option value="<%= value %>" <%= entityType === value ? 'selected' : '' %>><%= value %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="field">
+    <label for="entityId">Entity id</label>
+    <input id="entityId" name="entityId" value="<%= entityId %>" data-testid="audit-filter-entity-id" />
+  </div>
+  <div>
+    <button type="submit" data-testid="audit-filter-submit">Filter</button>
+    <a class="button secondary" href="/audit" data-testid="audit-filter-reset">Reset</a>
+  </div>
+</form>
+
+<p class="muted" data-testid="audit-total-count"><%= total %> audit entr(y/ies).</p>
+
+<div class="panel">
+  <% if (entries.length === 0) { %>
+  <p class="empty-state" data-testid="empty-state">No audit entries match this filter.</p>
+  <% } else { %>
+  <table data-testid="audit-table">
+    <thead><tr><th>When</th><th>Actor</th><th>Action</th><th>Entity</th><th>Change</th></tr></thead>
+    <tbody>
+      <% entries.forEach(function (entry) { %>
+      <tr data-testid="audit-row" data-action="<%= entry.action %>" data-entity-type="<%= entry.entityType %>">
+        <td class="small"><%= entry.createdAt %></td>
+        <td class="small"><%= entry.actorEmail || '—' %></td>
+        <td data-testid="audit-action"><%= entry.action %></td>
+        <td class="small"><%= entry.entityType %>#<%= entry.entityId %></td>
+        <td>
+          <details>
+            <summary data-testid="audit-details-toggle">before / after</summary>
+            <p class="small muted">before</p>
+            <pre class="json" data-testid="audit-before"><%= entry.before ? JSON.stringify(entry.before, null, 2) : 'null' %></pre>
+            <p class="small muted">after</p>
+            <pre class="json" data-testid="audit-after"><%= entry.after ? JSON.stringify(entry.after, null, 2) : 'null' %></pre>
+          </details>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <% } %>
+</div>
+
+<% if (totalPages > 1) { %>
+<nav class="pagination" aria-label="Audit pagination" data-testid="audit-pagination">
+  <% if (page > 1) { %>
+  <a href="/audit?page=<%= page - 1 %>&entityType=<%= entityType %>&entityId=<%= entityId %>" data-testid="pagination-prev">Previous</a>
+  <% } %>
+  <% pages.forEach(function (value) { %>
+  <% if (value === page) { %>
+  <span aria-current="page" data-testid="pagination-current"><%= value %></span>
+  <% } else { %>
+  <a href="/audit?page=<%= value %>&entityType=<%= entityType %>&entityId=<%= entityId %>" data-testid="pagination-page"><%= value %></a>
+  <% } %>
+  <% }); %>
+  <% if (page < totalPages) { %>
+  <a href="/audit?page=<%= page + 1 %>&entityType=<%= entityType %>&entityId=<%= entityId %>" data-testid="pagination-next">Next</a>
+  <% } %>
+  <span class="muted small">Page <%= page %> of <%= totalPages %></span>
+</nav>
+<% } %>
+
+<%- include('partials/foot') %>

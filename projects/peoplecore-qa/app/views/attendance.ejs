@@ -1,0 +1,107 @@
+<%- include('partials/head', { title: 'Attendance' }) %>
+
+<h1 data-testid="attendance-heading">Attendance</h1>
+
+<form class="panel filters" method="get" action="/attendance" data-testid="attendance-filters">
+  <div class="field">
+    <label for="from">From</label>
+    <input id="from" name="from" type="date" value="<%= filters.from %>" data-testid="attendance-filter-from" />
+  </div>
+  <div class="field">
+    <label for="to">To</label>
+    <input id="to" name="to" type="date" value="<%= filters.to %>" data-testid="attendance-filter-to" />
+  </div>
+  <div class="field">
+    <label for="status">Status</label>
+    <select id="status" name="status" data-testid="attendance-filter-status">
+      <option value="">Any status</option>
+      <% statuses.forEach(function (value) { %>
+      <option value="<%= value %>" <%= filters.status === value ? 'selected' : '' %>><%= value %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div>
+    <button type="submit" data-testid="attendance-filter-submit">Apply</button>
+    <a class="button secondary" href="/attendance" data-testid="attendance-filter-reset">Reset</a>
+  </div>
+</form>
+
+<% if (canWrite) { %>
+<form class="panel filters" method="post" action="/attendance" data-testid="attendance-form">
+  <h2 style="width: 100%; margin: 0">Record attendance</h2>
+  <div class="field">
+    <label for="employeeId">Employee</label>
+    <select id="employeeId" name="employeeId" data-testid="attendance-form-employee">
+      <% employees.forEach(function (employee) { %>
+      <option value="<%= employee.id %>"><%= employee.label %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="field">
+    <label for="workDate">Work date</label>
+    <input id="workDate" name="workDate" type="date" value="<%= today %>" data-testid="attendance-form-date" />
+  </div>
+  <div class="field">
+    <label for="attendance-status">Status</label>
+    <select id="attendance-status" name="status" data-testid="attendance-form-status">
+      <% statuses.forEach(function (value) { %>
+      <option value="<%= value %>"><%= value %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="field">
+    <label for="checkIn">Check in</label>
+    <input id="checkIn" name="checkIn" type="time" value="09:00" data-testid="attendance-form-checkin" />
+  </div>
+  <div class="field">
+    <label for="checkOut">Check out</label>
+    <input id="checkOut" name="checkOut" type="time" value="17:30" data-testid="attendance-form-checkout" />
+  </div>
+  <div class="field">
+    <label for="notes">Notes</label>
+    <input id="notes" name="notes" data-testid="attendance-form-notes" />
+  </div>
+  <div>
+    <button type="submit" data-testid="attendance-form-submit">Save record</button>
+  </div>
+</form>
+<% } else { %>
+<p class="alert alert-info" data-testid="attendance-readonly-notice">
+  Your role can read attendance but cannot record it.
+</p>
+<% } %>
+
+<p class="muted" data-testid="attendance-total-count"><%= total %> record(s) in scope for this filter.</p>
+
+<div class="panel">
+  <% if (records.length === 0) { %>
+  <p class="empty-state" data-testid="empty-state">No attendance records match this filter.</p>
+  <% } else { %>
+  <table data-testid="attendance-grid">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Employee</th>
+        <th>Status</th>
+        <th>Check in</th>
+        <th>Check out</th>
+        <th class="hide-small">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% records.forEach(function (row) { %>
+      <tr data-testid="attendance-row" data-attendance-id="<%= row.id %>" data-employee-code="<%= row.employeeCode %>">
+        <td data-testid="attendance-date"><%= row.workDate %></td>
+        <td data-testid="attendance-employee"><%= row.employeeName %></td>
+        <td><span class="status status-<%= row.status %>" data-testid="attendance-status"><%= row.status %></span></td>
+        <td><%= row.checkIn || '—' %></td>
+        <td><%= row.checkOut || '—' %></td>
+        <td class="hide-small"><%= row.notes || '—' %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <% } %>
+</div>
+
+<%- include('partials/foot') %>

@@ -1,0 +1,244 @@
+{
+  "project": "peoplecore-qa",
+  "application": "PeopleCore HRMS 1.0.0",
+  "generatedAt": "2026-10-14T00:36:20.125Z",
+  "node": "v24.21.0",
+  "platform": "win32 x64",
+  "git": {
+    "commit": "9b6fc8a",
+    "branch": "main",
+    "workingTreeDirty": true
+  },
+  "suites": [
+    {
+      "id": "db",
+      "title": "SQL validation (node:sqlite)",
+      "status": "passed",
+      "executed": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "executedAt": "2026-10-14T00:33:33.143Z",
+      "log": "test-evidence/logs/db.txt",
+      "artefact": "test-reports/db-results.json",
+      "orchestratorExitCode": 0,
+      "checks": [
+        {
+          "id": "DB-01",
+          "title": "UNIQUE constraints: employee_code, email, department name/code and one attendance row per employee per day",
+          "status": "passed",
+          "detail": "13 indexes present (attendance UNIQUE on employee_id+work_date), 5 duplicate probes rejected"
+        },
+        {
+          "id": "DB-02",
+          "title": "Foreign keys are enforced (PRAGMA foreign_keys=ON) for every relationship",
+          "status": "passed",
+          "detail": "PRAGMA foreign_keys=1, 4 FK probes rejected, foreign_key_check clean"
+        },
+        {
+          "id": "DB-03",
+          "title": "CHECK constraints: salary range, role, employee status, attendance status, leave type/status and leave days",
+          "status": "passed",
+          "detail": "8 CHECK-constraint probes rejected, upper salary boundary accepted"
+        },
+        {
+          "id": "DB-04",
+          "title": "Data rules: salary precision and hire-date window hold for every seeded row",
+          "status": "passed",
+          "detail": "10 employees verified: salary in (0, 1000000] with <=2 decimals, hire_date within [1990-01-01, today]"
+        },
+        {
+          "id": "DB-05",
+          "title": "Attendance: 60 seeded rows, one per employee per work day, duplicate insert rejected",
+          "status": "passed",
+          "detail": "60 rows / 10 employees / 6 work days, no duplicates, no weekends"
+        },
+        {
+          "id": "DB-06",
+          "title": "Attendance time rules: LEAVE and ABSENT rows carry no times, PRESENT/REMOTE always do, check-out is after check-in",
+          "status": "passed",
+          "detail": "statuses: ABSENT=2, LEAVE=3, PRESENT=48, REMOTE=7"
+        },
+        {
+          "id": "DB-07",
+          "title": "Leave data: days match the inclusive date difference, 6 seeded requests cover all four statuses",
+          "status": "passed",
+          "detail": "6 requests, statuses APPROVED/CANCELLED/PENDING/REJECTED, overlap scenario #5 (2026-10-24 → 2026-10-26)"
+        },
+        {
+          "id": "DB-08",
+          "title": "Overlap detection query catches an intersecting PENDING/APPROVED booking and ignores cancelled/adjacent ones",
+          "status": "passed",
+          "detail": "overlap query verified on employee 4 (request #1), 5 boundary probes"
+        },
+        {
+          "id": "DB-09",
+          "title": "Audit rows are present, well formed and carry the seeded before/after payloads",
+          "status": "passed",
+          "detail": "2 rows, JSON payloads parse, creation has no before state, approve transition recorded"
+        },
+        {
+          "id": "DB-10",
+          "title": "Orphan check: no child row references a missing parent (attendance, leave, sessions, employees, reviewers)",
+          "status": "passed",
+          "detail": "6 orphan queries + self-manager + manager chain (EMP-003 → 7 reports) + PRAGMA foreign_key_check all clean"
+        },
+        {
+          "id": "DB-11",
+          "title": "Seeding is deterministic: two runs with the same reference date produce byte-identical rows",
+          "status": "passed",
+          "detail": "5 tables identical across two seeds, 10 unique scrypt hashes, dates pinned to 2026-01-15"
+        },
+        {
+          "id": "DB-12",
+          "title": "Failed (negative) API calls leave no partial rows — row counts and referential integrity unchanged",
+          "status": "passed",
+          "detail": "10 negative calls rejected (409 POST /api/employees · 409 POST /api/employees · 422 POST /api/employees · 422 POST /api/employees · 422 POST /api/employees · 400 POST /api/employees · 409 POST /api/attendance · 409 POST /api/leave-requests · 403 POST /api/departments · 403 POST /api/employees); counts unchanged at 3/10/60/6/2"
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "title": "Playwright API suite (request contexts)",
+      "status": "passed",
+      "executed": 58,
+      "passed": 58,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "failedTitles": [],
+      "durationMs": 62555.636,
+      "startedAt": "2026-10-14T00:33:33.577Z",
+      "log": "test-evidence/logs/api.txt",
+      "artefact": "test-reports/playwright/api.json",
+      "orchestratorExitCode": 0
+    },
+    {
+      "id": "ui",
+      "title": "Playwright UI suite (Chromium)",
+      "status": "passed",
+      "executed": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "failedTitles": [],
+      "durationMs": 47029.257999999994,
+      "startedAt": "2026-10-14T00:34:36.627Z",
+      "log": "test-evidence/logs/ui.txt",
+      "artefact": "test-reports/playwright/ui.json",
+      "orchestratorExitCode": 0
+    },
+    {
+      "id": "postman",
+      "title": "Postman collection via newman",
+      "status": "passed",
+      "executed": 96,
+      "passed": 96,
+      "failed": 0,
+      "skipped": 0,
+      "requests": 45,
+      "assertions": 96,
+      "requestFailures": 0,
+      "failures": [],
+      "log": "test-evidence/logs/postman.txt",
+      "artefact": "test-reports/newman/newman-report.json",
+      "orchestratorExitCode": 0
+    },
+    {
+      "id": "perf",
+      "title": "Performance baseline (autocannon)",
+      "status": "passed",
+      "executed": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "targets": [
+        {
+          "name": "health",
+          "target": "/api/health",
+          "connections": 10,
+          "durationSeconds": 5,
+          "requestsPerSecond": 4880,
+          "latencyMs": {
+            "min": 1,
+            "p50": 2,
+            "p95": 2,
+            "p99": 3,
+            "max": 10
+          },
+          "throughputKbPerSecond": 1981133,
+          "non2xx": 0,
+          "errors": 0,
+          "timeouts": 0
+        },
+        {
+          "name": "employees-list-20",
+          "target": "/api/employees?limit=20",
+          "connections": 10,
+          "durationSeconds": 5,
+          "requestsPerSecond": 1935,
+          "latencyMs": {
+            "min": 3,
+            "p50": 4,
+            "p95": 7,
+            "p99": 8,
+            "max": 22
+          },
+          "throughputKbPerSecond": 8939930,
+          "non2xx": 0,
+          "errors": 0,
+          "timeouts": 0
+        },
+        {
+          "name": "reports-summary",
+          "target": "/api/reports/summary",
+          "connections": 10,
+          "durationSeconds": 5,
+          "requestsPerSecond": 1474,
+          "latencyMs": {
+            "min": 5,
+            "p50": 6,
+            "p95": 9,
+            "p99": 11,
+            "max": 18
+          },
+          "throughputKbPerSecond": 1388032,
+          "non2xx": 0,
+          "errors": 0,
+          "timeouts": 0
+        }
+      ],
+      "log": "test-evidence/logs/perf.txt",
+      "artefact": "test-reports/perf-baseline.json",
+      "orchestratorExitCode": 0
+    }
+  ],
+  "totals": {
+    "executed": 189,
+    "passed": 189,
+    "failed": 0,
+    "skipped": 0
+  },
+  "defects": {
+    "total": 14,
+    "closed": 12,
+    "open": 2,
+    "seeded": [
+      "HR-SEEDED-01",
+      "HR-SEEDED-02"
+    ]
+  },
+  "manualTestCases": {
+    "total": 69,
+    "byStatus": {
+      "Pass": 65,
+      "Not Executed": 4
+    }
+  },
+  "requirements": {
+    "total": 16,
+    "covered": 16
+  },
+  "releaseRecommendation": "GO — all executed suites are green"
+}

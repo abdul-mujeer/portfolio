@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Engineering", "code": "ENG" },
+  { "id": 2, "name": "Human Resources", "code": "HR" },
+  { "id": 3, "name": "Sales", "code": "SLS" }
+]

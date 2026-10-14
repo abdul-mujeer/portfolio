@@ -1,0 +1,19 @@
+<%- include('partials/head', { title: title || 'Error' }) %>
+
+<div class="panel" data-testid="error-page">
+  <h1><%= typeof statusCode !== 'undefined' ? statusCode : 500 %> — Something went wrong</h1>
+  <p data-testid="error-message">
+    <%= typeof errorMessage !== 'undefined' && errorMessage ? errorMessage : 'The request could not be completed.' %>
+  </p>
+  <p class="small muted">Error code: <code data-testid="error-code"><%= typeof errorCode !== 'undefined' ? errorCode : 'INTERNAL_ERROR' %></code></p>
+  <% if (details && details.length) { %>
+  <ul class="small" data-testid="error-details">
+    <% details.forEach(function (detail) { %>
+    <li><strong><%= detail.path %></strong>: <%= detail.message %></li>
+    <% }); %>
+  </ul>
+  <% } %>
+  <p><a class="button" href="/dashboard" data-testid="back-to-dashboard">Back to dashboard</a></p>
+</div>
+
+<%- include('partials/foot') %>

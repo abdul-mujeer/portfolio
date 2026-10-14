@@ -1,0 +1,12 @@
+<%- include('partials/head', { title: title || 'Forbidden' }) %>
+
+<div class="panel" data-testid="forbidden-page">
+  <h1>403 — Forbidden</h1>
+  <p data-testid="forbidden-message">
+    <%= typeof errorMessage !== 'undefined' && errorMessage ? errorMessage : 'Your role is not allowed to open this page.' %>
+  </p>
+  <p class="small muted">Error code: <code data-testid="error-code"><%= typeof errorCode !== 'undefined' && errorCode ? errorCode : 'FORBIDDEN' %></code></p>
+  <p><a class="button" href="/dashboard" data-testid="back-to-dashboard">Back to dashboard</a></p>
+</div>
+
+<%- include('partials/foot') %>

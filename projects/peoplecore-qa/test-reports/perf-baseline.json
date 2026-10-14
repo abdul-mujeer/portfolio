@@ -1,0 +1,72 @@
+{
+  "suite": "perf",
+  "note": "autocannon baseline on a local Windows machine — indicators only, never a capacity claim.",
+  "startedAt": "2026-10-14T00:36:04.623Z",
+  "node": "v24.21.0",
+  "platform": "win32 x64",
+  "seed": {
+    "reference": "2026-10-14",
+    "departments": 3,
+    "employees": 10,
+    "attendance": 60,
+    "leaveRequests": 6,
+    "auditLogs": 2
+  },
+  "targets": [
+    {
+      "name": "health",
+      "target": "/api/health",
+      "connections": 10,
+      "durationSeconds": 5,
+      "requestsPerSecond": 4880,
+      "latencyMs": {
+        "min": 1,
+        "p50": 2,
+        "p95": 2,
+        "p99": 3,
+        "max": 10
+      },
+      "throughputKbPerSecond": 1981133,
+      "non2xx": 0,
+      "errors": 0,
+      "timeouts": 0
+    },
+    {
+      "name": "employees-list-20",
+      "target": "/api/employees?limit=20",
+      "connections": 10,
+      "durationSeconds": 5,
+      "requestsPerSecond": 1935,
+      "latencyMs": {
+        "min": 3,
+        "p50": 4,
+        "p95": 7,
+        "p99": 8,
+        "max": 22
+      },
+      "throughputKbPerSecond": 8939930,
+      "non2xx": 0,
+      "errors": 0,
+      "timeouts": 0
+    },
+    {
+      "name": "reports-summary",
+      "target": "/api/reports/summary",
+      "connections": 10,
+      "durationSeconds": 5,
+      "requestsPerSecond": 1474,
+      "latencyMs": {
+        "min": 5,
+        "p50": 6,
+        "p95": 9,
+        "p99": 11,
+        "max": 18
+      },
+      "throughputKbPerSecond": 1388032,
+      "non2xx": 0,
+      "errors": 0,
+      "timeouts": 0
+    }
+  ],
+  "finishedAt": "2026-10-14T00:36:20.045Z"
+}

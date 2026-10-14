@@ -1,0 +1,14 @@
+# suite      : Performance baseline (autocannon)
+# command    : C:\Program Files\nodejs\node.exe scripts/perf-baseline.mjs
+# started at : 2026-10-14T00:35:50.440Z
+# log file   : test-evidence\logs\perf.txt
+[perf] health: 5s @ 10 connections
+[perf]   req/s 4880 · p50 2ms · p99 3ms · non-2xx 0
+[perf] employees-list-20: 5s @ 10 connections
+[perf]   req/s 1935 · p50 4ms · p99 8ms · non-2xx 0
+[perf] reports-summary: 5s @ 10 connections
+[perf]   req/s 1474 · p50 6ms · p99 11ms · non-2xx 0
+[perf] report: test-reports\perf-baseline.json
+
+# finished at: 2026-10-14T00:36:20.071Z
+# exit code  : 0

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %> · PeopleCore HRMS</title>
+    <meta name="description" content="PeopleCore HRMS — role based HR management demo application under test." />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main" data-testid="skip-link">Skip to main content</a>
+    <header class="site-header">
+      <div class="brand">
+        <a href="/dashboard" data-testid="brand-link">PeopleCore <span>HRMS</span></a>
+      </div>
+      <% if (locals.user) { %>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/dashboard" data-testid="nav-dashboard">Dashboard</a>
+        <a href="/employees" data-testid="nav-employees">Employees</a>
+        <a href="/attendance" data-testid="nav-attendance">Attendance</a>
+        <a href="/leave" data-testid="nav-leave">Leave</a>
+        <% if (locals.user.role === 'ADMIN' || locals.user.role === 'HR') { %>
+        <a href="/audit" data-testid="nav-audit">Audit</a>
+        <% } %>
+      </nav>
+      <div class="user-info">
+        <span class="role-badge" data-testid="role-badge"><%= locals.user.role %></span>
+        <span class="user-name" data-testid="current-user"><%= locals.user.fullName %></span>
+        <a href="/logout" data-testid="logout-link">Sign out</a>
+      </div>
+      <% } %>
+    </header>
+    <main id="main" class="container">
+      <% if (typeof flash !== 'undefined' && flash) { %>
+      <p class="flash" role="status" data-testid="flash-message"><%= flash %></p>
+      <% } %>

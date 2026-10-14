@@ -1,0 +1,17 @@
+RequirementID,RequirementSummary,AcceptanceCriteriaIDs,TestCases,CoverageStatus,Notes
+HR-REQ-001,"Sign-in, sign-out and session lifetime",HR-AC-001 HR-AC-002 HR-AC-003 HR-AC-004 HR-AC-005,HR-TC-001 HR-TC-002 HR-TC-004 HR-TC-006 HR-TC-007,Covered,5 test case(s) · implemented+tested
+HR-REQ-002,Server-side role-based authorization,HR-AC-006 HR-AC-007 HR-AC-008,HR-TC-059 HR-TC-060,Covered,2 test case(s) · implemented+tested
+HR-REQ-003,"Scoped employee list with search, filter, sort and pagination",HR-AC-009 HR-AC-010 HR-AC-011,HR-TC-016 HR-TC-017 HR-TC-026 HR-TC-027 HR-TC-028 HR-TC-029,Covered,6 test case(s) · implemented+tested
+HR-REQ-004,Employee creation with validation,HR-AC-012 HR-AC-013 HR-AC-014,HR-TC-018 HR-TC-019 HR-TC-020 HR-TC-021 HR-TC-025,Covered,5 test case(s) · implemented+tested
+HR-REQ-005,Employee update and role-change rules,HR-AC-015 HR-AC-016 HR-AC-017,HR-TC-024 HR-TC-030 HR-TC-065,Covered,3 test case(s) · implemented+tested
+HR-REQ-006,Employee deletion with safety guards,HR-AC-018 HR-AC-019 HR-AC-020,HR-TC-022 HR-TC-023,Covered,2 test case(s) · implemented+tested
+HR-REQ-007,"Department list, creation and rename",HR-AC-021 HR-AC-022 HR-AC-023,HR-TC-031 HR-TC-032 HR-TC-033,Covered,3 test case(s) · implemented+tested
+HR-REQ-008,Attendance recording and rules,HR-AC-024 HR-AC-025 HR-AC-026,HR-TC-034 HR-TC-035 HR-TC-036 HR-TC-037 HR-TC-038 HR-TC-039 HR-TC-040 HR-TC-064,Covered,8 test case(s) · implemented+tested
+HR-REQ-009,Leave submission with validation and overlap detection,HR-AC-027 HR-AC-028 HR-AC-029,HR-TC-041 HR-TC-042 HR-TC-043 HR-TC-044 HR-TC-045 HR-TC-053,Covered,6 test case(s) · implemented+tested
+HR-REQ-010,Leave review workflow,HR-AC-030 HR-AC-031 HR-AC-032,HR-TC-046 HR-TC-047 HR-TC-049 HR-TC-050 HR-TC-052,Covered,5 test case(s) · implemented+tested
+HR-REQ-011,Leave cancellation,HR-AC-033 HR-AC-034,HR-TC-048,Covered,1 test case(s) · implemented+tested
+HR-REQ-012,Immutable audit trail,HR-AC-035 HR-AC-036 HR-AC-037,HR-TC-054 HR-TC-055,Covered,2 test case(s) · implemented+tested
+HR-REQ-013,Scoped HR summary report,HR-AC-038 HR-AC-039,HR-TC-056,Covered,1 test case(s) · implemented+tested
+HR-REQ-014,HTTP conventions and error envelope,HR-AC-040 HR-AC-041 HR-AC-042,HR-TC-005 HR-TC-011 HR-TC-012 HR-TC-013 HR-TC-014 HR-TC-015 HR-TC-057,Covered,7 test case(s) · implemented+tested
+HR-REQ-015,Server-rendered EJS interface,HR-AC-043 HR-AC-044 HR-AC-045,HR-TC-003 HR-TC-008 HR-TC-009 HR-TC-010 HR-TC-051 HR-TC-061 HR-TC-062 HR-TC-063 HR-TC-066 HR-TC-067 HR-TC-068 HR-TC-069,Covered,"12 test case(s) · 4 not executed (HR-TC-066, HR-TC-067, HR-TC-068, HR-TC-069) · implemented+tested"
+HR-REQ-016,Deterministic seed data and reset,HR-AC-046 HR-AC-047 HR-AC-048,HR-TC-058,Covered,1 test case(s) · implemented+tested

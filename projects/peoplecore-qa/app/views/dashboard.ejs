@@ -1,0 +1,107 @@
+<%- include('partials/head', { title: 'Dashboard' }) %>
+
+<h1 data-testid="dashboard-heading">
+  Dashboard
+  <span class="muted small">— signed in as <%= locals.user.role %></span>
+</h1>
+
+<div class="card-grid">
+  <section class="card" data-testid="card-headcount">
+    <p class="metric" data-testid="metric-headcount"><%= cards.headcount %></p>
+    <p class="metric-label"><%= locals.user.role === 'EMPLOYEE' ? 'My record' : 'People in scope' %></p>
+    <p class="small muted"><%= cards.active %> active records</p>
+  </section>
+
+  <section class="card" data-testid="card-leave">
+    <p class="metric" data-testid="metric-pending-leave"><%= cards.pendingLeave %></p>
+    <p class="metric-label">Leave awaiting review</p>
+    <% if (cards.pendingLeave > 0) { %>
+    <p class="small"><a href="/leave" data-testid="card-leave-link">Open the review queue</a></p>
+    <% } else { %>
+    <p class="small muted">Nothing waiting for you</p>
+    <% } %>
+  </section>
+
+  <section class="card" data-testid="card-attendance">
+    <p class="metric" data-testid="metric-attendance-rate"><%= attendance.attendanceRate %>%</p>
+    <p class="metric-label">Attendance rate (30 days)</p>
+    <p class="small muted">
+      <%= attendance.present %> present · <%= attendance.remote %> remote · <%= attendance.absent %> absent ·
+      <%= attendance.leave %> leave
+    </p>
+  </section>
+
+  <section class="card" data-testid="card-my-leave">
+    <p class="metric" data-testid="metric-my-pending-leave"><%= cards.myPendingLeave %></p>
+    <p class="metric-label">My pending requests</p>
+    <p class="small"><a href="/leave" data-testid="card-my-leave-link">Submit or cancel leave</a></p>
+  </section>
+</div>
+
+<h2>My attendance today</h2>
+<div class="panel">
+  <% if (todaysAttendance.length === 0) { %>
+  <p class="empty-state" data-testid="dashboard-attendance-empty">
+    No attendance recorded for today (<%= attendance.from %> → <%= attendance.to %> window is shown above).
+  </p>
+  <% } else { %>
+  <table>
+    <thead><tr><th>Date</th><th>Status</th><th>Check in</th><th>Check out</th><th>Notes</th></tr></thead>
+    <tbody>
+      <% todaysAttendance.forEach(function (row) { %>
+      <tr data-testid="dashboard-attendance-row">
+        <td><%= row.workDate %></td>
+        <td><span class="status status-<%= row.status %>"><%= row.status %></span></td>
+        <td><%= row.checkIn || '—' %></td>
+        <td><%= row.checkOut || '—' %></td>
+        <td><%= row.notes || '—' %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <% } %>
+</div>
+
+<% if (departments.length) { %>
+<h2>Headcount by department</h2>
+<div class="panel">
+  <table data-testid="department-headcount">
+    <thead><tr><th>Department</th><th>Code</th><th>Employees</th></tr></thead>
+    <tbody>
+      <% departments.forEach(function (department) { %>
+      <tr data-testid="department-headcount-row">
+        <td><%= department.name %></td>
+        <td><%= department.code %></td>
+        <td data-testid="department-headcount-count"><%= department.employeeCount %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<% } %>
+
+<% if (locals.user.role === 'ADMIN' || locals.user.role === 'HR') { %>
+<h2>Latest audit entries</h2>
+<div class="panel">
+  <% if (recentAudit.length === 0) { %>
+  <p class="empty-state" data-testid="dashboard-audit-empty">No audit entries yet.</p>
+  <% } else { %>
+  <table>
+    <thead><tr><th>When</th><th>Actor</th><th>Action</th><th>Entity</th></tr></thead>
+    <tbody>
+      <% recentAudit.forEach(function (entry) { %>
+      <tr data-testid="dashboard-audit-row">
+        <td class="small"><%= entry.createdAt %></td>
+        <td><%= entry.actorEmail || '—' %></td>
+        <td><%= entry.action %></td>
+        <td><%= entry.entityType %>#<%= entry.entityId %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <p class="small"><a href="/audit" data-testid="dashboard-audit-link">Full audit log</a></p>
+  <% } %>
+</div>
+<% } %>
+
+<%- include('partials/foot') %>

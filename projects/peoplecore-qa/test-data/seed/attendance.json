@@ -1,0 +1,136 @@
+{
+  "workdayWindow": 6,
+  "note": "Each employee has exactly `workdayWindow` attendance rows. Index 0 is the most recent workday, index 5 the oldest. PRESENT/REMOTE rows get the employee's default check-in/check-out; ABSENT and LEAVE rows never carry times. 10 employees x 6 workdays = 60 rows.",
+  "employees": [
+    {
+      "employeeCode": "EMP-001",
+      "checkIn": "08:55",
+      "checkOut": "17:45",
+      "pattern": [
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "REMOTE" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" }
+      ]
+    },
+    {
+      "employeeCode": "EMP-002",
+      "checkIn": "09:10",
+      "checkOut": "18:05",
+      "pattern": [
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "REMOTE" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" }
+      ]
+    },
+    {
+      "employeeCode": "EMP-003",
+      "checkIn": "08:30",
+      "checkOut": "17:15",
+      "pattern": [
+        { "status": "REMOTE", "notes": "Manager on-call rotation" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "REMOTE" }
+      ]
+    },
+    {
+      "employeeCode": "EMP-004",
+      "checkIn": "09:02",
+      "checkOut": "17:38",
+      "pattern": [
+        { "status": "ABSENT", "notes": "No show, no notice - follow-up required" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" }
+      ]
+    },
+    {
+      "employeeCode": "EMP-005",
+      "checkIn": "09:25",
+      "checkOut": "18:10",
+      "pattern": [
+        { "status": "PRESENT" },
+        { "status": "REMOTE" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" }
+      ]
+    },
+    {
+      "employeeCode": "EMP-006",
+      "checkIn": "08:45",
+      "checkOut": "17:20",
+      "pattern": [
+        { "status": "LEAVE", "notes": "Approved sick leave" },
+        { "status": "LEAVE", "notes": "Approved sick leave" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" }
+      ]
+    },
+    {
+      "employeeCode": "EMP-007",
+      "checkIn": "09:15",
+      "checkOut": "17:50",
+      "pattern": [
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" }
+      ]
+    },
+    {
+      "employeeCode": "EMP-008",
+      "checkIn": "08:50",
+      "checkOut": "17:30",
+      "pattern": [
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "ABSENT", "notes": "Unplanned absence" }
+      ]
+    },
+    {
+      "employeeCode": "EMP-009",
+      "checkIn": "09:05",
+      "checkOut": "17:40",
+      "pattern": [
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "LEAVE", "notes": "Carried-over annual leave" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "REMOTE" }
+      ]
+    },
+    {
+      "employeeCode": "EMP-010",
+      "checkIn": "09:30",
+      "checkOut": "18:00",
+      "pattern": [
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "PRESENT" },
+        { "status": "REMOTE" },
+        { "status": "PRESENT" }
+      ]
+    }
+  ]
+}

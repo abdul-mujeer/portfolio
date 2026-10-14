@@ -1,0 +1,108 @@
+<%- include('partials/head', { title: 'Leave' }) %>
+
+<h1 data-testid="leave-heading">Leave</h1>
+
+<div class="card-grid">
+  <section class="card">
+    <h2>Request leave</h2>
+    <% if (errors._form) { %>
+    <p class="alert alert-error" role="alert" data-testid="leave-form-error-summary"><%= errors._form %></p>
+    <% } %>
+    <form method="post" action="/leave" class="stacked-form" data-testid="leave-form">
+      <div class="field">
+        <label for="leaveType">Leave type</label>
+        <select id="leaveType" name="leaveType" data-testid="leave-form-type">
+          <% types.forEach(function (value) { %>
+          <option value="<%= value %>" <%= values.leaveType === value ? 'selected' : '' %>><%= value %></option>
+          <% }); %>
+        </select>
+        <% if (errors.leaveType) { %><p class="field-error" data-testid="form-error-leaveType"><%= errors.leaveType %></p><% } %>
+      </div>
+      <div class="field">
+        <label for="startDate">Start date</label>
+        <input id="startDate" name="startDate" type="date" value="<%= values.startDate || '' %>"
+               data-testid="leave-form-start" />
+        <% if (errors.startDate) { %><p class="field-error" data-testid="form-error-startDate"><%= errors.startDate %></p><% } %>
+      </div>
+      <div class="field">
+        <label for="endDate">End date</label>
+        <input id="endDate" name="endDate" type="date" value="<%= values.endDate || '' %>"
+               data-testid="leave-form-end" />
+        <% if (errors.endDate) { %><p class="field-error" data-testid="form-error-endDate"><%= errors.endDate %></p><% } %>
+      </div>
+      <div class="field">
+        <label for="reason">Reason (at least <%= minReason %> characters)</label>
+        <textarea id="reason" name="reason" rows="3" data-testid="leave-form-reason"><%= values.reason || '' %></textarea>
+        <% if (errors.reason) { %><p class="field-error" data-testid="form-error-reason"><%= errors.reason %></p><% } %>
+      </div>
+      <div>
+        <button type="submit" data-testid="leave-form-submit">Submit request</button>
+      </div>
+    </form>
+  </section>
+
+  <% if (canReview) { %>
+  <section class="card" data-testid="review-queue">
+    <h2>Review queue (<%= reviewQueue.length %>)</h2>
+    <% if (reviewQueue.length === 0) { %>
+    <p class="empty-state" data-testid="review-queue-empty">No pending requests from your reports.</p>
+    <% } else { %>
+    <ul style="list-style: none; padding: 0; margin: 0">
+      <% reviewQueue.forEach(function (request) { %>
+      <li class="panel" style="margin: 0 0 0.75rem" data-testid="review-row" data-leave-id="<%= request.id %>">
+        <p style="margin: 0 0 0.35rem">
+          <strong data-testid="review-employee"><%= request.employeeName %></strong>
+          · <%= request.leaveType %> · <%= request.startDate %> → <%= request.endDate %>
+          (<%= request.days %> day(s))
+        </p>
+        <p class="small muted" style="margin: 0 0 0.5rem" data-testid="review-reason"><%= request.reason %></p>
+        <form method="post" action="/leave/<%= request.id %>/approve" style="display: inline">
+          <button class="small" type="submit" data-testid="review-approve-<%= request.id %>">Approve</button>
+        </form>
+        <form method="post" action="/leave/<%= request.id %>/reject" style="display: inline">
+          <label class="small" for="comment-<%= request.id %>">Rejection comment (<%= minRejectComment %>+ chars)</label>
+          <input id="comment-<%= request.id %>" name="comment" data-testid="review-comment-<%= request.id %>" />
+          <button class="small danger" type="submit" data-testid="review-reject-<%= request.id %>">Reject</button>
+        </form>
+      </li>
+      <% }); %>
+    </ul>
+    <% } %>
+  </section>
+  <% } %>
+</div>
+
+<h2>My requests</h2>
+<div class="panel">
+  <% if (mine.length === 0) { %>
+  <p class="empty-state" data-testid="my-leave-empty-state">You have not submitted any leave requests.</p>
+  <% } else { %>
+  <table data-testid="my-leave-table">
+    <thead>
+      <tr><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Status</th><th>Reviewer</th><th>Comment</th><th></th></tr>
+    </thead>
+    <tbody>
+      <% mine.forEach(function (request) { %>
+      <tr data-testid="leave-row" data-leave-id="<%= request.id %>">
+        <td><%= request.leaveType %></td>
+        <td data-testid="leave-start"><%= request.startDate %></td>
+        <td data-testid="leave-end"><%= request.endDate %></td>
+        <td><%= request.days %></td>
+        <td><span class="status status-<%= request.status %>" data-testid="leave-status"><%= request.status %></span></td>
+        <td><%= request.reviewerName || '—' %></td>
+        <td class="small"><%= request.reviewComment || '—' %></td>
+        <td>
+          <% if (request.status === 'PENDING') { %>
+          <form method="post" action="/leave/<%= request.id %>/cancel">
+            <button class="small secondary" type="submit" data-testid="leave-cancel-<%= request.id %>">Cancel</button>
+          </form>
+          <% } %>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <% } %>
+</div>
+
+<%- include('partials/foot') %>

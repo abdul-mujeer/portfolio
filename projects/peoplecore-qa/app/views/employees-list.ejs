@@ -1,0 +1,141 @@
+<%- include('partials/head', { title: 'Employees' }) %>
+
+<div class="page-actions">
+  <h1 style="margin: 0" data-testid="employees-heading">Employees</h1>
+  <% if (canManage) { %>
+  <a class="button" href="/employees/new" data-testid="new-employee-link">New employee</a>
+  <% } %>
+</div>
+
+<form class="panel filters" method="get" action="/employees" data-testid="employee-filters">
+  <div class="field">
+    <label for="q">Search</label>
+    <input id="q" name="q" type="search" value="<%= filters.q || '' %>" placeholder="Name, email or EMP code"
+           data-testid="employee-search" />
+  </div>
+  <div class="field">
+    <label for="departmentId">Department</label>
+    <select id="departmentId" name="departmentId" data-testid="employee-department-filter">
+      <option value="">All departments</option>
+      <% departments.forEach(function (department) { %>
+      <option value="<%= department.id %>" <%= String(filters.departmentId || '') === String(department.id) ? 'selected' : '' %>>
+        <%= department.name %>
+      </option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="field">
+    <label for="status">Status</label>
+    <select id="status" name="status" data-testid="employee-status-filter">
+      <option value="">Any status</option>
+      <% ['ACTIVE', 'ON_LEAVE', 'TERMINATED'].forEach(function (value) { %>
+      <option value="<%= value %>" <%= filters.status === value ? 'selected' : '' %>><%= value %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="field">
+    <label for="sort">Sort by</label>
+    <select id="sort" name="sort" data-testid="employee-sort">
+      <% [['employeeCode', 'Employee code'], ['firstName', 'First name'], ['lastName', 'Last name'], ['hireDate', 'Hire date'], ['status', 'Status'], ['role', 'Role'], ['department', 'Department']].forEach(function (option) { %>
+      <option value="<%= option[0] %>" <%= filters.sort === option[0] ? 'selected' : '' %>><%= option[1] %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="field">
+    <label for="order">Order</label>
+    <select id="order" name="order" data-testid="employee-order">
+      <option value="asc" <%= filters.order === 'asc' ? 'selected' : '' %>>Ascending</option>
+      <option value="desc" <%= filters.order === 'desc' ? 'selected' : '' %>>Descending</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="limit">Rows per page</label>
+    <select id="limit" name="limit" data-testid="employee-limit">
+      <% [5, 10, 20, 50].forEach(function (value) { %>
+      <option value="<%= value %>" <%= Number(filters.limit) === value ? 'selected' : '' %>><%= value %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div>
+    <button type="submit" data-testid="employee-filter-submit">Apply</button>
+    <a class="button secondary" href="/employees" data-testid="employee-filter-reset">Reset</a>
+  </div>
+</form>
+
+<p class="muted" data-testid="total-count">
+  Showing <%= employees.length %> of <%= total %> matching record(s).
+</p>
+
+<div class="panel">
+  <% if (employees.length === 0) { %>
+  <p class="empty-state" data-testid="empty-state">
+    No employees match this filter. Adjust the search or
+    <a href="/employees" data-testid="empty-state-reset">reset the filters</a>.
+  </p>
+  <% } else { %>
+  <table>
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th class="hide-small">Email</th>
+        <th>Department</th>
+        <th>Role</th>
+        <th>Status</th>
+        <% if (employees[0].salary !== undefined) { %><th>Salary</th><% } %>
+        <% if (canManage) { %><th>Actions</th><% } %>
+      </tr>
+    </thead>
+    <tbody>
+      <% employees.forEach(function (employee) { %>
+      <tr data-testid="employee-row" data-employee-code="<%= employee.employeeCode %>" data-employee-id="<%= employee.id %>">
+        <td data-testid="employee-code"><%= employee.employeeCode %></td>
+        <td>
+          <a href="/employees/<%= employee.id %>" data-testid="employee-link"><%= employee.fullName %></a>
+        </td>
+        <td class="hide-small"><%= employee.email %></td>
+        <td data-testid="employee-department"><%= employee.departmentName || '—' %></td>
+        <td data-testid="employee-role"><%= employee.role %></td>
+        <td><span class="status status-<%= employee.status %>" data-testid="employee-status"><%= employee.status %></span></td>
+        <% if (employee.salary !== undefined) { %>
+        <td data-testid="employee-salary"><%= employee.salary.toFixed(2) %></td>
+        <% } %>
+        <% if (canManage) { %>
+        <td class="actions-cell">
+          <a class="button secondary small" href="/employees/<%= employee.id %>/edit"
+             data-testid="employee-edit-link">Edit</a>
+        </td>
+        <% } %>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <% } %>
+</div>
+
+<% if (totalPages > 1) { %>
+<nav class="pagination" aria-label="Pagination" data-testid="pagination">
+  <% if (page > 1) { %>
+  <a href="/employees?<%= queryString(page - 1) %>" data-testid="pagination-prev" rel="prev">Previous</a>
+  <% } else { %>
+  <span class="muted" data-testid="pagination-prev-disabled">Previous</span>
+  <% } %>
+
+  <% pages.forEach(function (value) { %>
+  <% if (value === page) { %>
+  <span aria-current="page" data-testid="pagination-current"><%= value %></span>
+  <% } else { %>
+  <a href="/employees?<%= queryString(value) %>" data-testid="pagination-page"><%= value %></a>
+  <% } %>
+  <% }); %>
+
+  <% if (page < totalPages) { %>
+  <a href="/employees?<%= queryString(page + 1) %>" data-testid="pagination-next" rel="next">Next</a>
+  <% } else { %>
+  <span class="muted" data-testid="pagination-next-disabled">Next</span>
+  <% } %>
+  <span class="muted small" data-testid="pagination-summary">Page <%= page %> of <%= totalPages %></span>
+</nav>
+<% } %>
+
+<%- include('partials/foot') %>

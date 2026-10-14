@@ -1,0 +1,34 @@
+# suite      : SQL validation (node:sqlite)
+# command    : C:\Program Files\nodejs\node.exe tests/db/run.mjs
+# started at : 2026-10-14T00:32:46.355Z
+# log file   : test-evidence\logs\db.txt
+PASS  DB-01  UNIQUE constraints: employee_code, email, department name/code and one attendance row per employee per day
+      ↳ 13 indexes present (attendance UNIQUE on employee_id+work_date), 5 duplicate probes rejected
+PASS  DB-02  Foreign keys are enforced (PRAGMA foreign_keys=ON) for every relationship
+      ↳ PRAGMA foreign_keys=1, 4 FK probes rejected, foreign_key_check clean
+PASS  DB-03  CHECK constraints: salary range, role, employee status, attendance status, leave type/status and leave days
+      ↳ 8 CHECK-constraint probes rejected, upper salary boundary accepted
+PASS  DB-04  Data rules: salary precision and hire-date window hold for every seeded row
+      ↳ 10 employees verified: salary in (0, 1000000] with <=2 decimals, hire_date within [1990-01-01, today]
+PASS  DB-05  Attendance: 60 seeded rows, one per employee per work day, duplicate insert rejected
+      ↳ 60 rows / 10 employees / 6 work days, no duplicates, no weekends
+PASS  DB-06  Attendance time rules: LEAVE and ABSENT rows carry no times, PRESENT/REMOTE always do, check-out is after check-in
+      ↳ statuses: ABSENT=2, LEAVE=3, PRESENT=48, REMOTE=7
+PASS  DB-07  Leave data: days match the inclusive date difference, 6 seeded requests cover all four statuses
+      ↳ 6 requests, statuses APPROVED/CANCELLED/PENDING/REJECTED, overlap scenario #5 (2026-10-24 → 2026-10-26)
+PASS  DB-08  Overlap detection query catches an intersecting PENDING/APPROVED booking and ignores cancelled/adjacent ones
+      ↳ overlap query verified on employee 4 (request #1), 5 boundary probes
+PASS  DB-09  Audit rows are present, well formed and carry the seeded before/after payloads
+      ↳ 2 rows, JSON payloads parse, creation has no before state, approve transition recorded
+PASS  DB-10  Orphan check: no child row references a missing parent (attendance, leave, sessions, employees, reviewers)
+      ↳ 6 orphan queries + self-manager + manager chain (EMP-003 → 7 reports) + PRAGMA foreign_key_check all clean
+PASS  DB-11  Seeding is deterministic: two runs with the same reference date produce byte-identical rows
+      ↳ 5 tables identical across two seeds, 10 unique scrypt hashes, dates pinned to 2026-01-15
+PASS  DB-12  Failed (negative) API calls leave no partial rows — row counts and referential integrity unchanged
+      ↳ 10 negative calls rejected (409 POST /api/employees · 409 POST /api/employees · 422 POST /api/employees · 422 POST /api/employees · 422 POST /api/employees · 400 POST /api/employees · 409 POST /api/attendance · 409 POST /api/leave-requests · 403 POST /api/departments · 403 POST /api/employees); counts unchanged at 3/10/60/6/2
+
+SQL validation: 12/12 checks passed (0 failed)
+Report: test-reports\db-results.json
+
+# finished at: 2026-10-14T00:33:33.151Z
+# exit code  : 0

@@ -1,0 +1,77 @@
+{
+  "note": "startOffsetDays/endOffsetDays are relative to the seed reference date (today unless SEED_AS_OF is set), which keeps the demo data close to the wall clock while remaining byte-identical for a given date. LR-0005 (EMP-009, PENDING, +10..+12) is the documented overlap scenario: POSTing another PENDING/APPROVED request for EMP-009 that intersects those dates must return 409 LEAVE_OVERLAP.",
+  "requests": [
+    {
+      "id": 1,
+      "employeeCode": "EMP-004",
+      "leaveType": "ANNUAL",
+      "startOffsetDays": 14,
+      "endOffsetDays": 18,
+      "reason": "Family trip abroad, flights already booked.",
+      "status": "PENDING",
+      "reviewedByCode": null,
+      "reviewComment": null,
+      "reviewedOffsetDays": null
+    },
+    {
+      "id": 2,
+      "employeeCode": "EMP-005",
+      "leaveType": "SICK",
+      "startOffsetDays": -12,
+      "endOffsetDays": -11,
+      "reason": "Medical certificate attached, two days of rest.",
+      "status": "APPROVED",
+      "reviewedByCode": "EMP-002",
+      "reviewComment": "Approved - take care and share the certificate with HR.",
+      "reviewedOffsetDays": -13
+    },
+    {
+      "id": 3,
+      "employeeCode": "EMP-006",
+      "leaveType": "UNPAID",
+      "startOffsetDays": -30,
+      "endOffsetDays": -25,
+      "reason": "Personal matter that cannot be postponed.",
+      "status": "REJECTED",
+      "reviewedByCode": "EMP-002",
+      "reviewComment": "Coverage is not available for that week.",
+      "reviewedOffsetDays": -32
+    },
+    {
+      "id": 4,
+      "employeeCode": "EMP-007",
+      "leaveType": "PARENTAL",
+      "startOffsetDays": -60,
+      "endOffsetDays": -45,
+      "reason": "Parental leave extension, later withdrawn by the employee.",
+      "status": "CANCELLED",
+      "reviewedByCode": null,
+      "reviewComment": null,
+      "reviewedOffsetDays": -61
+    },
+    {
+      "id": 5,
+      "employeeCode": "EMP-009",
+      "leaveType": "ANNUAL",
+      "startOffsetDays": 10,
+      "endOffsetDays": 12,
+      "reason": "Annual leave to attend a wedding out of state.",
+      "status": "PENDING",
+      "reviewedByCode": null,
+      "reviewComment": null,
+      "reviewedOffsetDays": null
+    },
+    {
+      "id": 6,
+      "employeeCode": "EMP-010",
+      "leaveType": "SICK",
+      "startOffsetDays": 3,
+      "endOffsetDays": 4,
+      "reason": "Scheduled medical procedure and single day of recovery.",
+      "status": "PENDING",
+      "reviewedByCode": null,
+      "reviewComment": null,
+      "reviewedOffsetDays": null
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+<%- include('partials/head', { title: 'Sign in' }) %>
+
+<div class="card login-card">
+  <h1>Sign in to PeopleCore</h1>
+  <p class="muted small">Role-based HRMS demo — every request is authorized on the server.</p>
+
+  <% if (error) { %>
+  <p class="alert alert-error" role="alert" data-testid="<%= locked ? 'login-locked' : 'login-error' %>"><%= error %></p>
+  <% } %>
+
+  <form method="post" action="/login" class="stacked-form" data-testid="login-form">
+    <input type="hidden" name="next" value="<%= next %>" />
+    <div class="field">
+      <label for="email">Work email</label>
+      <input id="email" name="email" type="email" required autocomplete="username" value="<%= email %>"
+             data-testid="login-email" />
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required autocomplete="current-password"
+             data-testid="login-password" />
+    </div>
+    <div>
+      <button type="submit" data-testid="login-submit">Sign in</button>
+    </div>
+  </form>
+
+  <h2 class="small">Demo accounts</h2>
+  <table class="credentials" data-testid="demo-credentials">
+    <caption class="muted small" style="text-align: left">
+      Synthetic accounts, documented in the README. Passwords are demo values, not secrets.
+    </caption>
+    <thead>
+      <tr><th>Email</th><th>Role</th><th>Password</th></tr>
+    </thead>
+    <tbody>
+      <% const demoPasswords = { ADMIN: 'Admin#12345', HR: 'Hr#1234567', MANAGER: 'Manager#12345', EMPLOYEE: 'Employee#1234' }; %>
+      <% demoAccounts.forEach(function (account) { %>
+      <tr>
+        <td><%= account.email %></td>
+        <td><%= account.role %></td>
+        <td><code><%= demoPasswords[account.role] %></code></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('partials/foot') %>

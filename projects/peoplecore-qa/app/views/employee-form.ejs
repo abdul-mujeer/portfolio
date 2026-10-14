@@ -1,0 +1,128 @@
+<%- include('partials/head', { title: mode === 'create' ? 'New employee' : 'Edit employee' }) %>
+
+<h1 data-testid="employee-form-heading"><%= mode === 'create' ? 'New employee' : 'Edit employee' %></h1>
+
+<% if (typeof formError !== 'undefined' && formError) { %>
+<p class="alert alert-error" role="alert" data-testid="form-error-summary"><%= formError %></p>
+<% } %>
+<% if (errors._form) { %>
+<p class="alert alert-error" role="alert" data-testid="form-error-summary"><%= errors._form %></p>
+<% } %>
+
+<form class="panel" method="post" action="<%= mode === 'create' ? '/employees' : '/employees/' + employee.id %>"
+      data-testid="employee-form" novalidate>
+  <h2>Identity</h2>
+  <div class="card-grid">
+    <div class="field">
+      <label for="employeeCode">Employee code</label>
+      <input id="employeeCode" name="employeeCode" value="<%= employee.employeeCode || '' %>"
+             placeholder="EMP-011" data-testid="form-employeeCode"
+             <%= canEditCode ? '' : 'disabled' %> />
+      <% if (!canEditCode) { %><p class="small muted" data-testid="form-employeeCode-disabled-note">Only an ADMIN can change the employee code.</p><% } %>
+      <% if (errors.employeeCode) { %><p class="field-error" data-testid="form-error-employeeCode"><%= errors.employeeCode %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="firstName">First name</label>
+      <input id="firstName" name="firstName" value="<%= employee.firstName || '' %>" data-testid="form-firstName" />
+      <% if (errors.firstName) { %><p class="field-error" data-testid="form-error-firstName"><%= errors.firstName %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="lastName">Last name</label>
+      <input id="lastName" name="lastName" value="<%= employee.lastName || '' %>" data-testid="form-lastName" />
+      <% if (errors.lastName) { %><p class="field-error" data-testid="form-error-lastName"><%= errors.lastName %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" value="<%= employee.email || '' %>" data-testid="form-email" />
+      <% if (errors.email) { %><p class="field-error" data-testid="form-error-email"><%= errors.email %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="phone">Phone</label>
+      <input id="phone" name="phone" value="<%= employee.phone || '' %>" placeholder="+1 555 0110" data-testid="form-phone" />
+      <% if (errors.phone) { %><p class="field-error" data-testid="form-error-phone"><%= errors.phone %></p><% } %>
+    </div>
+  </div>
+
+  <h2>Employment</h2>
+  <div class="card-grid">
+    <div class="field">
+      <label for="role">Role</label>
+      <select id="role" name="role" data-testid="form-role" <%= canEditRole ? '' : 'disabled' %>>
+        <% ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'].forEach(function (value) { %>
+        <option value="<%= value %>"
+          <%= employee.role === value ? 'selected' : '' %>
+          <%= (!canEditRole && value === 'ADMIN') ? 'disabled' : '' %>><%= value %></option>
+        <% }); %>
+      </select>
+      <% if (!canEditRole) { %>
+      <p class="small muted" data-testid="form-role-disabled-note">HR cannot change roles — ask an ADMIN.</p>
+      <% } %>
+      <% if (errors.role) { %><p class="field-error" data-testid="form-error-role"><%= errors.role %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="departmentId">Department</label>
+      <select id="departmentId" name="departmentId" data-testid="form-departmentId">
+        <option value="">Select a department</option>
+        <% departments.forEach(function (department) { %>
+        <option value="<%= department.id %>" <%= String(employee.departmentId || '') === String(department.id) ? 'selected' : '' %>>
+          <%= department.name %>
+        </option>
+        <% }); %>
+      </select>
+      <% if (errors.departmentId) { %><p class="field-error" data-testid="form-error-departmentId"><%= errors.departmentId %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="position">Position</label>
+      <input id="position" name="position" value="<%= employee.position || '' %>" data-testid="form-position" />
+      <% if (errors.position) { %><p class="field-error" data-testid="form-error-position"><%= errors.position %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="salary">Salary</label>
+      <input id="salary" name="salary" inputmode="decimal" value="<%= employee.salary === undefined ? '' : employee.salary %>"
+             data-testid="form-salary" <%= canEditSalary ? '' : 'disabled' %> />
+      <% if (!canEditSalary) { %><p class="small muted" data-testid="form-salary-disabled-note">Your role cannot edit salary.</p><% } %>
+      <% if (errors.salary) { %><p class="field-error" data-testid="form-error-salary"><%= errors.salary %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="hireDate">Hire date</label>
+      <input id="hireDate" name="hireDate" type="date" max="<%= today %>" value="<%= employee.hireDate || '' %>"
+             data-testid="form-hireDate" />
+      <% if (errors.hireDate) { %><p class="field-error" data-testid="form-error-hireDate"><%= errors.hireDate %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="status">Status</label>
+      <select id="status" name="status" data-testid="form-status">
+        <% ['ACTIVE', 'ON_LEAVE', 'TERMINATED'].forEach(function (value) { %>
+        <option value="<%= value %>" <%= employee.status === value ? 'selected' : '' %>><%= value %></option>
+        <% }); %>
+      </select>
+      <% if (errors.status) { %><p class="field-error" data-testid="form-error-status"><%= errors.status %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="managerId">Manager</label>
+      <select id="managerId" name="managerId" data-testid="form-managerId">
+        <option value="">No manager</option>
+        <% managers.forEach(function (manager) { %>
+        <option value="<%= manager.id %>" <%= String(employee.managerId || '') === String(manager.id) ? 'selected' : '' %>>
+          <%= manager.label %>
+        </option>
+        <% }); %>
+      </select>
+      <% if (errors.managerId) { %><p class="field-error" data-testid="form-error-managerId"><%= errors.managerId %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="password"><%= mode === 'create' ? 'Initial password' : 'New password (optional)' %></label>
+      <input id="password" name="password" type="password" autocomplete="new-password"
+             placeholder="At least 8 chars, letter + number + symbol" data-testid="form-password" />
+      <% if (errors.password) { %><p class="field-error" data-testid="form-error-password"><%= errors.password %></p><% } %>
+    </div>
+  </div>
+
+  <p class="page-actions" style="margin-top: 1.25rem">
+    <button type="submit" data-testid="employee-form-submit"><%= mode === 'create' ? 'Create employee' : 'Save changes' %></button>
+    <a class="button secondary" href="<%= mode === 'create' ? '/employees' : '/employees/' + employee.id %>"
+       data-testid="employee-form-cancel">Cancel</a>
+  </p>
+</form>
+
+<%- include('partials/foot') %>

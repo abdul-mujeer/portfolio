@@ -1,0 +1,74 @@
+{
+  "note": "Both seeded defects are OFF by default. With SEED_DEFECTS=1 the probes must fail; without it they must pass.",
+  "detectedOn": "2026-10-14",
+  "runs": [
+    {
+      "label": "SEED_DEFECTS=1 (defects enabled)",
+      "seedDefects": true,
+      "generatedAt": "2026-10-14T00:20:22.118Z",
+      "baseUrl": "http://127.0.0.1:4240",
+      "results": [
+        {
+          "probe": "SEEDED-01",
+          "title": "Manager employee list stays inside the team",
+          "request": "GET /api/employees?limit=100 as manager@example.com",
+          "rowsReturned": 10,
+          "outOfScopeRows": [
+            "EMP-001",
+            "EMP-002"
+          ],
+          "passed": false
+        },
+        {
+          "probe": "SEEDED-02",
+          "title": "Same-start-date leave overlap is refused",
+          "request": "POST /api/leave-requests {{ startDate: 2026-10-24, endDate: 2026-10-27 }} as employee6@example.com",
+          "seededRequest": {
+            "id": 5,
+            "startDate": "2026-10-24",
+            "endDate": "2026-10-26",
+            "status": "PENDING"
+          },
+          "status": 201,
+          "errorCode": null,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "label": "SEED_DEFECTS=0 (clean build)",
+      "seedDefects": false,
+      "generatedAt": "2026-10-14T00:20:23.121Z",
+      "baseUrl": "http://127.0.0.1:4240",
+      "results": [
+        {
+          "probe": "SEEDED-01",
+          "title": "Manager employee list stays inside the team",
+          "request": "GET /api/employees?limit=100 as manager@example.com",
+          "rowsReturned": 8,
+          "outOfScopeRows": [],
+          "passed": true
+        },
+        {
+          "probe": "SEEDED-02",
+          "title": "Same-start-date leave overlap is refused",
+          "request": "POST /api/leave-requests {{ startDate: 2026-10-24, endDate: 2026-10-27 }} as employee6@example.com",
+          "seededRequest": {
+            "id": 5,
+            "startDate": "2026-10-24",
+            "endDate": "2026-10-26",
+            "status": "PENDING"
+          },
+          "status": 409,
+          "errorCode": "LEAVE_OVERLAP",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "detectedWithDefectsEnabled": 2,
+    "cleanRunFailures": 0,
+    "reproducible": true
+  }
+}

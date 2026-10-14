@@ -1,0 +1,42 @@
+{
+  "name": "peoplecore-qa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PeopleCore HRMS — Express + EJS + node:sqlite application with a full QA/test-automation package (Playwright API/UI, SQL validation, Postman/newman).",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node app/server/src/index.js",
+    "dev": "node --watch app/server/src/index.js",
+    "seed": "node scripts/reset-db.mjs --seed",
+    "db:reset": "node scripts/reset-db.mjs --reset",
+    "lint": "eslint app tests scripts scripts/docs scripts/reports",
+    "test:api": "node scripts/reset-db.mjs --test --quiet && playwright test --project=api",
+    "test:ui": "node scripts/reset-db.mjs --test --quiet && playwright test --project=ui",
+    "test:db": "node tests/db/run.mjs",
+    "test:postman": "node scripts/newman-run.mjs",
+    "test:perf": "node scripts/perf-baseline.mjs",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:all": "node scripts/run-tests.mjs",
+    "screenshots": "node scripts/screenshots.mjs",
+    "seeded:evidence": "node scripts/seeded-defect-run.mjs",
+    "docs:csv": "node scripts/docs/generate-csv.mjs",
+    "docs:report": "node scripts/reports/build-report.mjs"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.56.1",
+    "autocannon": "^8.0.0",
+    "eslint": "^9.39.1",
+    "globals": "^15.15.0",
+    "newman": "^6.2.1"
+  }
+}

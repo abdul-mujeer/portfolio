@@ -1,0 +1,37 @@
+{
+  "startedAt": "2026-10-14T00:32:46.355Z",
+  "finishedAt": "2026-10-14T00:36:20.346Z",
+  "results": [
+    {
+      "id": "db",
+      "title": "SQL validation (node:sqlite)",
+      "exitCode": 0,
+      "logFile": "test-evidence\\logs\\db.txt"
+    },
+    {
+      "id": "api",
+      "title": "Playwright API suite",
+      "exitCode": 0,
+      "logFile": "test-evidence\\logs\\api.txt"
+    },
+    {
+      "id": "ui",
+      "title": "Playwright UI suite (Chromium)",
+      "exitCode": 0,
+      "logFile": "test-evidence\\logs\\ui.txt"
+    },
+    {
+      "id": "postman",
+      "title": "Postman collection via newman",
+      "exitCode": 0,
+      "logFile": "test-evidence\\logs\\postman.txt"
+    },
+    {
+      "id": "perf",
+      "title": "Performance baseline (autocannon)",
+      "exitCode": 0,
+      "logFile": "test-evidence\\logs\\perf.txt"
+    }
+  ],
+  "reportExit": 0
+}
