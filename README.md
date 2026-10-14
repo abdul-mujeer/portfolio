@@ -121,14 +121,18 @@ npm run docs:handover    # regenerate docs/HANDOVER.md from real artefacts
 
 ## Deployment
 
-The site is a static Vite build (`dist/`). It is not currently deployed. To deploy it:
+**Live site: <https://portfolio-abdul-mujeer.vercel.app/>** (Vercel, deployed from this repository —
+a push to `main` triggers a production deployment automatically).
+
+Verified after the last push: the home page, all three case-study pages (`/projects/<slug>/`), the
+résumé page (`/resume.html`), the favicon and the project thumbnails all return HTTP 200.
+
+To deploy a fresh copy elsewhere:
 
 ```powershell
 npm run build
 npx vercel deploy --prod dist          # or: npx netlify deploy --prod --dir dist
 ```
-
-After deploying, set the correct canonical/OG URLs in `index.html` and add the live link here.
 
 ## License, attribution and usage
 
