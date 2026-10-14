@@ -1,0 +1,25 @@
+RequirementID,RequirementSummary,AcceptanceCriteriaIDs,TestCases,CoverageStatus,Notes
+SHOP-REQ-001,User registration,AC-001; AC-002; AC-003,SHOP-TC-001; SHOP-TC-002; SHOP-TC-003; SHOP-TC-004,Covered (4/4 passed),High priority · Authentication
+SHOP-REQ-002,"Login, session handling and logout",AC-004; AC-005; AC-006; AC-007,SHOP-TC-005; SHOP-TC-006; SHOP-TC-007; SHOP-TC-008; SHOP-TC-009; SHOP-TC-010,Covered (6/6 passed),High priority · Authentication
+SHOP-REQ-003,Brute-force protection,AC-008,SHOP-TC-011,Covered (1/1 passed),Medium priority · Security
+SHOP-REQ-004,Product listing,AC-009; AC-010,SHOP-TC-012; SHOP-TC-013,Covered (2/2 passed),High priority · Catalog
+SHOP-REQ-005,Product search,AC-011; AC-012; AC-013,SHOP-TC-014; SHOP-TC-015; SHOP-TC-016; SHOP-TC-017,Covered (4/4 passed),High priority · Catalog
+SHOP-REQ-006,Sorting,AC-014; AC-015,SHOP-TC-018; SHOP-TC-019; SHOP-TC-020; SHOP-TC-021,Covered (4/4 passed),Medium priority · Catalog
+SHOP-REQ-007,Filtering,AC-016; AC-017; AC-018; AC-019,SHOP-TC-022; SHOP-TC-023; SHOP-TC-024; SHOP-TC-025; SHOP-TC-026; SHOP-TC-027; SHOP-TC-028,Covered (7/7 passed),High priority · Catalog
+SHOP-REQ-008,Pagination,AC-020; AC-021,SHOP-TC-029; SHOP-TC-030; SHOP-TC-031,Covered (3/3 passed),Medium priority · Catalog
+SHOP-REQ-009,Product detail,AC-022; AC-023,SHOP-TC-032; SHOP-TC-033; SHOP-TC-034,Covered (3/3 passed),Medium priority · Catalog
+SHOP-REQ-010,Add to cart and merge,AC-024; AC-025,SHOP-TC-035; SHOP-TC-036; SHOP-TC-037,Covered (3/3 passed),High priority · Cart
+SHOP-REQ-011,Cart quantity limits,AC-026; AC-027; AC-028; AC-029,SHOP-TC-038; SHOP-TC-039; SHOP-TC-040; SHOP-TC-041; SHOP-TC-042; SHOP-TC-043,Covered (6/6 passed),High priority · Cart
+SHOP-REQ-012,"Cart update, remove and clear",AC-030; AC-031; AC-032,SHOP-TC-044; SHOP-TC-045; SHOP-TC-046; SHOP-TC-047,Covered (4/4 passed),Medium priority · Cart
+SHOP-REQ-013,Stock validation at checkout,AC-033; AC-034; AC-035,SHOP-TC-048; SHOP-TC-049,Covered (2/2 passed),Critical priority · Checkout
+SHOP-REQ-014,Pricing rules,AC-036; AC-037; AC-038,SHOP-TC-050; SHOP-TC-051; SHOP-TC-052; SHOP-TC-053,Covered (4/4 passed),Critical priority · Checkout
+SHOP-REQ-015,Checkout form validation,AC-039; AC-040; AC-041,SHOP-TC-054; SHOP-TC-055; SHOP-TC-056; SHOP-TC-057,Covered (4/4 passed),High priority · Checkout
+SHOP-REQ-016,Order creation and persistence,AC-042; AC-043; AC-044; AC-045,SHOP-TC-058; SHOP-TC-059; SHOP-TC-060; SHOP-TC-061,Covered (4/4 passed),Critical priority · Orders
+SHOP-REQ-017,Order history and data isolation,AC-046; AC-047,SHOP-TC-062; SHOP-TC-063; SHOP-TC-064,Covered (3/3 passed),High priority · Orders
+SHOP-REQ-018,Order cancellation and stock restore,AC-048; AC-049; AC-050; AC-051,SHOP-TC-065; SHOP-TC-066; SHOP-TC-067; SHOP-TC-068,Covered (4/4 passed),High priority · Orders
+SHOP-REQ-019,Order status workflow (admin),AC-052; AC-053; AC-054,SHOP-TC-069; SHOP-TC-070; SHOP-TC-071; SHOP-TC-072; SHOP-TC-073,Covered (5/5 passed),High priority · Orders
+SHOP-REQ-020,Inventory management,AC-055; AC-056; AC-057; AC-058,SHOP-TC-074; SHOP-TC-075; SHOP-TC-076; SHOP-TC-077,Covered (4/4 passed),Medium priority · Admin
+SHOP-REQ-021,Role-based access control,AC-059; AC-060; AC-061,SHOP-TC-078; SHOP-TC-079; SHOP-TC-080; SHOP-TC-081,Covered (4/4 passed),Critical priority · Security
+SHOP-REQ-022,Input safety and request hardening,AC-062; AC-063; AC-064; AC-065,SHOP-TC-082; SHOP-TC-083; SHOP-TC-084; SHOP-TC-085; SHOP-TC-086; SHOP-TC-087; SHOP-TC-100; SHOP-TC-101,Covered (8/8 passed),Critical priority · Security
+SHOP-REQ-023,Database integrity and audit trail,AC-066; AC-067; AC-068; AC-069,SHOP-TC-088; SHOP-TC-089; SHOP-TC-090; SHOP-TC-091; SHOP-TC-092; SHOP-TC-093,Covered (6/6 passed),Critical priority · Data
+SHOP-REQ-024,"Empty, loading and error states",AC-070; AC-071; AC-072,SHOP-TC-094; SHOP-TC-095; SHOP-TC-096; SHOP-TC-097; SHOP-TC-098; SHOP-TC-099,"Partially covered (4 passed, 2 not executed)",Medium priority · Usability

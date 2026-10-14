@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Brick Builder 500 Set">
+  <defs>
+    <linearGradient id="g" gradientTransform="rotate(22 0.5 0.5)">
+      <stop offset="0%" stop-color="#d04f8f"/>
+      <stop offset="100%" stop-color="#4c0f30"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#g)"/>
+  <circle cx="182" cy="72" r="120" fill="#ffffff" opacity="0.08"/>
+  <circle cx="218" cy="228" r="70" fill="#ffffff" opacity="0.06"/>
+  <text x="200" y="168" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="700" fill="#ffffff" opacity="0.92">BB</text>
+  <text x="200" y="216" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#ffffff" opacity="0.75">SKU-TO-001</text>
+</svg>

@@ -1,0 +1,719 @@
+{
+  "info": {
+    "name": "ShopSure API",
+    "description": "API test collection for the ShopSure demo store (QA portfolio project).\n\nCoverage: health, authentication, catalog search/filter/sort validation, cart rules, checkout pricing decision table, order lifecycle transitions and role-based access control.\n\nRun with: `npm run test:postman` (boots a freshly seeded server and executes this collection through Newman).\nOr manually: `newman run postman/ShopSure-API.postman_collection.json --env-var baseUrl=http://127.0.0.1:4100`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:4100" },
+    { "key": "customerEmail", "value": "customer@example.com" },
+    { "key": "customerPassword", "value": "Customer#12345" },
+    { "key": "adminEmail", "value": "admin@example.com" },
+    { "key": "adminPassword", "value": "Admin#12345" }
+  ],
+  "item": [
+    {
+      "name": "01 Health and access control",
+      "item": [
+        {
+          "name": "GET health",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/health", "host": ["{{baseUrl}}"], "path": ["api", "health"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('application reports ok', () => pm.expect(body.status).to.eql('ok'));",
+                  "pm.test('seeded catalog is present', () => pm.expect(body.seededProducts).to.be.at.least(24));",
+                  "pm.test('version is returned', () => pm.expect(body.version).to.match(/^\\d+\\.\\d+\\.\\d+$/));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET cart without session returns 401",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/cart", "host": ["{{baseUrl}}"], "path": ["api", "cart"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 401', () => pm.response.to.have.status(401));",
+                  "pm.test('error envelope is used', () => pm.expect(pm.response.json().error.code).to.eql('UNAUTHENTICATED'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET unknown route returns 404",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/does-not-exist", "host": ["{{baseUrl}}"], "path": ["api", "does-not-exist"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": ["pm.test('status is 404', () => pm.response.to.have.status(404));"] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 Authentication",
+      "item": [
+        {
+          "name": "POST register a unique customer",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const unique = `postman.${Date.now()}@example.com`;",
+                  "pm.collectionVariables.set('registeredEmail', unique);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 201', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test('returned user matches the requested email', () => pm.expect(body.user.email).to.eql(pm.collectionVariables.get('registeredEmail')));",
+                  "pm.test('new accounts are customers', () => pm.expect(body.user.role).to.eql('CUSTOMER'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Buyer\",\n  \"email\": \"{{registeredEmail}}\",\n  \"password\": \"Postman#12345\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          }
+        },
+        {
+          "name": "POST register duplicate email returns 409",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Duplicate Buyer\",\n  \"email\": \"customer@example.com\",\n  \"password\": \"Duplicate#12345\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 409', () => pm.response.to.have.status(409));",
+                  "pm.test('code identifies the duplicate email', () => pm.expect(pm.response.json().error.code).to.eql('EMAIL_ALREADY_REGISTERED'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST register with weak payload returns 400 with details",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"A\",\n  \"email\": \"nope\",\n  \"password\": \"short\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 400', () => pm.response.to.have.status(400));",
+                  "const details = pm.response.json().error.details;",
+                  "['name','email','password'].forEach((field) => {",
+                  "  pm.test(`validation details mention ${field}`, () => pm.expect(JSON.stringify(details)).to.include(field));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST login customer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{customerEmail}}\",\n  \"password\": \"{{customerPassword}}\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('user payload is returned', () => pm.expect(pm.response.json().user.email).to.eql(pm.collectionVariables.get('customerEmail')));",
+                  "pm.test('session cookie is set', () => pm.expect(pm.response.headers.get('set-cookie') || '').to.include('shopsure_session='));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST login with wrong password returns 401",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{customerEmail}}\",\n  \"password\": \"TotallyWrong#9\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 401', () => pm.response.to.have.status(401));",
+                  "pm.test('message is generic (no user enumeration)', () => pm.expect(pm.response.json().error.message).to.eql('Invalid email or password.'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET me with the customer session",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/auth/me", "host": ["{{baseUrl}}"], "path": ["api", "auth", "me"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('status is 200', () => pm.response.to.have.status(200));", "pm.test('role is CUSTOMER', () => pm.expect(pm.response.json().user.role).to.eql('CUSTOMER'));"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 Catalog and search",
+      "item": [
+        {
+          "name": "GET products (first page)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api", "products"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('default page size is 12', () => pm.expect(body.items).to.have.length(12));",
+                  "pm.test('total matches the X-Total-Count header', () => pm.expect(String(body.total)).to.eql(pm.response.headers.get('X-Total-Count')));",
+                  "pm.test('products include category information', () => pm.expect(body.items[0]).to.have.property('categoryName'));",
+                  "if (body.items.length > 0) pm.collectionVariables.set('productId', body.items[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET products?q=wireless (case-insensitive search)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/products?q=wireless",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"],
+              "query": [{ "key": "q", "value": "wireless" }]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('search returns matches', () => pm.expect(body.total).to.be.above(0));",
+                  "pm.test('every result contains the term', () => body.items.forEach((item) => pm.expect(`${item.name} ${item.description}`.toLowerCase()).to.include('wireless')));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET products?category=sports",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/products?category=sports&limit=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"],
+              "query": [
+                { "key": "category", "value": "sports" },
+                { "key": "limit", "value": "50" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test('only sports products are returned', () => body.items.forEach((item) => pm.expect(item.categorySlug).to.eql('sports')));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET products with an invalid sort returns 400",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/products?sort=drop-table", "host": ["{{baseUrl}}"], "path": ["api", "products"], "query": [{ "key": "sort", "value": "drop-table" }] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 400', () => pm.response.to.have.status(400));",
+                  "pm.test('validation error code', () => pm.expect(pm.response.json().error.code).to.eql('VALIDATION_ERROR'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET product detail",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/products/1", "host": ["{{baseUrl}}"], "path": ["api", "products", "1"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                  "const product = pm.response.json().product;",
+                  "pm.test('price and stock are numeric', () => { pm.expect(product.price).to.be.a('number'); pm.expect(product.stock).to.be.a('number'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET unknown product returns 404",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/products/99999", "host": ["{{baseUrl}}"], "path": ["api", "products", "99999"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": ["pm.test('status is 404', () => pm.response.to.have.status(404));"] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 Cart rules",
+      "item": [
+        {
+          "name": "DELETE existing cart lines (setup)",
+          "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/cart", "host": ["{{baseUrl}}"], "path": ["api", "cart"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": ["pm.test('cart cleared or already empty', () => pm.expect([204, 200]).to.include(pm.response.code));"] }
+            }
+          ]
+        },
+        {
+          "name": "POST add headphones to cart",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"productId\": 1,\n  \"quantity\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/api/cart/items", "host": ["{{baseUrl}}"], "path": ["api", "cart", "items"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 201', () => pm.response.to.have.status(201));",
+                  "const cart = pm.response.json();",
+                  "pm.test('one line is present', () => pm.expect(cart.items).to.have.length(1));",
+                  "pm.collectionVariables.set('cartItemId', cart.items[0].id);",
+                  "pm.test('10% discount applies from 100.00', () => pm.expect(cart.discount).to.eql(15));",
+                  "pm.test('shipping is free from 50.00', () => pm.expect(cart.shipping).to.eql(0));",
+                  "pm.test('total equals subtotal - discount + shipping', () => pm.expect(cart.total).to.eql(134.99));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST adding the same product merges the quantity",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"productId\": 1,\n  \"quantity\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/api/cart/items", "host": ["{{baseUrl}}"], "path": ["api", "cart", "items"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const cart = pm.response.json();",
+                  "pm.test('still one line', () => pm.expect(cart.items).to.have.length(1));",
+                  "pm.test('quantity is merged to 2', () => pm.expect(cart.items[0].quantity).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST quantity above the 10-unit line limit returns 400",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"productId\": 8,\n  \"quantity\": 11\n}" },
+            "url": { "raw": "{{baseUrl}}/api/cart/items", "host": ["{{baseUrl}}"], "path": ["api", "cart", "items"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": ["pm.test('status is 400', () => pm.response.to.have.status(400));"] }
+            }
+          ]
+        },
+        {
+          "name": "POST quantity above stock returns 422",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"productId\": 5,\n  \"quantity\": 4\n}" },
+            "url": { "raw": "{{baseUrl}}/api/cart/items", "host": ["{{baseUrl}}"], "path": ["api", "cart", "items"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 422', () => pm.response.to.have.status(422));",
+                  "pm.test('insufficient stock code', () => pm.expect(pm.response.json().error.code).to.eql('INSUFFICIENT_STOCK'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST out-of-stock product returns 422",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"productId\": 4,\n  \"quantity\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/api/cart/items", "host": ["{{baseUrl}}"], "path": ["api", "cart", "items"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 422', () => pm.response.to.have.status(422));",
+                  "pm.test('out of stock code', () => pm.expect(pm.response.json().error.code).to.eql('OUT_OF_STOCK'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 Checkout and order lifecycle",
+      "item": [
+        {
+          "name": "POST checkout with invalid postcode returns 400",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Casey Customer\",\n  \"email\": \"customer@example.com\",\n  \"phone\": \"+1 555 0100\",\n  \"address\": \"12 Example Street\",\n  \"city\": \"Springfield\",\n  \"postcode\": \"!!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 400', () => pm.response.to.have.status(400));",
+                  "pm.test('postcode is reported', () => pm.expect(JSON.stringify(pm.response.json().error.details)).to.include('postcode'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST checkout creates a PENDING order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Casey Customer\",\n  \"email\": \"customer@example.com\",\n  \"phone\": \"+1 555 0100\",\n  \"address\": \"12 Example Street\",\n  \"city\": \"Springfield\",\n  \"postcode\": \"12345\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 201', () => pm.response.to.have.status(201));",
+                  "const order = pm.response.json().order;",
+                  "pm.collectionVariables.set('orderId', order.id);",
+                  "pm.test('order number format', () => pm.expect(order.orderNumber).to.match(/^ORD-\\d{5}$/));",
+                  "pm.test('status is PENDING', () => pm.expect(order.status).to.eql('PENDING'));",
+                  "pm.test('initial event recorded', () => pm.expect(order.events[0].toStatus).to.eql('PENDING'));",
+                  "pm.test('totals are consistent', () => pm.expect(order.total).to.eql(Number((order.subtotal - order.discount + order.shippingFee).toFixed(2))));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET order history contains the new order",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                  "const items = pm.response.json().items;",
+                  "pm.test('order history includes the created order', () => pm.expect(items.some((order) => order.id === pm.collectionVariables.get('orderId'))).to.be.true);",
+                  "pm.test('orders are newest first', () => { for (let i = 1; i < items.length; i += 1) pm.expect(items[i - 1].id).to.be.above(items[i].id); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET another customer cannot read this order (404)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"second@example.com\",\n  \"password\": \"Second#12345\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": ["pm.test('second customer can log in', () => pm.response.to.have.status(200));"] }
+            }
+          ]
+        },
+        {
+          "name": "GET order with the second customer session returns 404",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/orders/{{orderId}}", "host": ["{{baseUrl}}"], "path": ["api", "orders", "{{orderId}}"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": ["pm.test('status is 404 (no resource leaking)', () => pm.response.to.have.status(404));"] }
+            }
+          ]
+        },
+        {
+          "name": "POST back to the first customer session",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{customerEmail}}\",\n  \"password\": \"{{customerPassword}}\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": ["pm.test('status is 200', () => pm.response.to.have.status(200));"] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 Admin operations and RBAC",
+      "item": [
+        {
+          "name": "GET admin orders as customer returns 403",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/admin/orders", "host": ["{{baseUrl}}"], "path": ["api", "admin", "orders"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 403', () => pm.response.to.have.status(403));",
+                  "pm.test('forbidden code', () => pm.expect(pm.response.json().error.code).to.eql('FORBIDDEN'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST login as admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('status is 200', () => pm.response.to.have.status(200));", "pm.test('role is ADMIN', () => pm.expect(pm.response.json().user.role).to.eql('ADMIN'));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH illegal status jump is rejected (422)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"DELIVERED\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/admin/orders/{{orderId}}/status", "host": ["{{baseUrl}}"], "path": ["api", "admin", "orders", "{{orderId}}", "status"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 422', () => pm.response.to.have.status(422));",
+                  "pm.test('invalid transition code', () => pm.expect(pm.response.json().error.code).to.eql('INVALID_TRANSITION'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH PENDING -> PAID",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"PAID\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/admin/orders/{{orderId}}/status", "host": ["{{baseUrl}}"], "path": ["api", "admin", "orders", "{{orderId}}", "status"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('order is PAID', () => pm.expect(pm.response.json().order.status).to.eql('PAID'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH PAID -> SHIPPED",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"SHIPPED\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/admin/orders/{{orderId}}/status", "host": ["{{baseUrl}}"], "path": ["api", "admin", "orders", "{{orderId}}", "status"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": ["pm.test('order is SHIPPED', () => pm.expect(pm.response.json().order.status).to.eql('SHIPPED'));"] }
+            }
+          ]
+        },
+        {
+          "name": "PATCH stock update",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"stock\": 77\n}" },
+            "url": { "raw": "{{baseUrl}}/api/admin/products/8/stock", "host": ["{{baseUrl}}"], "path": ["api", "admin", "products", "8", "stock"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('new stock returned', () => pm.expect(pm.response.json().product.stock).to.eql(77));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH negative stock returns 400",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"stock\": -4\n}" },
+            "url": { "raw": "{{baseUrl}}/api/admin/products/8/stock", "host": ["{{baseUrl}}"], "path": ["api", "admin", "products", "8", "stock"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": ["pm.test('status is 400', () => pm.response.to.have.status(400));"] }
+            }
+          ]
+        },
+        {
+          "name": "GET admin users never exposes credentials",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/admin/users", "host": ["{{baseUrl}}"], "path": ["api", "admin", "users"] } },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('no password or salt fields are returned', () => { const text = pm.response.text(); pm.expect(text).to.not.include('password'); pm.expect(text).to.not.include('salt'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

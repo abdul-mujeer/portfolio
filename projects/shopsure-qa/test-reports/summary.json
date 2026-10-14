@@ -1,0 +1,62 @@
+{
+  "project": "ShopSure — E-commerce Quality Assurance",
+  "generatedAt": "2026-10-13T23:59:57.707Z",
+  "gitCommit": "1f9605a",
+  "node": "v24.21.0",
+  "platform": "win32",
+  "manualTestCases": {
+    "total": 101,
+    "byStatus": {
+      "Pass": 99,
+      "Not Executed": 2
+    }
+  },
+  "defects": {
+    "total": 6,
+    "open": 0,
+    "closed": 6,
+    "seeded": 3
+  },
+  "automation": {
+    "api": {
+      "total": 72,
+      "passed": 72,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "ui": {
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "database": {
+      "total": 23,
+      "passed": 23,
+      "failed": 0
+    },
+    "postman": {
+      "assertions": 76,
+      "passed": 76,
+      "failed": 0,
+      "requests": 35
+    }
+  },
+  "totals": {
+    "executed": 4,
+    "passed": 202,
+    "failed": 0
+  },
+  "requirementCoverage": {
+    "requirements": 24,
+    "fullyCovered": 24
+  },
+  "rawResults": {
+    "api": "test-reports\\playwright\\api-results.json",
+    "ui": "test-reports\\playwright\\ui-results.json",
+    "database": "test-reports\\db-checks.json",
+    "postman": "test-reports\\newman\\shopsure-newman.json"
+  }
+}

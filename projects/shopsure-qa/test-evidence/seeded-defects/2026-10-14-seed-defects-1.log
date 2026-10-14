@@ -1,0 +1,92 @@
+
+Running 3 tests using 1 worker
+
+  x  1 [api] › tests\api\seeded-defects.spec.ts:12:3 › Seeded defect detection › @regression SHOP-BUG-103: minPrice filter includes products priced exactly at the boundary (40ms)
+  x  2 [api] › tests\api\seeded-defects.spec.ts:18:3 › Seeded defect detection › @regression SHOP-BUG-101: cart refuses more units than the product has in stock (1.2s)
+  x  3 [api] › tests\api\seeded-defects.spec.ts:32:3 › Seeded defect detection › @regression SHOP-BUG-102: cancelling an order restores stock (1.6s)
+
+
+  1) [api] › tests\api\seeded-defects.spec.ts:12:3 › Seeded defect detection › @regression SHOP-BUG-103: minPrice filter includes products priced exactly at the boundary 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected value: 50
+    Received array: [149.99, 99.99, 100, 64.5, 54, 89]
+
+      13 |     const response = await request.get("/api/products?minPrice=50&limit=50");
+      14 |     const body = await response.json();
+    > 15 |     expect(body.items.map((item: { price: number }) => item.price)).toContain(50);
+         |                                                                     ^
+      16 |   });
+      17 |
+      18 |   test("@regression SHOP-BUG-101: cart refuses more units than the product has in stock", async () => {
+        at D:\projects\portfolio\projects\shopsure-qa\tests\api\seeded-defects.spec.ts:15:69
+
+    Error Context: test-results\seeded-defects-Seeded-defe-2d95d-ced-exactly-at-the-boundary-api\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\seeded-defects-Seeded-defe-2d95d-ced-exactly-at-the-boundary-api\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\seeded-defects-Seeded-defe-2d95d-ced-exactly-at-the-boundary-api\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [api] › tests\api\seeded-defects.spec.ts:18:3 › Seeded defect detection › @regression SHOP-BUG-101: cart refuses more units than the product has in stock 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 422
+    Received: 201
+
+      22 |       await setStock(admin.context, PRODUCT_IDS.deskLampLowStock, 3);
+      23 |       const response = await addToCart(customer.context, PRODUCT_IDS.deskLampLowStock, 4);
+    > 24 |       expect(response.status()).toBe(422);
+         |                                 ^
+      25 |       expect((await response.json()).error.code).toBe("INSUFFICIENT_STOCK");
+      26 |     } finally {
+      27 |       await admin.dispose();
+        at D:\projects\portfolio\projects\shopsure-qa\tests\api\seeded-defects.spec.ts:24:33
+
+    Error Context: test-results\seeded-defects-Seeded-defe-bd5de-an-the-product-has-in-stock-api\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\seeded-defects-Seeded-defe-bd5de-an-the-product-has-in-stock-api\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\seeded-defects-Seeded-defe-bd5de-an-the-product-has-in-stock-api\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [api] › tests\api\seeded-defects.spec.ts:32:3 › Seeded defect detection › @regression SHOP-BUG-102: cancelling an order restores stock 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 10
+    Received: 8
+
+      42 |       const product = await admin.context.get(`/api/admin/products?q=SKU-HK-001`);
+      43 |       const body = await product.json();
+    > 44 |       expect(body.items[0].stock).toBe(10);
+         |                                   ^
+      45 |     } finally {
+      46 |       await admin.dispose();
+      47 |       await customer.dispose();
+        at D:\projects\portfolio\projects\shopsure-qa\tests\api\seeded-defects.spec.ts:44:35
+
+    Error Context: test-results\seeded-defects-Seeded-defe-49d05-ing-an-order-restores-stock-api\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\seeded-defects-Seeded-defe-49d05-ing-an-order-restores-stock-api\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\seeded-defects-Seeded-defe-49d05-ing-an-order-restores-stock-api\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    [api] › tests\api\seeded-defects.spec.ts:12:3 › Seeded defect detection › @regression SHOP-BUG-103: minPrice filter includes products priced exactly at the boundary 
+    [api] › tests\api\seeded-defects.spec.ts:18:3 › Seeded defect detection › @regression SHOP-BUG-101: cart refuses more units than the product has in stock 
+    [api] › tests\api\seeded-defects.spec.ts:32:3 › Seeded defect detection › @regression SHOP-BUG-102: cancelling an order restores stock 
+
+[WebServer] [shopsure] SEED_DEFECTS=1 — deliberately injected defects are ACTIVE (see seeded-defects.md).

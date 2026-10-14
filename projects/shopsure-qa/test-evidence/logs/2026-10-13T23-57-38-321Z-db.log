@@ -1,0 +1,30 @@
+
+Database validation checks
+==========================
+PASS  DB-01  Seed creates the documented reference data set
+PASS  DB-02  At least one out-of-stock product exists for negative testing
+PASS  DB-03  price > 0 CHECK constraint rejects a negative price
+PASS  DB-04  stock >= 0 CHECK constraint rejects negative stock
+PASS  DB-05  UNIQUE constraint prevents duplicate SKUs
+PASS  DB-06  UNIQUE constraint prevents duplicate user emails (case-insensitive)
+PASS  DB-07  UNIQUE(user_id, product_id) prevents duplicate cart lines
+PASS  DB-08  Cart quantity CHECK constraint enforces the 1..10 line limit at database level
+PASS  DB-09  Order status CHECK constraint rejects unknown status values
+PASS  DB-10  No foreign-key violations anywhere in the database
+PASS  DB-11  No order items without a parent order
+PASS  DB-12  Every order has at least one order item
+PASS  DB-13  Stored order totals equal subtotal - discount + shipping
+PASS  DB-14  Order line totals equal unit price x quantity
+PASS  DB-15  Discount rule is consistent for every stored order (10% from 100.00)
+PASS  DB-16  Shipping rule is consistent for every stored order (free from 50.00)
+PASS  DB-17  Order numbers follow the ORD-##### format
+PASS  DB-18  Order numbers are unique
+PASS  DB-19  Passwords are stored as salted scrypt hashes, never plaintext
+PASS  DB-20  Session rows always carry a future expiry timestamp
+PASS  DB-21  Every order event belongs to an existing order
+PASS  DB-22  Every order records its initial PENDING event
+PASS  DB-23  Cancelled orders always have a CANCELED event (traceability)
+
+23/23 database checks passed.
+Report written to test-reports/db-checks.json
+

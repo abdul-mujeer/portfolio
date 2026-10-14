@@ -1,0 +1,196 @@
+{
+  "checkedAt": "2026-10-13T23:59:01.637Z",
+  "database": "D:\\projects\\portfolio\\projects\\shopsure-qa\\.data\\shopsure.e2e.db",
+  "modules": [
+    "constraints.mjs"
+  ],
+  "total": 23,
+  "passed": 23,
+  "failed": 0,
+  "results": [
+    {
+      "id": "DB-01",
+      "title": "Seed creates the documented reference data set",
+      "passed": true,
+      "expected": "users >= 3, categories = 6, products >= 24",
+      "actual": "users=3, categories=6, products=24",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-02",
+      "title": "At least one out-of-stock product exists for negative testing",
+      "passed": true,
+      "expected": ">= 1",
+      "actual": "1",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-03",
+      "title": "price > 0 CHECK constraint rejects a negative price",
+      "passed": true,
+      "expected": "insert rejected",
+      "actual": "CHECK constraint failed: price > 0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-04",
+      "title": "stock >= 0 CHECK constraint rejects negative stock",
+      "passed": true,
+      "expected": "insert rejected",
+      "actual": "CHECK constraint failed: stock >= 0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-05",
+      "title": "UNIQUE constraint prevents duplicate SKUs",
+      "passed": true,
+      "expected": "insert rejected",
+      "actual": "UNIQUE constraint failed: products.sku",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-06",
+      "title": "UNIQUE constraint prevents duplicate user emails (case-insensitive)",
+      "passed": true,
+      "expected": "insert rejected",
+      "actual": "UNIQUE constraint failed: users.email",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-07",
+      "title": "UNIQUE(user_id, product_id) prevents duplicate cart lines",
+      "passed": true,
+      "expected": "insert rejected",
+      "actual": "UNIQUE constraint failed: cart_items.user_id, cart_items.product_id",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-08",
+      "title": "Cart quantity CHECK constraint enforces the 1..10 line limit at database level",
+      "passed": true,
+      "expected": "update rejected",
+      "actual": "CHECK constraint failed: quantity >= 1 AND quantity <= 10",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-09",
+      "title": "Order status CHECK constraint rejects unknown status values",
+      "passed": true,
+      "expected": "insert rejected",
+      "actual": "CHECK constraint failed: status IN ('PENDING','PAID','SHIPPED','DELIVERED','CANCELED')",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-10",
+      "title": "No foreign-key violations anywhere in the database",
+      "passed": true,
+      "expected": "0 violations",
+      "actual": "0 violation(s)",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-11",
+      "title": "No order items without a parent order",
+      "passed": true,
+      "expected": "0 rows",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-12",
+      "title": "Every order has at least one order item",
+      "passed": true,
+      "expected": "0 orders",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-13",
+      "title": "Stored order totals equal subtotal - discount + shipping",
+      "passed": true,
+      "expected": "0 mismatching orders",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-14",
+      "title": "Order line totals equal unit price x quantity",
+      "passed": true,
+      "expected": "0 mismatching lines",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-15",
+      "title": "Discount rule is consistent for every stored order (10% from 100.00)",
+      "passed": true,
+      "expected": "0 inconsistent orders",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-16",
+      "title": "Shipping rule is consistent for every stored order (free from 50.00)",
+      "passed": true,
+      "expected": "0 inconsistent orders",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-17",
+      "title": "Order numbers follow the ORD-##### format",
+      "passed": true,
+      "expected": "0 malformed numbers",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-18",
+      "title": "Order numbers are unique",
+      "passed": true,
+      "expected": "0 duplicates",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-19",
+      "title": "Passwords are stored as salted scrypt hashes, never plaintext",
+      "passed": true,
+      "expected": "0 weak/plaintext rows",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-20",
+      "title": "Session rows always carry a future expiry timestamp",
+      "passed": true,
+      "expected": "0 expired sessions",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-21",
+      "title": "Every order event belongs to an existing order",
+      "passed": true,
+      "expected": "0 orphan events",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-22",
+      "title": "Every order records its initial PENDING event",
+      "passed": true,
+      "expected": "0 orders missing events",
+      "actual": "0",
+      "module": "constraints.mjs"
+    },
+    {
+      "id": "DB-23",
+      "title": "Cancelled orders always have a CANCELED event (traceability)",
+      "passed": true,
+      "expected": "0 inconsistencies",
+      "actual": "0",
+      "module": "constraints.mjs"
+    }
+  ]
+}

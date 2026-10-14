@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Clean Testing Practices">
+  <defs>
+    <linearGradient id="g" gradientTransform="rotate(184 0.5 0.5)">
+      <stop offset="0%" stop-color="#2f8f6b"/>
+      <stop offset="100%" stop-color="#0f2f24"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#g)"/>
+  <circle cx="224" cy="198" r="120" fill="#ffffff" opacity="0.08"/>
+  <circle cx="176" cy="102" r="70" fill="#ffffff" opacity="0.06"/>
+  <text x="200" y="168" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="700" fill="#ffffff" opacity="0.92">CT</text>
+  <text x="200" y="216" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#ffffff" opacity="0.75">SKU-BK-001</text>
+</svg>

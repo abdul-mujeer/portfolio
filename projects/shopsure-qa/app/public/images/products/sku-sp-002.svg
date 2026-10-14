@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Starter Yoga Mat">
+  <defs>
+    <linearGradient id="g" gradientTransform="rotate(311 0.5 0.5)">
+      <stop offset="0%" stop-color="#7a4fd0"/>
+      <stop offset="100%" stop-color="#2a1250"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#g)"/>
+  <circle cx="151" cy="148" r="120" fill="#ffffff" opacity="0.08"/>
+  <circle cx="249" cy="152" r="70" fill="#ffffff" opacity="0.06"/>
+  <text x="200" y="168" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="700" fill="#ffffff" opacity="0.92">SY</text>
+  <text x="200" y="216" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#ffffff" opacity="0.75">SKU-SP-002</text>
+</svg>

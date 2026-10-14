@@ -1,0 +1,9 @@
+
+Running 3 tests using 1 worker
+
+  ok 1 [api] › tests\api\seeded-defects.spec.ts:12:3 › Seeded defect detection › @regression SHOP-BUG-103: minPrice filter includes products priced exactly at the boundary (65ms)
+  ok 2 [api] › tests\api\seeded-defects.spec.ts:18:3 › Seeded defect detection › @regression SHOP-BUG-101: cart refuses more units than the product has in stock (2.0s)
+  ok 3 [api] › tests\api\seeded-defects.spec.ts:32:3 › Seeded defect detection › @regression SHOP-BUG-102: cancelling an order restores stock (2.9s)
+
+  3 passed (17.6s)
+

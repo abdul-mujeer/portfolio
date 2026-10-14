@@ -1,0 +1,219 @@
+newman
+
+ShopSure API
+
+□ 01 Health and access control
+└ GET health
+  GET http://127.0.0.1:4181/api/health [200 OK, 317B, 24ms]
+  √  status is 200
+  √  application reports ok
+  √  seeded catalog is present
+  √  version is returned
+
+└ GET cart without session returns 401
+  GET http://127.0.0.1:4181/api/cart [401 Unauthorized, 295B, 4ms]
+  √  status is 401
+  √  error envelope is used
+
+└ GET unknown route returns 404
+  GET http://127.0.0.1:4181/api/does-not-exist [404 Not Found, 302B, 4ms]
+  √  status is 404
+
+□ 02 Authentication
+└ POST register a unique customer
+  POST http://127.0.0.1:4181/api/auth/register [201 Created, 480B, 331ms]
+  √  status is 201
+  √  returned user matches the requested email
+  √  new accounts are customers
+
+└ POST register duplicate email returns 409
+  POST http://127.0.0.1:4181/api/auth/register [409 Conflict, 319B, 3ms]
+  √  status is 409
+  √  code identifies the duplicate email
+
+└ POST register with weak payload returns 400 with details
+  POST http://127.0.0.1:4181/api/auth/register [400 Bad Request, 634B, 4ms]
+  √  status is 400
+  √  validation details mention name
+  √  validation details mention email
+  √  validation details mention password
+
+└ POST login customer
+  POST http://127.0.0.1:4181/api/auth/login [200 OK, 462B, 239ms]
+  √  status is 200
+  √  user payload is returned
+  √  session cookie is set
+
+└ POST login with wrong password returns 401
+  POST http://127.0.0.1:4181/api/auth/login [401 Unauthorized, 297B, 36ms]
+  √  status is 401
+  √  message is generic (no user enumeration)
+
+└ GET me with the customer session
+  GET http://127.0.0.1:4181/api/auth/me [200 OK, 302B, 3ms]
+  √  status is 200
+  √  role is CUSTOMER
+
+□ 03 Catalog and search
+└ GET products (first page)
+  GET http://127.0.0.1:4181/api/products [200 OK, 4.34kB, 3ms]
+  √  status is 200
+  √  default page size is 12
+  √  total matches the X-Total-Count header
+  √  products include category information
+
+└ GET products?q=wireless (case-insensitive search)
+  GET http://127.0.0.1:4181/api/products?q=wireless [200 OK, 999B, 3ms]
+  √  status is 200
+  √  search returns matches
+  √  every result contains the term
+
+└ GET products?category=sports
+  GET http://127.0.0.1:4181/api/products?category=sports&limit=50 [200 OK, 1.56kB, 2ms]
+  √  only sports products are returned
+
+└ GET products with an invalid sort returns 400
+  GET http://127.0.0.1:4181/api/products?sort=drop-table [400 Bad Request, 355B, 2ms]
+  √  status is 400
+  √  validation error code
+
+└ GET product detail
+  GET http://127.0.0.1:4181/api/products/1 [200 OK, 602B, 3ms]
+  √  status is 200
+  √  price and stock are numeric
+
+└ GET unknown product returns 404
+  GET http://127.0.0.1:4181/api/products/99999 [404 Not Found, 280B, 2ms]
+  √  status is 404
+
+□ 04 Cart rules
+└ DELETE existing cart lines (setup)
+  DELETE http://127.0.0.1:4181/api/cart [204 No Content, 111B, 2ms]
+  √  cart cleared or already empty
+
+└ POST add headphones to cart
+  POST http://127.0.0.1:4181/api/cart/items [201 Created, 467B, 339ms]
+  √  status is 201
+  √  one line is present
+  √  10% discount applies from 100.00
+  √  shipping is free from 50.00
+  √  total equals subtotal - discount + shipping
+
+└ POST adding the same product merges the quantity
+  POST http://127.0.0.1:4181/api/cart/items [201 Created, 467B, 127ms]
+  √  still one line
+  √  quantity is merged to 2
+
+└ POST quantity above the 10-unit line limit returns 400
+  POST http://127.0.0.1:4181/api/cart/items [400 Bad Request, 386B, 2ms]
+  √  status is 400
+
+└ POST quantity above stock returns 422
+  POST http://127.0.0.1:4181/api/cart/items [422 Unprocessable Entity, 334B, 2ms]
+  √  status is 422
+  √  insufficient stock code
+
+└ POST out-of-stock product returns 422
+  POST http://127.0.0.1:4181/api/cart/items [422 Unprocessable Entity, 300B, 3ms]
+  √  status is 422
+  √  out of stock code
+
+□ 05 Checkout and order lifecycle
+└ POST checkout with invalid postcode returns 400
+  POST http://127.0.0.1:4181/api/orders [400 Bad Request, 395B, 2ms]
+  √  status is 400
+  √  postcode is reported
+
+└ POST checkout creates a PENDING order
+  POST http://127.0.0.1:4181/api/orders [201 Created, 866B, 203ms]
+  √  status is 201
+  √  order number format
+  √  status is PENDING
+  √  initial event recorded
+  √  totals are consistent
+
+└ GET order history contains the new order
+  GET http://127.0.0.1:4181/api/orders [200 OK, 780B, 2ms]
+  √  status is 200
+  √  order history includes the created order
+  √  orders are newest first
+
+└ GET another customer cannot read this order (404)
+  POST http://127.0.0.1:4181/api/auth/login [200 OK, 458B, 159ms]
+  √  second customer can log in
+
+└ GET order with the second customer session returns 404
+  GET http://127.0.0.1:4181/api/orders/3 [404 Not Found, 278B, 2ms]
+  √  status is 404 (no resource leaking)
+
+└ POST back to the first customer session
+  POST http://127.0.0.1:4181/api/auth/login [200 OK, 462B, 263ms]
+  √  status is 200
+
+□ 06 Admin operations and RBAC
+└ GET admin orders as customer returns 403
+  GET http://127.0.0.1:4181/api/admin/orders [403 Forbidden, 290B, 2ms]
+  √  status is 403
+  √  forbidden code
+
+└ POST login as admin
+  POST http://127.0.0.1:4181/api/auth/login [200 OK, 453B, 226ms]
+  √  status is 200
+  √  role is ADMIN
+
+└ PATCH illegal status jump is rejected (422)
+  PATCH http://127.0.0.1:4181/api/admin/orders/3/status [422 Unprocessable Entity, 322B, 2ms]
+  √  status is 422
+  √  invalid transition code
+
+└ PATCH PENDING -> PAID
+  PATCH http://127.0.0.1:4181/api/admin/orders/3/status [200 OK, 974B, 192ms]
+  √  status is 200
+  √  order is PAID
+
+└ PATCH PAID -> SHIPPED
+  PATCH http://127.0.0.1:4181/api/admin/orders/3/status [200 OK, 1.08kB, 232ms]
+  √  order is SHIPPED
+
+└ PATCH stock update
+  PATCH http://127.0.0.1:4181/api/admin/products/8/stock [200 OK, 493B, 143ms]
+  √  status is 200
+  √  new stock returned
+
+└ PATCH negative stock returns 400
+  PATCH http://127.0.0.1:4181/api/admin/products/8/stock [400 Bad Request, 371B, 2ms]
+  √  status is 400
+
+└ GET admin users never exposes credentials
+  GET http://127.0.0.1:4181/api/admin/users [200 OK, 718B, 2ms]
+  √  status is 200
+  √  no password or salt fields are returned
+
+┌─────────────────────────┬───────────────────┬───────────────────┐
+│                         │          executed │            failed │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              iterations │                 1 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│                requests │                35 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│            test-scripts │                35 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│      prerequest-scripts │                 1 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              assertions │                76 │                 0 │
+├─────────────────────────┴───────────────────┴───────────────────┤
+│ total run duration: 5.3s                                        │
+├─────────────────────────────────────────────────────────────────┤
+│ total data received: 13.16kB (approx)                           │
+├─────────────────────────────────────────────────────────────────┤
+│ average response time: 73ms [min: 2ms, max: 339ms, s.d.: 108ms] │
+└─────────────────────────────────────────────────────────────────┘
+
+Newman summary
+==============
+Requests:  35 (failed: 0)
+Assertions:76 (failed: 0)
+Duration:  5308 ms
+
+(node:2848) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(Use `node --trace-deprecation ...` to show where the warning was created)
