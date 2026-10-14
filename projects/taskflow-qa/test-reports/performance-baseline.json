@@ -1,0 +1,53 @@
+{
+  "suite": "performance",
+  "executedAt": "2026-10-14T00:21:14.544Z",
+  "database": ".data/taskflow.perf.db",
+  "tool": "autocannon",
+  "connections": 10,
+  "durationSeconds": 5,
+  "pipelining": 1,
+  "environment": "Local Windows machine, single Node.js process, file-backed SQLite (node:sqlite), loopback network.",
+  "caveat": "LOCAL DEMO BASELINE ONLY. Single process and local loopback inflate throughput and deflate latency versus any real deployment. There is no connection pooling, reverse proxy, TLS, multi-instance or production-size data set involved. Do not quote these numbers as production capacity.",
+  "targets": [
+    {
+      "label": "GET /api/v1/health",
+      "url": "/api/v1/health",
+      "requests": {
+        "total": 44003,
+        "average": 8802.8
+      },
+      "latency": {
+        "average": 0.65,
+        "p50": 1,
+        "p97_5": 1,
+        "p99": 2,
+        "max": 9
+      },
+      "throughputBytesPerSecond": 2824806.4,
+      "errors": 0,
+      "timeouts": 0,
+      "non2xx": 0,
+      "status2xx": 44003
+    },
+    {
+      "label": "GET /api/v1/projects/1/tasks (authenticated, 12 tasks)",
+      "url": "/api/v1/projects/1/tasks?limit=20&sort=id&order=asc",
+      "requests": {
+        "total": 7349,
+        "average": 1469.8
+      },
+      "latency": {
+        "average": 6.3,
+        "p50": 6,
+        "p97_5": 9,
+        "p99": 10,
+        "max": 19
+      },
+      "throughputBytesPerSecond": 9103769.6,
+      "errors": 0,
+      "timeouts": 0,
+      "non2xx": 0,
+      "status2xx": 7349
+    }
+  ]
+}

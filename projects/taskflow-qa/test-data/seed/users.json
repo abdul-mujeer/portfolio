@@ -1,0 +1,7 @@
+[
+  { "id": 1, "email": "owner@example.com", "display_name": "Nadia Rahman", "password": "Owner#12345", "createdDaysAgo": 120 },
+  { "id": 2, "email": "admin@example.com", "display_name": "Omar Faruk", "password": "Admin#12345", "createdDaysAgo": 118 },
+  { "id": 3, "email": "member@example.com", "display_name": "Priya Sen", "password": "Member#12345", "createdDaysAgo": 110 },
+  { "id": 4, "email": "outsider@example.com", "display_name": "Quentin Das", "password": "Outside#12345", "createdDaysAgo": 90 },
+  { "id": 5, "email": "noprojects@example.com", "display_name": "Nina Bose", "password": "Solo#12345", "createdDaysAgo": 60 }
+]

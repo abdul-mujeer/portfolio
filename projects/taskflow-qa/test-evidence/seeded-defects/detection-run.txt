@@ -1,0 +1,16 @@
+=== SEEDED DEFECT DETECTION RUN ===
+Database: .data/taskflow.seeded.db (freshly seeded, SEED_DEFECTS=0 at seed time)
+
+--- Baseline (SEED_DEFECTS=0): correct behaviour expected ---
+overdue count = 3 (SQL strict "<" expectation: 3)
+overdue ids = 4,3,10
+DONE chain: IN_PROGRESS:200 -> IN_REVIEW:200 -> DONE:200
+DONE -> IN_PROGRESS = 422 (expected 422)
+
+--- Defect run (SEED_DEFECTS=1): the same probes now expose the seeded bugs ---
+overdue count = 4 (SQL "<=" expectation with the defect: 4)
+overdue ids = 4,3,10,12
+DONE chain: IN_PROGRESS:200 -> IN_REVIEW:200 -> DONE:200
+DONE -> IN_PROGRESS = 200 (expected 200 with the defect: DONE is not terminal)
+
+Detection summary: SEEDED-001 DETECTED, SEEDED-002 DETECTED

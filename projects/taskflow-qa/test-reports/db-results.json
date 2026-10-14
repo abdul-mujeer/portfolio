@@ -1,0 +1,166 @@
+{
+  "suite": "db",
+  "executedAt": "2026-10-14T00:38:16.999Z",
+  "database": "D:\\projects\\portfolio\\projects\\taskflow-qa\\.data\\taskflow.test.db",
+  "checks": [
+    {
+      "id": "unique-user-email",
+      "caseId": "TASK-TC-201",
+      "name": "users.email UNIQUE rejects a duplicate insert and leaves the table untouched",
+      "status": "PASS",
+      "details": "duplicate email rejected, users still 14"
+    },
+    {
+      "id": "unique-project-key",
+      "caseId": "TASK-TC-201",
+      "name": "projects.key UNIQUE rejects a duplicate insert",
+      "status": "PASS",
+      "details": "duplicate project key rejected"
+    },
+    {
+      "id": "foreign-keys-enabled",
+      "caseId": "TASK-TC-202",
+      "name": "PRAGMA foreign_keys is ON for the application connection",
+      "status": "PASS",
+      "details": "foreign_keys = 1"
+    },
+    {
+      "id": "foreign-key-check-clean",
+      "caseId": "TASK-TC-202",
+      "name": "PRAGMA foreign_key_check returns no violations",
+      "status": "PASS",
+      "details": "no FK violations"
+    },
+    {
+      "id": "fk-insert-rejected",
+      "caseId": "TASK-TC-202",
+      "name": "tasks.project_id FK rejects a task pointing at a missing project",
+      "status": "PASS",
+      "details": "orphan task rejected by FK"
+    },
+    {
+      "id": "no-orphan-rows",
+      "caseId": "TASK-TC-202",
+      "name": "no orphan tasks / comments / members / activity rows exist",
+      "status": "PASS",
+      "details": "tasks=0, comments=0, members=0, activity=0, activity.tasks=0"
+    },
+    {
+      "id": "check-task-status",
+      "caseId": "TASK-TC-203",
+      "name": "tasks.status CHECK rejects values outside the enum ('BLOCKED')",
+      "status": "PASS",
+      "details": "invalid status rejected"
+    },
+    {
+      "id": "check-task-title-length",
+      "caseId": "TASK-TC-203",
+      "name": "tasks.title CHECK rejects titles shorter than 3 characters",
+      "status": "PASS",
+      "details": "short title rejected"
+    },
+    {
+      "id": "check-estimated-hours",
+      "caseId": "TASK-TC-203",
+      "name": "tasks.estimated_hours CHECK rejects values below 0.5",
+      "status": "PASS",
+      "details": "estimated_hours 0.25 rejected"
+    },
+    {
+      "id": "check-comment-body-length",
+      "caseId": "TASK-TC-203",
+      "name": "comments.body CHECK rejects bodies over 1000 characters",
+      "status": "PASS",
+      "details": "1001-char comment rejected"
+    },
+    {
+      "id": "check-project-key-pattern",
+      "caseId": "TASK-TC-203",
+      "name": "projects.key CHECK rejects lowercase keys",
+      "status": "PASS",
+      "details": "lowercase key rejected"
+    },
+    {
+      "id": "check-activity-detail-json",
+      "caseId": "TASK-TC-203",
+      "name": "activity.detail_json CHECK rejects non-JSON payloads and existing rows are all valid",
+      "status": "PASS",
+      "details": "invalid JSON rejected; all stored detail_json values are valid"
+    },
+    {
+      "id": "transition-history",
+      "caseId": "TASK-TC-204",
+      "name": "every DONE/CANCELED task has a TASK_STATUS_CHANGED activity row reaching that status",
+      "status": "PASS",
+      "details": "transition rows = 17, all finished tasks covered"
+    },
+    {
+      "id": "creation-history",
+      "caseId": "TASK-TC-204",
+      "name": "every existing task has a TASK_CREATED activity row",
+      "status": "PASS",
+      "details": "all tasks have creation events"
+    },
+    {
+      "id": "activity-actions-known",
+      "caseId": "TASK-TC-204",
+      "name": "activity only contains documented action names and each detail_json parses",
+      "status": "PASS",
+      "details": "actions seen: 12 distinct, all documented"
+    },
+    {
+      "id": "owner-consistency",
+      "caseId": "TASK-TC-204",
+      "name": "each project has exactly one OWNER row and it matches projects.owner_id",
+      "status": "PASS",
+      "details": "31 projects with consistent ownership"
+    },
+    {
+      "id": "archived-exclusion",
+      "caseId": "TASK-TC-205",
+      "name": "the overdue SQL excludes archived projects (2 archived overdue tasks stay out of scope)",
+      "status": "PASS",
+      "details": "active overdue = 3 (>= 3 seeded), archived overdue = 2 (excluded from reports)"
+    },
+    {
+      "id": "due-today-boundary",
+      "caseId": "TASK-TC-205",
+      "name": "a task due today is not overdue (strict <) when the run happens on the seed day",
+      "status": "PASS",
+      "details": "1 task due today; strict \"<\" gives 3, \"<=\" would give 4"
+    },
+    {
+      "id": "overdue-api-parity",
+      "caseId": "TASK-TC-205",
+      "name": "GET /reports/overdue matches the SQL predicate for the owner",
+      "status": "PASS",
+      "details": "API count = SQL count = 3"
+    },
+    {
+      "id": "task-count-parity",
+      "caseId": "TASK-TC-205",
+      "name": "X-Total-Count for each accessible project task list equals the SQL COUNT(*)",
+      "status": "PASS",
+      "details": "29 project(s) checked: TASK=15(done/canceled 3), OPS=4(done/canceled 1), ARCH=2(done/canceled 0), DRMHCB=1(done/canceled 0), DROABD=1(done/canceled 0), DRPBIE=1(done/canceled 0), DRQTDF=0(done/canceled 0), DRRHFI=0(done/canceled 0), DRSCFL=0(done/canceled 0), DRTGDO=0(done/canceled 0), DRWHBU=1(done/canceled 0), DRXEYV=0(done/canceled 0), DRXUIZ=0(done/canceled 0), RYRDBA=0(done/canceled 0), SAKDBC=1(done/canceled 0), SCBZBD=1(done/canceled 0), SCWCBE=1(done/canceled 0), SDJTBF=1(done/canceled 0), SECDBH=1(done/canceled 1), SFENBI=1(done/canceled 1), SGCCBJ=1(done/canceled 1), SGRRBA=1(done/canceled 0), SHAJBB=1(done/canceled 0), SHQRBC=3(done/canceled 0), SINGBD=2(done/canceled 0), SJDEBE=1(done/canceled 0), SADNBF=2(done/canceled 0), SBKFBG=1(done/canceled 0), SCTNBH=0(done/canceled 0)"
+    },
+    {
+      "id": "comment-count-parity",
+      "caseId": "TASK-TC-205",
+      "name": "the computed comment_count on a task equals the SQL COUNT(comments)",
+      "status": "PASS",
+      "details": "task 1: comment_count = 3"
+    },
+    {
+      "id": "persistence-after-reconnect",
+      "caseId": "TASK-TC-205",
+      "name": "counts survive closing and reopening the database file (persistence)",
+      "status": "PASS",
+      "details": "reopened: users=14, tasks=43"
+    }
+  ],
+  "totals": {
+    "executed": 22,
+    "passed": 22,
+    "failed": 0
+  }
+}

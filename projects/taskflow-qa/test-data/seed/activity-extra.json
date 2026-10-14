@@ -1,0 +1,11 @@
+[
+  { "projectId": 1, "taskId": 2, "actorId": 1, "action": "TASK_STATUS_CHANGED", "detail": { "from": "TODO", "to": "IN_PROGRESS" }, "daysAgo": 20, "time": "10:05:00" },
+  { "projectId": 1, "taskId": 2, "actorId": 2, "action": "TASK_STATUS_CHANGED", "detail": { "from": "IN_PROGRESS", "to": "IN_REVIEW" }, "daysAgo": 18, "time": "14:20:00" },
+  { "projectId": 1, "taskId": 2, "actorId": 2, "action": "TASK_STATUS_CHANGED", "detail": { "from": "IN_REVIEW", "to": "DONE" }, "daysAgo": 15, "time": "11:45:00" },
+  { "projectId": 1, "taskId": 9, "actorId": 1, "action": "TASK_STATUS_CHANGED", "detail": { "from": "TODO", "to": "IN_PROGRESS" }, "daysAgo": 24, "time": "09:30:00" },
+  { "projectId": 1, "taskId": 9, "actorId": 1, "action": "TASK_STATUS_CHANGED", "detail": { "from": "IN_PROGRESS", "to": "DONE" }, "daysAgo": 21, "time": "16:10:00" },
+  { "projectId": 1, "taskId": 7, "actorId": 3, "action": "TASK_STATUS_CHANGED", "detail": { "from": "TODO", "to": "CANCELED" }, "daysAgo": 10, "time": "13:00:00" },
+  { "projectId": 1, "taskId": 5, "actorId": 1, "action": "TASK_UPDATED", "detail": { "changes": { "priority": { "from": "MEDIUM", "to": "HIGH" } } }, "daysAgo": 13, "time": "15:25:00" },
+  { "projectId": 2, "taskId": 15, "actorId": 2, "action": "TASK_STATUS_CHANGED", "detail": { "from": "TODO", "to": "IN_PROGRESS" }, "daysAgo": 15, "time": "08:40:00" },
+  { "projectId": 2, "taskId": 15, "actorId": 2, "action": "TASK_STATUS_CHANGED", "detail": { "from": "IN_PROGRESS", "to": "DONE" }, "daysAgo": 9, "time": "17:05:00" }
+]

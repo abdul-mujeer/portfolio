@@ -1,0 +1,42 @@
+{
+  "name": "taskflow-qa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TaskFlow — API-first project management service (Express + node:sqlite + vanilla-JS console) with a complete QA package: Playwright API/UI suites, SQL validation checks, Postman/Newman lifecycle run, autocannon performance baseline and real execution evidence.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "seed": "node scripts/reset-db.mjs",
+    "db:reset": "node scripts/reset-db.mjs",
+    "start": "node --env-file-if-exists=.env app/server/src/index.js",
+    "dev": "node --watch --env-file-if-exists=.env app/server/src/index.js",
+    "lint": "eslint .",
+    "test:api": "playwright test --project=api",
+    "test:ui": "playwright test --project=ui",
+    "test:db": "node tests/db/run.mjs",
+    "test:postman": "node scripts/newman-run.mjs",
+    "test:perf": "node scripts/perf/autocannon-baseline.mjs",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:all": "node scripts/run-tests.mjs",
+    "screenshots": "node scripts/screenshots.mjs",
+    "manual:cases": "node scripts/manual-cases.mjs",
+    "seeded:demo": "node scripts/seeded-defects-demo.mjs",
+    "docs:csv": "node scripts/docs/generate-csv.mjs",
+    "docs:report": "node scripts/reports/build-report.mjs"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@playwright/test": "^1.49.0",
+    "autocannon": "^8.0.0",
+    "eslint": "^9.14.0",
+    "globals": "^15.12.0",
+    "newman": "^6.2.1"
+  }
+}

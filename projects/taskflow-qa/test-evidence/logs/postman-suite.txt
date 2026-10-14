@@ -1,0 +1,226 @@
+[newman] reusing the server already listening on http://127.0.0.1:4300
+(node:16260) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(Use `node --trace-deprecation ...` to show where the warning was created)
+newman
+
+TaskFlow API
+
+□ 01 - Health & auth lifecycle
+└ Health is public
+  GET http://127.0.0.1:4300/api/v1/health [200 OK, 321B, 15ms]
+  √  200 and status ok
+
+└ Register a fresh user (sets session cookie)
+  POST http://127.0.0.1:4300/api/v1/auth/register [201 Created, 519B, 348ms]
+  √  201 created
+  √  profile returned without secrets
+  √  session cookie is HttpOnly + SameSite=Lax
+
+└ Login as the seeded owner
+  POST http://127.0.0.1:4300/api/v1/auth/login [200 OK, 486B, 152ms]
+  √  200 logged in as owner
+
+└ Current session (GET /auth/me)
+  GET http://127.0.0.1:4300/api/v1/auth/me [200 OK, 315B, 2ms]
+  √  200 session identity
+
+└ Login with a wrong password is 401
+  POST http://127.0.0.1:4300/api/v1/auth/login [401 Unauthorized, 318B, 28ms]
+  √  401 with INVALID_CREDENTIALS
+
+└ Register duplicate owner email is 409
+  POST http://127.0.0.1:4300/api/v1/auth/register [409 Conflict, 317B, 1ms]
+  √  409 EMAIL_TAKEN
+
+□ 02 - Project & members
+└ Create a project (caller becomes OWNER)
+  POST http://127.0.0.1:4300/api/v1/projects [201 Created, 497B, 134ms]
+  √  201 with OWNER role and key
+
+└ Project appears in my list with X-Total-Count
+  GET http://127.0.0.1:4300/api/v1/projects?limit=100 [200 OK, 7.49kB, 2ms]
+  √  200 list contains the new project
+
+└ Add member@example.com as MEMBER
+  POST http://127.0.0.1:4300/api/v1/projects/33/members [201 Created, 342B, 219ms]
+  √  201 member added
+
+└ Adding the same member again is 409
+  POST http://127.0.0.1:4300/api/v1/projects/33/members [409 Conflict, 331B, 3ms]
+  √  409 MEMBER_ALREADY_EXISTS
+
+└ Adding an unknown email is 404
+  POST http://127.0.0.1:4300/api/v1/projects/33/members [404 Not Found, 305B, 2ms]
+  √  404 for unknown user
+
+└ Member roster for the new project
+  GET http://127.0.0.1:4300/api/v1/projects/33/members [200 OK, 522B, 2ms]
+  √  200 with OWNER and MEMBER rows
+
+□ 03 - Task lifecycle, workflow, comments, activity
+└ Create a task (defaults to TODO/MEDIUM)
+  POST http://127.0.0.1:4300/api/v1/projects/33/tasks [201 Created, 691B, 241ms]
+  √  201 task created
+
+└ Assigning a non-member is 422
+  PATCH http://127.0.0.1:4300/api/v1/tasks/45 [422 Unprocessable Entity, 338B, 2ms]
+  √  422 ASSIGNEE_NOT_MEMBER
+
+└ Task list filters by status and paginates
+  GET http://127.0.0.1:4300/api/v1/projects/33/tasks?status=TODO&sort=id&order=asc [200 OK, 745B, 1ms]
+  √  200 TODO filter finds the task
+
+└ Invalid transition TODO -> DONE is 422
+  PATCH http://127.0.0.1:4300/api/v1/tasks/45/status [422 Unprocessable Entity, 405B, 2ms]
+  √  422 INVALID_STATUS_TRANSITION
+
+└ Transition TODO -> IN_PROGRESS
+  PATCH http://127.0.0.1:4300/api/v1/tasks/45/status [200 OK, 693B, 261ms]
+  √  200 IN_PROGRESS
+
+└ Transition IN_PROGRESS -> IN_REVIEW
+  PATCH http://127.0.0.1:4300/api/v1/tasks/45/status [200 OK, 691B, 228ms]
+  √  200 IN_REVIEW
+
+└ Transition IN_REVIEW -> DONE
+  PATCH http://127.0.0.1:4300/api/v1/tasks/45/status [200 OK, 686B, 243ms]
+  √  200 DONE
+
+└ DONE is terminal: -> IN_PROGRESS is 422
+  PATCH http://127.0.0.1:4300/api/v1/tasks/45/status [422 Unprocessable Entity, 395B, 2ms]
+  √  422 terminal DONE
+
+└ Update task fields (priority + estimate)
+  PATCH http://127.0.0.1:4300/api/v1/tasks/45 [200 OK, 687B, 246ms]
+  √  200 updated task
+
+└ Comment on the task
+  POST http://127.0.0.1:4300/api/v1/tasks/45/comments [201 Created, 370B, 260ms]
+  √  201 comment created
+
+└ Comment list returns the comment
+  GET http://127.0.0.1:4300/api/v1/tasks/45/comments [200 OK, 424B, 2ms]
+  √  200 with one comment
+
+└ Task activity contains every lifecycle event
+  GET http://127.0.0.1:4300/api/v1/tasks/45/activity?limit=50 [200 OK, 1.83kB, 2ms]
+  √  200 with create/status/update/comment events
+
+└ Project activity feed is populated
+  GET http://127.0.0.1:4300/api/v1/projects/33/activity?limit=50 [200 OK, 2.3kB, 2ms]
+  √  200 feed with project + task events
+
+└ Pagination guard: limit=101 is 400
+  GET http://127.0.0.1:4300/api/v1/projects/33/tasks?limit=101 [400 Bad Request, 368B, 1ms]
+  √  400 VALIDATION_ERROR
+
+└ Overdue report for the owner scope
+  GET http://127.0.0.1:4300/api/v1/reports/overdue [200 OK, 1.29kB, 2ms]
+  √  200 report with counts and task list
+
+□ 04 - Authorization & isolation negatives
+└ Login as member@example.com
+  POST http://127.0.0.1:4300/api/v1/auth/login [200 OK, 484B, 152ms]
+  √  200 member session
+
+└ Member can create a task
+  POST http://127.0.0.1:4300/api/v1/projects/33/tasks [201 Created, 678B, 271ms]
+  √  201 allowed for members
+
+└ Member cannot rename the project (403)
+  PATCH http://127.0.0.1:4300/api/v1/projects/33 [403 Forbidden, 327B, 2ms]
+  √  403 FORBIDDEN
+
+└ Member cannot delete the project (403)
+  DELETE http://127.0.0.1:4300/api/v1/projects/33 [403 Forbidden, 322B, 2ms]
+  √  403 OWNER-only delete
+
+└ Member cannot update someone else's task (403)
+  PATCH http://127.0.0.1:4300/api/v1/tasks/45 [403 Forbidden, 347B, 2ms]
+  √  403 not reporter/assignee
+
+└ Member cannot add members (403)
+  POST http://127.0.0.1:4300/api/v1/projects/33/members [403 Forbidden, 322B, 1ms]
+  √  403 admin-only member management
+
+└ Login as outsider@example.com
+  POST http://127.0.0.1:4300/api/v1/auth/login [200 OK, 488B, 155ms]
+  √  200 outsider session
+
+└ Outsider cannot read the project (404, not 403)
+  GET http://127.0.0.1:4300/api/v1/projects/33 [404 Not Found, 292B, 2ms]
+  √  404 hides existence
+
+└ Outsider cannot read the task (404)
+  GET http://127.0.0.1:4300/api/v1/tasks/45 [404 Not Found, 289B, 1ms]
+  √  404 task hidden
+
+└ Outsider cannot comment (404)
+  POST http://127.0.0.1:4300/api/v1/tasks/45/comments [404 Not Found, 289B, 2ms]
+  √  404 comment blocked
+
+└ Login back as the owner
+  POST http://127.0.0.1:4300/api/v1/auth/login [200 OK, 486B, 163ms]
+  √  200 owner session restored
+
+□ 05 - Archive, cleanup & logout
+└ Owner renames the project
+  PATCH http://127.0.0.1:4300/api/v1/projects/33 [200 OK, 500B, 198ms]
+  √  200 renamed
+
+└ Owner archives the project
+  POST http://127.0.0.1:4300/api/v1/projects/33/archive [200 OK, 499B, 229ms]
+  √  200 archived
+
+└ Archived reads still work (200)
+  GET http://127.0.0.1:4300/api/v1/projects/33/tasks [200 OK, 1.22kB, 2ms]
+  √  200 tasks readable
+
+└ Archived mutations are 422
+  POST http://127.0.0.1:4300/api/v1/projects/33/tasks [422 Unprocessable Entity, 341B, 1ms]
+  √  422 ARCHIVED_PROJECT
+
+└ Archived projects also reject DELETE (422)
+  DELETE http://127.0.0.1:4300/api/v1/projects/33 [422 Unprocessable Entity, 341B, 2ms]
+  √  422 ARCHIVED_PROJECT for delete
+
+└ Create a scratch project for the delete flow
+  POST http://127.0.0.1:4300/api/v1/projects [201 Created, 460B, 128ms]
+  √  201 scratch project
+
+└ Delete the scratch project (OWNER)
+  DELETE http://127.0.0.1:4300/api/v1/projects/34 [204 No Content, 111B, 137ms]
+  √  204 deleted
+
+└ Deleted project is gone (404)
+  GET http://127.0.0.1:4300/api/v1/projects/34 [404 Not Found, 292B, 1ms]
+  √  404 after delete
+
+└ Logout clears the session
+  POST http://127.0.0.1:4300/api/v1/auth/logout [204 No Content, 207B, 144ms]
+  √  204 logged out
+
+└ After logout /auth/me is 401
+  GET http://127.0.0.1:4300/api/v1/auth/me [401 Unauthorized, 307B, 2ms]
+  √  401 UNAUTHENTICATED
+
+┌─────────────────────────┬───────────────────┬───────────────────┐
+│                         │          executed │            failed │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              iterations │                 1 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│                requests │                48 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│            test-scripts │                48 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│      prerequest-scripts │                 3 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              assertions │                50 │                 0 │
+├─────────────────────────┴───────────────────┴───────────────────┤
+│ total run duration: 7.9s                                        │
+├─────────────────────────────────────────────────────────────────┤
+│ total data received: 20.92kB (approx)                           │
+├─────────────────────────────────────────────────────────────────┤
+│ average response time: 83ms [min: 1ms, max: 348ms, s.d.: 105ms] │
+└─────────────────────────────────────────────────────────────────┘
+[newman] requests 48 (failed 0) - assertions 50 (failed 0)

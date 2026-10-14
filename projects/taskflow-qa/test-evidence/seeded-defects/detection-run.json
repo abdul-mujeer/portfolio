@@ -1,0 +1,57 @@
+{
+  "suite": "seeded-defects",
+  "executedAt": "2026-10-14T00:21:55.686Z",
+  "database": ".data/taskflow.seeded.db",
+  "baseline": {
+    "overdueCount": 3,
+    "overdueIds": [
+      4,
+      3,
+      10
+    ],
+    "doneChain": "IN_PROGRESS:200 -> IN_REVIEW:200 -> DONE:200",
+    "transitionAfterDone": 422
+  },
+  "seededRun": {
+    "overdueCount": 4,
+    "overdueIds": [
+      4,
+      3,
+      10,
+      12
+    ],
+    "doneChain": "IN_PROGRESS:200 -> IN_REVIEW:200 -> DONE:200",
+    "transitionAfterDone": 200
+  },
+  "detections": [
+    {
+      "defect": "SEEDED-001",
+      "name": "Overdue rule uses <= (due-today tasks are reported overdue)",
+      "baseline": {
+        "overdueCount": 3,
+        "sqlStrictExpectation": 3
+      },
+      "seeded": {
+        "overdueCount": 4,
+        "sqlInclusiveExpectation": 4
+      },
+      "detected": true,
+      "detectingCase": "TASK-TC-042 / TASK-TC-205 (assert counts match the strict \"<\" rule)"
+    },
+    {
+      "defect": "SEEDED-002",
+      "name": "DONE is not terminal (DONE -> IN_PROGRESS allowed)",
+      "baseline": {
+        "transitionAfterDone": 422,
+        "expected": 422
+      },
+      "seeded": {
+        "transitionAfterDone": 200,
+        "expected": 200
+      },
+      "detected": true,
+      "detectingCase": "TASK-TC-028 (assert 422 from DONE)"
+    }
+  ],
+  "allDetected": true
+}

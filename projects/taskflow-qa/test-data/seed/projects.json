@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "key": "TASK",
+    "name": "TaskFlow Platform",
+    "description": "Product team building the TaskFlow API and console.",
+    "ownerId": 1,
+    "createdDaysAgo": 30,
+    "archived": 0
+  },
+  {
+    "id": 2,
+    "key": "OPS",
+    "name": "Ops Automation",
+    "description": "Platform operations, backups and alerting automation.",
+    "ownerId": 2,
+    "createdDaysAgo": 28,
+    "archived": 0
+  },
+  {
+    "id": 3,
+    "key": "ARCH",
+    "name": "Legacy Archive",
+    "description": "Read-only archive of the retired support portal workstream.",
+    "ownerId": 1,
+    "createdDaysAgo": 25,
+    "archived": 1,
+    "archivedDaysAgo": 22
+  }
+]

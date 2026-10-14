@@ -1,0 +1,10 @@
+[
+  { "projectId": 1, "userId": 1, "role": "OWNER", "joinedDaysAgo": 30 },
+  { "projectId": 1, "userId": 2, "role": "ADMIN", "joinedDaysAgo": 29 },
+  { "projectId": 1, "userId": 3, "role": "MEMBER", "joinedDaysAgo": 28 },
+  { "projectId": 2, "userId": 2, "role": "OWNER", "joinedDaysAgo": 28 },
+  { "projectId": 2, "userId": 1, "role": "ADMIN", "joinedDaysAgo": 27 },
+  { "projectId": 2, "userId": 4, "role": "MEMBER", "joinedDaysAgo": 20 },
+  { "projectId": 3, "userId": 1, "role": "OWNER", "joinedDaysAgo": 25 },
+  { "projectId": 3, "userId": 3, "role": "MEMBER", "joinedDaysAgo": 24 }
+]

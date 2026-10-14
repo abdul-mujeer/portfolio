@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TaskFlow Console</title>
+  <meta name="description" content="TaskFlow API console - projects, task board, comments, activity." />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">TF</span>
+      <span>TaskFlow Console</span>
+    </div>
+    <div id="session-box" class="session" hidden>
+      <span data-testid="current-user" id="current-user"></span>
+      <button type="button" data-testid="logout-button" id="logout-button">Log out</button>
+    </div>
+  </header>
+
+  <div
+    id="error-banner"
+    class="error-banner"
+    data-testid="error-banner"
+    role="alert"
+    aria-live="assertive"
+    hidden
+  >
+    <span id="error-banner-text"></span>
+    <button type="button" data-testid="error-dismiss" id="error-dismiss" aria-label="Dismiss error">&#x2715;</button>
+  </div>
+
+  <main>
+    <!-- ------------------------------------------------------------------ login -->
+    <section id="login-view" data-testid="login-view" aria-labelledby="login-heading" class="login-view">
+      <h1 id="login-heading">Sign in</h1>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input id="login-email" data-testid="login-email" name="email" type="email"
+                 autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input id="login-password" data-testid="login-password" name="password" type="password"
+                 autocomplete="current-password" required />
+        </div>
+        <button type="submit" data-testid="login-submit" id="login-submit">Sign in</button>
+      </form>
+      <p class="hint">
+        Demo users: <code>owner@example.com / Owner#12345</code> &middot;
+        <code>admin@example.com / Admin#12345</code> &middot;
+        <code>member@example.com / Member#12345</code>
+      </p>
+    </section>
+
+    <!-- ------------------------------------------------------------------ console -->
+    <section id="board-view" data-testid="board-view" hidden aria-labelledby="board-heading">
+      <h1 id="board-heading" class="visually-hidden">Task board</h1>
+
+      <nav class="toolbar" aria-label="Project actions">
+        <div class="field inline">
+          <label for="project-switcher">Project</label>
+          <select id="project-switcher" data-testid="project-switcher"></select>
+        </div>
+        <span id="project-role" data-testid="project-role" class="role-chip"></span>
+        <span class="spacer"></span>
+        <button type="button" data-testid="task-create-button" id="task-create-button">New task</button>
+        <button type="button" data-testid="project-archive" id="project-archive" hidden>Archive project</button>
+      </nav>
+
+      <form id="filters" class="filters" aria-label="Task filters">
+        <div class="field inline">
+          <label for="filter-status">Status</label>
+          <select id="filter-status" data-testid="filter-status">
+            <option value="">All</option>
+            <option value="TODO">TODO</option>
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="IN_REVIEW">IN_REVIEW</option>
+            <option value="DONE">DONE</option>
+            <option value="CANCELED">CANCELED</option>
+          </select>
+        </div>
+        <div class="field inline">
+          <label for="filter-priority">Priority</label>
+          <select id="filter-priority" data-testid="filter-priority">
+            <option value="">All</option>
+            <option value="LOW">LOW</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="HIGH">HIGH</option>
+            <option value="CRITICAL">CRITICAL</option>
+          </select>
+        </div>
+        <div class="field inline">
+          <label for="filter-assignee">Assignee</label>
+          <select id="filter-assignee" data-testid="filter-assignee"></select>
+        </div>
+        <label class="checkbox">
+          <input type="checkbox" id="filter-overdue" data-testid="filter-overdue" />
+          Overdue only
+        </label>
+        <button type="submit" data-testid="filter-apply" id="filter-apply">Apply filters</button>
+        <button type="button" data-testid="filter-reset" id="filter-reset" class="secondary">Reset</button>
+      </form>
+
+      <div id="board" data-testid="board" class="board" aria-label="Task board columns"></div>
+      <p id="board-status" class="board-status" data-testid="board-status" aria-live="polite"></p>
+      <div id="empty-state" data-testid="empty-state" class="empty-state" hidden>
+        No tasks match the current filters.
+      </div>
+
+      <nav class="pagination" aria-label="Pagination">
+        <button type="button" data-testid="pagination-prev" id="pagination-prev">Previous</button>
+        <span data-testid="pagination-info" id="pagination-info"></span>
+        <button type="button" data-testid="pagination-next" id="pagination-next">Next</button>
+      </nav>
+
+      <section class="activity" aria-labelledby="activity-heading">
+        <h2 id="activity-heading">Activity</h2>
+        <ul id="activity-feed" data-testid="activity-feed" class="activity-feed"></ul>
+      </section>
+    </section>
+  </main>
+
+  <!-- ---------------------------------------------------------------- task modal -->
+  <div id="task-modal-backdrop" class="modal-backdrop" hidden>
+    <div
+      id="task-modal"
+      data-testid="task-modal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="task-modal-title"
+      hidden
+    >
+      <header class="modal-header">
+        <h2 id="task-modal-title" data-testid="task-modal-title">Task</h2>
+        <button type="button" data-testid="modal-close" id="modal-close" aria-label="Close dialog">&#x2715;</button>
+      </header>
+
+      <form id="task-form" novalidate>
+        <div class="field">
+          <label for="task-title">Title</label>
+          <input id="task-title" data-testid="task-title" name="title" type="text" maxlength="120" />
+        </div>
+        <div class="field">
+          <label for="task-description">Description</label>
+          <textarea id="task-description" data-testid="task-description" name="description"
+                    rows="3" maxlength="2000"></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="task-priority">Priority</label>
+            <select id="task-priority" data-testid="task-priority" name="priority">
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM" selected>MEDIUM</option>
+              <option value="HIGH">HIGH</option>
+              <option value="CRITICAL">CRITICAL</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="task-assignee">Assignee</label>
+            <select id="task-assignee" data-testid="task-assignee" name="assigneeId"></select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="task-due">Due date</label>
+            <input id="task-due" data-testid="task-due" name="dueDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="task-estimated">Estimated hours</label>
+            <input id="task-estimated" data-testid="task-estimated" name="estimatedHours"
+                   type="number" min="0.5" max="100" step="0.5" />
+          </div>
+        </div>
+
+        <div class="field" id="status-field" hidden>
+          <label for="task-status-select">Status</label>
+          <select id="task-status-select" data-testid="task-status-select"></select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" data-testid="task-delete" id="task-delete" class="danger" hidden>Delete task</button>
+          <span class="spacer"></span>
+          <button type="button" data-testid="task-cancel" id="task-cancel" class="secondary">Cancel</button>
+          <button type="submit" data-testid="task-save" id="task-save">Save task</button>
+        </div>
+      </form>
+
+      <section class="comments" id="comments-section" aria-labelledby="comments-heading" hidden>
+        <h3 id="comments-heading">Comments</h3>
+        <ul id="comment-list" data-testid="comment-list" class="comment-list"></ul>
+        <form id="comment-form">
+          <div class="field">
+            <label for="comment-body">Add a comment</label>
+            <textarea id="comment-body" data-testid="comment-body" rows="2" maxlength="1000"></textarea>
+          </div>
+          <button type="submit" data-testid="comment-submit" id="comment-submit">Post comment</button>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

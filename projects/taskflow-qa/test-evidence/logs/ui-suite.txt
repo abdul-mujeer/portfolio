@@ -1,0 +1,15 @@
+
+Running 10 tests using 1 worker
+
+  ok  1 [ui] › tests\ui\accessibility.spec.ts:5:3 › Console accessibility & keyboard support › TASK-TC-109 @regression labels, ARIA wiring and a keyboard-operable modal (Escape closes, focus returns) (616ms)
+  ok  2 [ui] › tests\ui\console.spec.ts:14:3 › TaskFlow console journeys › TASK-TC-101 @smoke login with demo credentials opens the console and logout returns to the login view (1.3s)
+  ok  3 [ui] › tests\ui\console.spec.ts:26:3 › TaskFlow console journeys › TASK-TC-102 @smoke the board renders all five status columns, seeded tasks and working pagination (585ms)
+  ok  4 [ui] › tests\ui\console.spec.ts:64:3 › TaskFlow console journeys › TASK-TC-103 @smoke a task created in the modal appears on the board with its details (865ms)
+  ok  5 [ui] › tests\ui\console.spec.ts:85:3 › TaskFlow console journeys › TASK-TC-104 changing the status select moves the card to the new column (1.3s)
+  ok  6 [ui] › tests\ui\console.spec.ts:101:3 › TaskFlow console journeys › TASK-TC-105 comments can be added from the task modal and render in the panel (1.4s)
+  ok  7 [ui] › tests\ui\console.spec.ts:116:3 › TaskFlow console journeys › TASK-TC-106 @smoke a rejected create shows a clear validation error banner and keeps the modal open (580ms)
+  ok  8 [ui] › tests\ui\console.spec.ts:135:3 › TaskFlow console journeys › TASK-TC-108 @regression the overdue filter shows exactly the overdue tasks (611ms)
+  ok  9 [ui] › tests\ui\security.spec.ts:5:3 › Console permissions & injection safety › TASK-TC-107 @smoke role-based UI hiding matches server-side authorization (member cannot archive) (404ms)
+  ok 10 [ui] › tests\ui\security.spec.ts:25:3 › Console permissions & injection safety › TASK-TC-110 @regression stored markup in a task title renders as plain text and never executes (1.4s)
+
+  10 passed (10.4s)

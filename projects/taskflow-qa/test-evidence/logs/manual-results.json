@@ -1,0 +1,185 @@
+{
+  "suite": "manual",
+  "executedAt": "2026-10-14T00:21:41.938Z",
+  "database": ".data/taskflow.test.db",
+  "results": [
+    {
+      "caseId": "TASK-TC-301",
+      "name": "SQL injection, malformed JSON and envelope consistency",
+      "status": "PASS",
+      "probes": [
+        {
+          "label": "project created for probes",
+          "ok": true,
+          "detail": "status 201"
+        },
+        {
+          "label": "q payload inert: ' OR 1=1 --",
+          "ok": true,
+          "detail": "status 200, total 0"
+        },
+        {
+          "label": "q payload inert: %'; DROP TABLE tasks;--",
+          "ok": true,
+          "detail": "status 200, total 0"
+        },
+        {
+          "label": "q payload inert: ' UNION SELECT email, password",
+          "ok": true,
+          "detail": "status 200, total 0"
+        },
+        {
+          "label": "q payload inert: 1; DELETE FROM comments;--",
+          "ok": true,
+          "detail": "status 200, total 0"
+        },
+        {
+          "label": "SQL-looking title stored verbatim",
+          "ok": true,
+          "detail": "status 201"
+        },
+        {
+          "label": "login injection rejected",
+          "ok": true,
+          "detail": "status 400"
+        },
+        {
+          "label": "malformed JSON -> 400 INVALID_JSON",
+          "ok": true,
+          "detail": "status 400, code INVALID_JSON"
+        },
+        {
+          "label": "401 envelope shape",
+          "ok": true,
+          "detail": "code=UNAUTHENTICATED, message=Authentication required"
+        },
+        {
+          "label": "403 envelope shape",
+          "ok": true,
+          "detail": "code=FORBIDDEN, message=Only the project OWNER can delete this p"
+        },
+        {
+          "label": "404 envelope shape",
+          "ok": true,
+          "detail": "code=NOT_FOUND, message=Project not found"
+        },
+        {
+          "label": "409 envelope shape",
+          "ok": true,
+          "detail": "code=PROJECT_KEY_TAKEN, message=Project key \"DHICSB\" is already in use"
+        },
+        {
+          "label": "422 envelope shape",
+          "ok": true,
+          "detail": "code=INVALID_STATUS_TRANSITION, message=Cannot change status from TODO to DONE"
+        }
+      ]
+    },
+    {
+      "caseId": "TASK-TC-302",
+      "name": "IDOR sweep across seeded ids for outsider and no-project user",
+      "status": "PASS",
+      "probes": [
+        {
+          "label": "project reads match membership scope",
+          "ok": true,
+          "detail": "mismatches 0, 403s 0"
+        },
+        {
+          "label": "task reads match membership scope (18 ids)",
+          "ok": true,
+          "detail": "mismatches 0"
+        },
+        {
+          "label": "out-of-scope read hidden: /projects/1/tasks",
+          "ok": true,
+          "detail": "status 404"
+        },
+        {
+          "label": "out-of-scope read hidden: /projects/1/members",
+          "ok": true,
+          "detail": "status 404"
+        },
+        {
+          "label": "out-of-scope read hidden: /projects/1/activity",
+          "ok": true,
+          "detail": "status 404"
+        },
+        {
+          "label": "out-of-scope read hidden: /tasks/1/comments",
+          "ok": true,
+          "detail": "status 404"
+        },
+        {
+          "label": "out-of-scope read hidden: /tasks/1/activity",
+          "ok": true,
+          "detail": "status 404"
+        },
+        {
+          "label": "no-project user sees nothing",
+          "ok": true,
+          "detail": "status 404"
+        },
+        {
+          "label": "no-project overdue report is empty",
+          "ok": true,
+          "detail": "status 200, count 0"
+        }
+      ]
+    },
+    {
+      "caseId": "TASK-TC-303",
+      "name": "Payload size, content-type, duplicate params and method fallthrough",
+      "status": "PASS",
+      "probes": [
+        {
+          "label": ">100KB body -> 413",
+          "ok": true,
+          "detail": "status 413"
+        },
+        {
+          "label": "text/plain body is not parsed and fails validation (400)",
+          "ok": true,
+          "detail": "status 400"
+        },
+        {
+          "label": "duplicate query params -> 400",
+          "ok": true,
+          "detail": "status 400"
+        },
+        {
+          "label": "unsupported method falls through to 404 (no 405 handler - documented)",
+          "ok": true,
+          "detail": "status 404"
+        },
+        {
+          "label": "server healthy after probes",
+          "ok": true,
+          "detail": "status 200"
+        }
+      ]
+    },
+    {
+      "caseId": "TASK-TC-304",
+      "name": "Unicode round-trip and expired-session cleanup",
+      "status": "PASS",
+      "probes": [
+        {
+          "label": "unicode title accepted and stored verbatim",
+          "ok": true,
+          "detail": "status 201"
+        },
+        {
+          "label": "unicode title returned verbatim",
+          "ok": true,
+          "detail": "title Unicode ✅ テスト — Ünïcode 中文 запуск"
+        },
+        {
+          "label": "expired session -> 401 and row removed",
+          "ok": true,
+          "detail": "before 1, status 401, after 0"
+        }
+      ]
+    }
+  ]
+}

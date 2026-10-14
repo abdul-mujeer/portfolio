@@ -1,0 +1,44 @@
+
+[TASK-TC-301] SQL injection, malformed JSON and envelope consistency
+    ok   project created for probes - status 201
+    ok   q payload inert: ' OR 1=1 -- - status 200, total 0
+    ok   q payload inert: %'; DROP TABLE tasks;-- - status 200, total 0
+    ok   q payload inert: ' UNION SELECT email, password - status 200, total 0
+    ok   q payload inert: 1; DELETE FROM comments;-- - status 200, total 0
+    ok   SQL-looking title stored verbatim - status 201
+    ok   login injection rejected - status 400
+    ok   malformed JSON -> 400 INVALID_JSON - status 400, code INVALID_JSON
+    ok   401 envelope shape - code=UNAUTHENTICATED, message=Authentication required
+    ok   403 envelope shape - code=FORBIDDEN, message=Only the project OWNER can delete this p
+    ok   404 envelope shape - code=NOT_FOUND, message=Project not found
+    ok   409 envelope shape - code=PROJECT_KEY_TAKEN, message=Project key "DHICSB" is already in use
+    ok   422 envelope shape - code=INVALID_STATUS_TRANSITION, message=Cannot change status from TODO to DONE
+  => PASS (13/13 probes)
+
+[TASK-TC-302] IDOR sweep across seeded ids for outsider and no-project user
+    ok   project reads match membership scope - mismatches 0, 403s 0
+    ok   task reads match membership scope (18 ids) - mismatches 0
+    ok   out-of-scope read hidden: /projects/1/tasks - status 404
+    ok   out-of-scope read hidden: /projects/1/members - status 404
+    ok   out-of-scope read hidden: /projects/1/activity - status 404
+    ok   out-of-scope read hidden: /tasks/1/comments - status 404
+    ok   out-of-scope read hidden: /tasks/1/activity - status 404
+    ok   no-project user sees nothing - status 404
+    ok   no-project overdue report is empty - status 200, count 0
+  => PASS (9/9 probes)
+
+[TASK-TC-303] Payload size, content-type, duplicate params and method fallthrough
+    ok   >100KB body -> 413 - status 413
+    ok   text/plain body is not parsed and fails validation (400) - status 400
+    ok   duplicate query params -> 400 - status 400
+    ok   unsupported method falls through to 404 (no 405 handler - documented) - status 404
+    ok   server healthy after probes - status 200
+  => PASS (5/5 probes)
+
+[TASK-TC-304] Unicode round-trip and expired-session cleanup
+    ok   unicode title accepted and stored verbatim - status 201
+    ok   unicode title returned verbatim - title Unicode ✅ テスト — Ünïcode 中文 запуск
+    ok   expired session -> 401 and row removed - before 1, status 401, after 0
+  => PASS (3/3 probes)
+
+Summary: TASK-TC-301 PASS, TASK-TC-302 PASS, TASK-TC-303 PASS, TASK-TC-304 PASS

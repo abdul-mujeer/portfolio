@@ -1,0 +1,2 @@
+[taskflow] APP_SECRET not set - using the documented dev-only default
+[taskflow] API listening on http://127.0.0.1:4300 (db: D:\projects\portfolio\projects\taskflow-qa\.data\taskflow.test.db)

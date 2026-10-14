@@ -1,0 +1,21 @@
+﻿RequirementID,RequirementSummary,AcceptanceCriteriaIDs,TestCases,CoverageStatus,Notes
+TASK-REQ-001,Authentication and session lifecycle,TASK-REQ-001-AC1 TASK-REQ-001-AC2 TASK-REQ-001-AC3 TASK-REQ-001-AC4,TASK-TC-001 TASK-TC-002 TASK-TC-004,Verified,3 case(s) executed and passed in the current evidence set.
+TASK-REQ-002,Password policy and hashing,TASK-REQ-002-AC1 TASK-REQ-002-AC2 TASK-REQ-002-AC3,TASK-TC-003,Verified,1 case(s) executed and passed in the current evidence set.
+TASK-REQ-003,Session security,TASK-REQ-003-AC1 TASK-REQ-003-AC2 TASK-REQ-003-AC3,TASK-TC-005 TASK-TC-304,Verified,2 case(s) executed and passed in the current evidence set.
+TASK-REQ-004,Project CRUD and key uniqueness,TASK-REQ-004-AC1 TASK-REQ-004-AC2 TASK-REQ-004-AC3,TASK-TC-006 TASK-TC-007 TASK-TC-008 TASK-TC-011,Verified,4 case(s) executed and passed in the current evidence set.
+TASK-REQ-005,"Members, roles and object-level permissions",TASK-REQ-005-AC1 TASK-REQ-005-AC2 TASK-REQ-005-AC3,TASK-TC-010 TASK-TC-013 TASK-TC-014 TASK-TC-016 TASK-TC-017 TASK-TC-026 TASK-TC-107,Verified,7 case(s) executed and passed in the current evidence set.
+TASK-REQ-006,Ownership transfer and owner protection,TASK-REQ-006-AC1 TASK-REQ-006-AC2 TASK-REQ-006-AC3,TASK-TC-015 TASK-TC-018,Verified,2 case(s) executed and passed in the current evidence set.
+TASK-REQ-007,Task CRUD and validation,TASK-REQ-007-AC1 TASK-REQ-007-AC2 TASK-REQ-007-AC3,TASK-TC-019 TASK-TC-020 TASK-TC-021 TASK-TC-025 TASK-TC-103,Verified,5 case(s) executed and passed in the current evidence set.
+TASK-REQ-008,Task assignment rules,TASK-REQ-008-AC1 TASK-REQ-008-AC2,TASK-TC-022,Verified,1 case(s) executed and passed in the current evidence set.
+TASK-REQ-009,Due date rules,TASK-REQ-009-AC1 TASK-REQ-009-AC2 TASK-REQ-009-AC3,TASK-TC-023,Verified,1 case(s) executed and passed in the current evidence set.
+TASK-REQ-010,Status workflow,TASK-REQ-010-AC1 TASK-REQ-010-AC2 TASK-REQ-010-AC3,TASK-TC-027 TASK-TC-028 TASK-TC-029 TASK-TC-104,Verified,4 case(s) executed and passed in the current evidence set.
+TASK-REQ-011,Comments,TASK-REQ-011-AC1 TASK-REQ-011-AC2 TASK-REQ-011-AC3,TASK-TC-030 TASK-TC-031 TASK-TC-105,Verified,3 case(s) executed and passed in the current evidence set.
+TASK-REQ-012,Activity feed completeness,TASK-REQ-012-AC1 TASK-REQ-012-AC2 TASK-REQ-012-AC3,TASK-TC-032 TASK-TC-033 TASK-TC-204,Verified,3 case(s) executed and passed in the current evidence set.
+TASK-REQ-013,"Pagination, filtering and sorting",TASK-REQ-013-AC1 TASK-REQ-013-AC2 TASK-REQ-013-AC3,TASK-TC-034 TASK-TC-035 TASK-TC-036 TASK-TC-037 TASK-TC-038,Verified,5 case(s) executed and passed in the current evidence set.
+TASK-REQ-014,Cross-project isolation,TASK-REQ-014-AC1 TASK-REQ-014-AC2 TASK-REQ-014-AC3,TASK-TC-009 TASK-TC-039 TASK-TC-040 TASK-TC-041 TASK-TC-302,Verified,5 case(s) executed and passed in the current evidence set.
+TASK-REQ-015,Overdue report and archived exclusion,TASK-REQ-015-AC1 TASK-REQ-015-AC2 TASK-REQ-015-AC3,TASK-TC-042 TASK-TC-043 TASK-TC-108 TASK-TC-205,Verified,4 case(s) executed and passed in the current evidence set.
+TASK-REQ-016,Archived project behaviour,TASK-REQ-016-AC1 TASK-REQ-016-AC2 TASK-REQ-016-AC3,TASK-TC-012,Verified,1 case(s) executed and passed in the current evidence set.
+TASK-REQ-017,Error envelope and HTTP semantics,TASK-REQ-017-AC1 TASK-REQ-017-AC2 TASK-REQ-017-AC3,TASK-TC-024 TASK-TC-047 TASK-TC-106 TASK-TC-303,Verified,4 case(s) executed and passed in the current evidence set.
+TASK-REQ-018,Data integrity and persistence,TASK-REQ-018-AC1 TASK-REQ-018-AC2 TASK-REQ-018-AC3,TASK-TC-048 TASK-TC-201 TASK-TC-202 TASK-TC-203,Verified,4 case(s) executed and passed in the current evidence set.
+TASK-REQ-019,Input safety,TASK-REQ-019-AC1 TASK-REQ-019-AC2 TASK-REQ-019-AC3,TASK-TC-044 TASK-TC-045 TASK-TC-046 TASK-TC-110 TASK-TC-301,Verified,5 case(s) executed and passed in the current evidence set.
+TASK-REQ-020,UI console journeys and accessibility,TASK-REQ-020-AC1 TASK-REQ-020-AC2 TASK-REQ-020-AC3,TASK-TC-101 TASK-TC-102 TASK-TC-109,Verified,3 case(s) executed and passed in the current evidence set.
