@@ -16,9 +16,9 @@ const QASkills = () => {
           QA skills &amp; <span>tools</span>
         </h2>
         <p className="qa-lede">
-          A practical, entry-level QA toolkit built by testing three real applications end to end —
-          the same lifecycle a QA team follows: understand requirements, design risk-based tests, execute
-          them manually, automate the critical paths, validate the data and report with evidence.
+          A practical QA toolkit built by testing three real applications end to end — the same
+          lifecycle a QA team follows: understand requirements, design risk-based tests, execute them
+          manually, automate the critical paths, validate the data and report with evidence.
         </p>
 
         <div className="qa-skill-grid">

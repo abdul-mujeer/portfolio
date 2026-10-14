@@ -157,7 +157,7 @@ Per-project commands, demo credentials and suite-by-suite instructions are in ea
 2. **GitHub description and topics** (web UI or \`gh\` CLI). Suggested description: "QA / SQA portfolio —
    three end-to-end testing projects with manual test cases, Playwright API/UI automation, SQL validation,
    Postman/Newman collections and executed evidence." Suggested topics: \`qa\`, \`software-testing\`,
-   \`test-automation\`, \`playwright\`, \`postman\`, \`sql\`, \`manual-testing\`, \`entry-level\`, \`portfolio\`.
+   \`test-automation\`, \`playwright\`, \`postman\`, \`sql\`, \`manual-testing\`, \`junior-qa\`, \`portfolio\`.
 3. **Optional: profile README.** The public repository \`abdul-mujeer/abdul-mujeer\` exists but has no README,
    so the GitHub profile shows nothing. A short profile README (name, QA focus, links to the three case
    studies and the live site) is ready to be written into that separate repository once you approve it.

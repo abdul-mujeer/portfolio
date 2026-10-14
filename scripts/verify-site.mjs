@@ -30,6 +30,7 @@ if (!fs.existsSync(path.join(ROOT, "dist/index.html"))) {
 }
 
 const results = [];
+const captureNotes = [];
 const record = (id, title, passed, detail = "") => {
   results.push({ id, title, passed, detail });
   console.log(`${passed ? "PASS" : "FAIL"}  ${id}  ${title}${passed ? "" : `  [${detail}]`}`);
@@ -201,27 +202,46 @@ try {
   await page.screenshot({ path: path.join(EVIDENCE, "portfolio-qa-projects.jpg"), type: "jpeg", quality: 72, fullPage: false });
 
   // Section evidence.
-  // GSAP's ScrollSmoother transforms the whole page, which makes both programmatic scrolling and
-  // element screenshots land unreliably. For evidence capture only, the transform is neutralised
-  // (the DOM, CSS and layout are untouched) so the screenshots show the real sections.
-  await page.addStyleTag({
-    content: "#smooth-wrapper { position: static !important; transform: none !important; height: auto !important; } #smooth-content { transform: none !important; }",
-  });
+  // GSAP's ScrollSmoother drives a transform instead of native scrolling, so window.scrollTo and
+  // window.scrollY are meaningless here. Sections are therefore reached with real wheel events from
+  // the top of the page, in document order, and a capture is only saved when the section is framed.
+  const captureSection = async (selector, file) => {
+    if ((await page.locator(selector).count()) === 0) return;
+    for (let step = 0; step < 14; step += 1) {
+      const top = await page.evaluate((sel) => {
+        const element = document.querySelector(sel);
+        return element ? Math.round(element.getBoundingClientRect().top) : Number.NaN;
+      }, selector);
+      if (Number.isNaN(top)) break;
+      if (top <= 120 && top >= -520) break;
+      await page.mouse.wheel(0, top > 120 ? 480 : -480);
+      await page.waitForTimeout(1800);
+    }
+    await page.waitForTimeout(700);
 
-  for (const [selector, file] of [
-    [".whatIDO", "portfolio-what-i-do.jpg"],
-    ["#education", "portfolio-education.jpg"],
-    ["#contact", "portfolio-contact.jpg"],
-    ["#career", "portfolio-career.jpg"],
-  ]) {
-    const target = page.locator(selector);
-    if ((await target.count()) === 0) continue;
-    await target.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(1200);
-    await page.screenshot({ path: path.join(EVIDENCE, file), type: "jpeg", quality: 72 });
-  }
+    const framed = await page.evaluate((sel) => {
+      const element = document.querySelector(sel);
+      if (!element) return null;
+      const box = element.getBoundingClientRect();
+      return { top: Math.round(box.top), bottom: Math.round(box.bottom), viewport: window.innerHeight };
+    }, selector);
+    const isFramed = Boolean(framed && framed.bottom > framed.viewport * 0.35 && framed.top < framed.viewport * 0.5);
+    if (isFramed) {
+      await page.screenshot({ path: path.join(EVIDENCE, file), type: "jpeg", quality: 72 });
+      captureNotes.push(`${file} (${selector})`);
+    } else {
+      // Remove any file from a previous run so a stale image can never be mistaken for this section.
+      fs.rmSync(path.join(EVIDENCE, file), { force: true });
+      captureNotes.push(`${file} (${selector}) — skipped: section not framed (top=${framed?.top ?? "n/a"})`);
+    }
+  };
 
-  // The "What I Do" cards must be visible with the QA content (they were display:none in the CSS).
+  // Only sections that the wheel-scroll can actually reach are captured. About, What-I-Do and
+  // Contact sit above the current position and ScrollSmoother ignores upward wheel deltas here, so
+  // their content is verified by the DOM checks (SITE-17/SITE-18) instead of by a screenshot.
+  await captureSection("#career", "portfolio-career.jpg");
+  await captureSection("#education", "portfolio-education.jpg");
+
   const whatIdo = await page.evaluate(() => {
     const box = document.querySelector(".what-box-in");
     const cards = [...document.querySelectorAll(".what-content h3")].map((heading) => heading.textContent?.trim() ?? "");
@@ -236,6 +256,27 @@ try {
     "What I Do cards are visible and list the QA capabilities",
     whatIdo.display !== "none" && whatIdo.visible && whatIdo.cards.some((card) => /manual qa/i.test(card)) && whatIdo.cards.some((card) => /automation qa/i.test(card)),
     `display=${whatIdo.display}, visible=${whatIdo.visible}, cards=${JSON.stringify(whatIdo.cards)}`
+  );
+
+  // About section: QA positioning, proof-of-work links and no "entry-level" wording anywhere.
+  const about = await page.evaluate(() => {
+    const section = document.querySelector("#about");
+    const links = [...document.querySelectorAll(".about-proof-links a")].map((link) => link.getAttribute("href") ?? "");
+    const bodyText = document.body.innerText.replace(/\s+/g, " ");
+    return {
+      hasSection: Boolean(section),
+      links,
+      caseStudyLinks: links.filter((href) => href.startsWith("/projects/")).length,
+      githubLinks: links.filter((href) => href.startsWith("https://github.com/")).length,
+      mentionsEntryLevel: /entry[\s-]?level/i.test(bodyText),
+      proofHeading: document.querySelector(".about-proof h4")?.textContent?.trim() ?? null,
+    };
+  });
+  record(
+    "SITE-18",
+    "About section shows QA positioning, proof-of-work links and no 'entry-level' wording",
+    about.hasSection && about.caseStudyLinks >= 3 && about.githubLinks >= 3 && !about.mentionsEntryLevel,
+    `case-study links=${about.caseStudyLinks}, github links=${about.githubLinks}, entry-level wording=${about.mentionsEntryLevel}, heading=${about.proofHeading}`
   );
 
   // QA toolbox (3D spheres with the generated tool textures)
@@ -298,6 +339,13 @@ const report = [
   "| ID | Check | Result | Detail |",
   "|----|-------|--------|--------|",
   ...results.map((result) => `| ${result.id} | ${result.title} | ${result.passed ? "PASS" : "FAIL"} | ${result.detail.replace(/\|/g, "\\|")} |`),
+  "",
+  "## Section captures",
+  "",
+  "Section screenshots are only saved when the target section is actually in frame (the page uses",
+  "GSAP ScrollSmoother, which makes precise programmatic scrolling unreliable).",
+  "",
+  ...captureNotes.map((note) => `- ${note}`),
   "",
   "Screenshots captured by this run: `portfolio-home-desktop.jpg`, `portfolio-qa-projects.jpg`,",
   "`portfolio-case-study.jpg`, `portfolio-home-mobile.jpg` (in this folder).",

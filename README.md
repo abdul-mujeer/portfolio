@@ -9,7 +9,7 @@ This repository contains my personal portfolio plus **three complete, runnable s
 projects**. Each project ships a real demo application, a full QA lifecycle documentation package,
 automated test suites, executed evidence and a release report.
 
-I am an entry-level QA / SQA candidate: Computer Science graduate, self-taught in software testing, and
+I am a QA / SQA candidate: Computer Science graduate, self-taught in software testing, and
 the work below is **portfolio practice built on demo applications I wrote myself** — it is not commercial
 QA employment experience, and no number in it is estimated.
 
@@ -61,7 +61,7 @@ Portfolio case studies (generated from each project's own executed artefacts):
 | Section | What it shows |
 |---------|---------------|
 | Hero | Name plus "Quality Assurance — Tester / Engineer" |
-| About | Entry-level QA/SQA positioning |
+| About | QA/SQA positioning, proof of work with links to the three projects |
 | What I Do | Manual QA and Automation QA capability cards |
 | QA Skills & Tools | Six skill groups (design, API, UI automation, database, process, foundations) |
 | QA Projects | The three case-study cards with verified metrics |

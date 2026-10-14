@@ -1,8 +1,8 @@
 # Portfolio site verification
 
-- Executed: 2026-10-14T02:45:40.324Z
+- Executed: 2026-10-14T10:56:05.923Z
 - Command: `npm run verify:site` (production build served by `vite preview`, driven by Playwright Chromium)
-- Result: **26/26 checks passed**
+- Result: **27/27 checks passed**
 
 | ID | Check | Result | Detail |
 |----|-------|--------|--------|
@@ -22,9 +22,10 @@
 | SITE-05b | CV PDF is served and is a real PDF | PASS | status 200 |
 | SITE-06 | Footer navigation and social links render | PASS | 12 links |
 | SITE-07 | Page title reflects the QA positioning | PASS | Qazi Abdul Mujeer — QA / SQA Engineer Portfolio \| Manual & Automation Testing |
-| SITE-08 | Meta description present | PASS | Entry-level QA / SQA engineer portfolio: three complete soft |
+| SITE-08 | Meta description present | PASS | QA / SQA engineer portfolio: three complete software testing |
 | SITE-09 | Favicon declared | PASS | /favicon.svg |
 | SITE-17 | What I Do cards are visible and list the QA capabilities | PASS | display=flex, visible=true, cards=["Manual QA","Automation QA"] |
+| SITE-18 | About section shows QA positioning, proof-of-work links and no 'entry-level' wording | PASS | case-study links=3, github links=3, entry-level wording=false, heading=Proof of work |
 | SITE-16 | QA toolbox renders a WebGL canvas and the sphere physics activates on scroll | PASS | canvases=1, data-active=true |
 | SITE-10 | Résumé page loads with the owner's name | PASS | Qazi Abdul Mujeer |
 | SITE-11 | ShopSure case study renders with executed metrics | PASS | 6 metric cards |
@@ -32,6 +33,14 @@
 | SITE-13 | No uncaught console errors | PASS |  |
 | SITE-14 | No failed internal requests (>=400) | PASS |  |
 | SITE-15 | Loading screen dismissed and the site is interactive | PASS | loading overlay still present after 90s |
+
+## Section captures
+
+Section screenshots are only saved when the target section is actually in frame (the page uses
+GSAP ScrollSmoother, which makes precise programmatic scrolling unreliable).
+
+- portfolio-career.jpg (#career)
+- portfolio-education.jpg (#education)
 
 Screenshots captured by this run: `portfolio-home-desktop.jpg`, `portfolio-qa-projects.jpg`,
 `portfolio-case-study.jpg`, `portfolio-home-mobile.jpg` (in this folder).

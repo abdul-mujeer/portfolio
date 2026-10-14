@@ -14,8 +14,8 @@ const Landing = ({ children }: PropsWithChildren) => {
               <span>MUJEER</span>
             </h1>
             <p className="landing-tagline">
-              Entry-level QA / SQA engineer: manual testing, API testing, SQL validation and
-              Playwright automation — demonstrated in three end-to-end projects with published evidence.
+              QA / SQA engineer — manual testing, API testing, SQL validation and Playwright
+              automation, proven across three end-to-end projects with published evidence.
             </p>
           </div>
           <div className="landing-info">

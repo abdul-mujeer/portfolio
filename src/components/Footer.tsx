@@ -29,8 +29,8 @@ const Footer = () => {
             <p className="qa-footer-brand">Qazi Abdul Mujeer</p>
             <p className="qa-footer-role">Aspiring QA / SQA Engineer · Manual &amp; Automation Testing</p>
             <p className="qa-footer-meta">
-              Entry-level QA portfolio built on three self-made demo applications. All test results on this
-              site were produced by executed runs and are documented in the repository.
+              QA portfolio built on three self-made applications. Every test result on this site was
+              produced by an executed run and is documented in the repository.
             </p>
           </div>
 

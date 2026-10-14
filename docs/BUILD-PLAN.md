@@ -9,7 +9,7 @@
 ## 1. Executive summary
 
 Turn the existing personal portfolio (`abdul-mujeer/portfolio`, React + Vite + GSAP) into a
-professional **entry-level QA / SQA engineer** portfolio that showcases three complete,
+professional **QA / SQA engineer** portfolio that showcases three complete,
 runnable software-testing projects:
 
 | # | Project | Focus | Location |

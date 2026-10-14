@@ -59,8 +59,8 @@ const Education = () => {
         </div>
 
         <p className="qa-note">
-          Currently seeking an entry-level QA / SQA role where I can apply this testing discipline to
-          real products and keep growing with a team.
+          Currently seeking a QA / SQA role where I can apply this testing discipline to real products
+          and keep growing with a team.
         </p>
       </div>
     </section>

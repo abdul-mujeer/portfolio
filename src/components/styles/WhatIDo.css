@@ -36,6 +36,8 @@
   height: 550px;
   margin-left: 200px;
   position: relative;
+  /* Always rendered: the capability cards carry the QA skills, so their visibility is not tied to
+     the 3D scroll timeline (the section's heading and the character still animate). */
   display: flex;
   overflow: hidden; /* removes the extra line below the last card */
 }
