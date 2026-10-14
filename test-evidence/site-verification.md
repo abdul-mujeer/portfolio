@@ -1,8 +1,8 @@
 # Portfolio site verification
 
-- Executed: 2026-10-14T01:28:12.726Z
+- Executed: 2026-10-14T02:45:40.324Z
 - Command: `npm run verify:site` (production build served by `vite preview`, driven by Playwright Chromium)
-- Result: **24/24 checks passed**
+- Result: **26/26 checks passed**
 
 | ID | Check | Result | Detail |
 |----|-------|--------|--------|
@@ -11,19 +11,21 @@
 | SITE-SEC-QA-PROJECTS | section "QA projects" exists (#qa-projects) | PASS | found 1 |
 | SITE-SEC-TESTING-APPROACH | section "Testing approach" exists (#testing) | PASS | found 1 |
 | SITE-SEC-EXPERIENCE | section "Experience" exists (#career) | PASS | found 1 |
-| SITE-SEC-WORK | section "Work" exists (#work) | PASS | found 1 |
 | SITE-SEC-EDUCATION | section "Education" exists (#education) | PASS | found 1 |
 | SITE-SEC-CONTACT | section "Contact" exists (#contact) | PASS | found 1 |
 | SITE-SEC-FOOTER | section "Footer" exists (#footer) | PASS | found 1 |
 | SITE-01 | Featured QA project cards render | PASS | found 3 cards |
 | SITE-02 | Project card thumbnails load (no broken images) | PASS | [{"src":"/images/qa-projects/shopsure-qa-card.jpg","width":1440},{"src":"/images/qa-projects/peoplecore-qa-card.jpg","width":1440},{"src":"/images/qa-projects/taskflow-qa-card.jpg","width":1440}] |
 | SITE-03 | Case-study links exist | PASS | ["/projects/shopsure-qa/","/projects/shopsure-qa/","/projects/peoplecore-qa/","/projects/peoplecore-qa/","/projects/taskflow-qa/","/projects/taskflow-qa/"] |
-| SITE-04 | Navigation targets resolve to real sections | PASS | ["#about","#qa-projects","#work","#contact"] |
-| SITE-05 | Résumé button points to the generated resume page (not '#') | PASS | /resume.html |
-| SITE-06 | Footer navigation and social links render | PASS | 13 links |
+| SITE-04 | Navigation targets resolve to real sections | PASS | ["#about","#qa-projects","#contact"] |
+| SITE-05 | CV button points to the uploaded CV PDF | PASS | /cv/Qazi_Abdul_Mujeer_QA_CV.pdf |
+| SITE-05b | CV PDF is served and is a real PDF | PASS | status 200 |
+| SITE-06 | Footer navigation and social links render | PASS | 12 links |
 | SITE-07 | Page title reflects the QA positioning | PASS | Qazi Abdul Mujeer — QA / SQA Engineer Portfolio \| Manual & Automation Testing |
 | SITE-08 | Meta description present | PASS | Entry-level QA / SQA engineer portfolio: three complete soft |
 | SITE-09 | Favicon declared | PASS | /favicon.svg |
+| SITE-17 | What I Do cards are visible and list the QA capabilities | PASS | display=flex, visible=true, cards=["Manual QA","Automation QA"] |
+| SITE-16 | QA toolbox renders a WebGL canvas and the sphere physics activates on scroll | PASS | canvases=1, data-active=true |
 | SITE-10 | Résumé page loads with the owner's name | PASS | Qazi Abdul Mujeer |
 | SITE-11 | ShopSure case study renders with executed metrics | PASS | 6 metric cards |
 | SITE-12 | Mobile viewport renders the project cards | PASS | 3 cards |

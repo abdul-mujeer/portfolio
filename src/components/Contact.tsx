@@ -20,6 +20,8 @@ const Contact = () => {
                 +92-316-2454316
               </a>
             </p>
+            <h4>Location</h4>
+            <p>Karachi, Pakistan</p>
           </div>
 
           <div className="contact-box">

@@ -39,13 +39,16 @@ const Career = () => {
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>WORKING ON PROJECT</h4>
-                <h5>AI-CRYPTO BOT</h5>
+                <h4>QA PRACTICE &amp; TRAINING</h4>
+                <h5>MANUAL AND AUTOMATION TESTING (SELF-DIRECTED)</h5>
               </div>
               <h3>CURRENTLY</h3>
             </div>
             <p>
-              A comprehensive cryptocurrency trading dashboard and analysis platform built with Next.js. This application provides real-time market data, trading signals, technical analysis, and virtual trading capabilities.
+              Building three end-to-end QA portfolio projects: requirements and acceptance criteria,
+              237 manual test cases, Playwright API and UI automation, SQL validation, Postman/Newman
+              collections and defect reports with retest evidence. Studying manual, automation and
+              mobile automation testing through an in-progress Udemy QA course.
             </p>
           </div>
         </div>

@@ -4,319 +4,152 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
-    <title>Qazi Abdul Mujeer — QA / SQA Engineer Résumé</title>
+    <title>Qazi Abdul Mujeer — Junior QA Engineer | Software Tester — CV</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <style>
-      :root {
-        --ink: #14121a;
-        --muted: #5b5766;
-        --line: #e2dff0;
-        --accent: #6b4ee6;
-        --bg: #ffffff;
-      }
-      * {
-        box-sizing: border-box;
-      }
+      @page { size: A4; margin: 12mm 12mm; }
+      :root { --ink: #17151f; --muted: #5c5768; --line: #dcd8e6; --accent: #6b4ee6; }
+      * { box-sizing: border-box; }
       body {
-        margin: 0;
-        background: #f4f3f8;
-        color: var(--ink);
+        margin: 0; background: #f4f3f8; color: var(--ink);
         font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-        line-height: 1.55;
+        font-size: 10.2pt; line-height: 1.42;
       }
       .sheet {
-        max-width: 900px;
-        margin: 28px auto;
-        background: var(--bg);
-        padding: 44px 48px 52px;
-        border-radius: 10px;
-        box-shadow: 0 18px 50px rgba(20, 18, 26, 0.12);
+        width: 210mm; min-height: 297mm; margin: 10mm auto; background: #fff;
+        padding: 12mm 12mm 10mm; box-shadow: 0 12px 40px rgba(20, 18, 26, 0.14);
       }
-      header {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 16px;
-        border-bottom: 3px solid var(--accent);
-        padding-bottom: 18px;
-      }
-      h1 {
-        margin: 0;
-        font-size: 30px;
-        letter-spacing: -0.4px;
-      }
-      .role {
-        margin: 6px 0 0;
-        font-size: 14px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--accent);
-        font-weight: 700;
-      }
-      .contact {
-        font-size: 13.5px;
-        text-align: right;
-        color: var(--muted);
-      }
-      .contact a {
-        color: var(--ink);
-        text-decoration: none;
-        border-bottom: 1px solid var(--line);
-      }
-      .contact a:hover {
-        border-color: var(--accent);
-      }
+      header { border-bottom: 2.5px solid var(--accent); padding-bottom: 8px; }
+      h1 { margin: 0; font-size: 21pt; letter-spacing: -0.3px; }
+      .title { margin: 3px 0 6px; font-size: 10.5pt; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--accent); }
+      .contact { font-size: 9.4pt; color: var(--muted); }
+      .contact a, .links a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+      .contact a:hover, .links a:hover { border-color: var(--accent); }
       h2 {
-        margin: 30px 0 12px;
-        font-size: 13px;
-        letter-spacing: 2.6px;
-        text-transform: uppercase;
-        color: var(--accent);
+        margin: 14px 0 6px; font-size: 9.6pt; letter-spacing: 2px; text-transform: uppercase;
+        color: var(--accent); border-bottom: 1px solid var(--line); padding-bottom: 3px;
       }
-      h3 {
-        margin: 0 0 2px;
-        font-size: 15.5px;
+      p { margin: 0 0 6px; }
+      .muted { color: var(--muted); font-size: 9.6pt; }
+      .skill { margin-bottom: 3px; }
+      .skill-label { font-weight: 700; }
+      .entry { margin-bottom: 9px; page-break-inside: avoid; }
+      .entry-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+      .entry-head h3 { margin: 0; font-size: 10.6pt; }
+      .entry-head span { font-size: 9.4pt; color: var(--muted); white-space: nowrap; }
+      .links a { font-weight: 600; }
+      .sep { color: var(--line); }
+      ul { margin: 3px 0 0 16px; padding: 0; }
+      li { margin-bottom: 2px; }
+      .toolbar { width: 210mm; margin: 10mm auto 0; display: flex; justify-content: flex-end; gap: 8px; }
+      .toolbar a, .toolbar button {
+        font: inherit; font-size: 9.5pt; font-weight: 600; padding: 8px 14px; border-radius: 8px;
+        border: 1px solid var(--accent); background: var(--accent); color: #fff;
+        text-decoration: none; cursor: pointer;
       }
-      .meta {
-        margin: 0 0 8px;
-        font-size: 12.5px;
-        letter-spacing: 0.6px;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-      p {
-        margin: 0 0 10px;
-        font-size: 14px;
-      }
-      ul {
-        margin: 0 0 10px 18px;
-        padding: 0;
-        font-size: 13.8px;
-      }
-      li {
-        margin-bottom: 4px;
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-        gap: 8px 26px;
-      }
-      .skill-row {
-        display: grid;
-        grid-template-columns: 170px 1fr;
-        gap: 12px;
-        padding: 7px 0;
-        border-bottom: 1px solid var(--line);
-        font-size: 13.5px;
-      }
-      .skill-row strong {
-        font-weight: 700;
-      }
-      .project {
-        padding: 14px 0;
-        border-bottom: 1px solid var(--line);
-      }
-      .project:last-child {
-        border-bottom: none;
-      }
-      .tags {
-        font-size: 12.5px;
-        color: var(--muted);
-      }
-      .notice {
-        margin: 0 0 26px;
-        padding: 12px 16px;
-        border-left: 3px solid var(--accent);
-        background: #f2effe;
-        font-size: 13px;
-        color: #3d3556;
-        border-radius: 0 8px 8px 0;
-      }
-      .toolbar {
-        max-width: 900px;
-        margin: 22px auto 0;
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        padding: 0 12px;
-      }
-      .toolbar button,
-      .toolbar a {
-        font: inherit;
-        font-size: 13.5px;
-        font-weight: 600;
-        padding: 9px 16px;
-        border-radius: 8px;
-        border: 1px solid var(--accent);
-        background: var(--accent);
-        color: #fff;
-        text-decoration: none;
-        cursor: pointer;
-      }
-      .toolbar a.ghost {
-        background: transparent;
-        color: var(--accent);
-      }
+      .toolbar a.ghost { background: transparent; color: var(--accent); }
       @media print {
-        body {
-          background: #fff;
-        }
-        .sheet {
-          box-shadow: none;
-          margin: 0;
-          max-width: none;
-          padding: 0 8mm;
-          border-radius: 0;
-        }
-        .toolbar,
-        .notice {
-          display: none;
-        }
-        h2 {
-          page-break-after: avoid;
-        }
-        .project {
-          page-break-inside: avoid;
-        }
+        body { background: #fff; }
+        .sheet { margin: 0; width: auto; min-height: 0; padding: 0; box-shadow: none; }
+        .toolbar { display: none; }
+        a { color: var(--ink) !important; }
       }
-      @media (max-width: 640px) {
-        .sheet {
-          padding: 26px 20px;
-        }
-        .contact {
-          text-align: left;
-        }
-        .skill-row {
-          grid-template-columns: 1fr;
-          gap: 2px;
-        }
+      @media (max-width: 800px) {
+        .sheet { width: auto; margin: 0; padding: 16px; }
+        .toolbar { width: auto; margin: 12px; }
+        .entry-head { flex-direction: column; gap: 2px; }
       }
     </style>
   </head>
   <body>
     <div class="toolbar">
       <button type="button" onclick="window.print()">Print / save as PDF</button>
+      <a class="ghost" href="/cv/Qazi_Abdul_Mujeer_QA_CV.pdf">Open the PDF version</a>
       <a class="ghost" href="/">Back to portfolio</a>
     </div>
 
     <main class="sheet">
-      <p class="notice">
-        This résumé page is generated from the content already published in my portfolio repository.
-        Replace it with your own PDF when ready by saving the print output as <code>resume.pdf</code>.
-      </p>
-
       <header>
-        <div>
-          <h1>Qazi Abdul Mujeer</h1>
-          <p class="role">Aspiring QA / SQA Engineer · Manual &amp; Automation Testing</p>
-        </div>
-        <div class="contact">
-          <div><a href="mailto:abdul.mujeer98@gmail.com">abdul.mujeer98@gmail.com</a></div>
-          <div><a href="tel:+92-316-2454316">+92-316-2454316</a></div>
-          <div><a href="https://github.com/abdul-mujeer" target="_blank" rel="noreferrer">github.com/abdul-mujeer</a></div>
-          <div><a href="https://www.linkedin.com/in/qazi-abdul-mujeer/" target="_blank" rel="noreferrer">linkedin.com/in/qazi-abdul-mujeer</a></div>
-          <div><a href="https://leetcode.com/u/Abdul_Mujeer/" target="_blank" rel="noreferrer">leetcode.com/u/Abdul_Mujeer</a></div>
-        </div>
+        <h1>Qazi Abdul Mujeer</h1>
+        <p class="title">Junior QA Engineer | Software Tester</p>
+        <p class="contact">
+          Karachi, Pakistan &nbsp;|&nbsp; 0316-2454316 &nbsp;|&nbsp; abdul.mujeer98@gmail.com
+          &nbsp;|&nbsp;
+          <a href="https://www.linkedin.com/in/qazi-abdul-mujeer/">LinkedIn</a> &nbsp;|&nbsp; <a href="https://github.com/abdul-mujeer">GitHub</a> &nbsp;|&nbsp; <a href="https://portfolio-abdul-mujeer.vercel.app">Portfolio</a>
+        </p>
       </header>
 
-      <h2>Summary</h2>
-      <p>
-        Computer Science graduate with foundational knowledge of Software Quality Assurance and manual
-        testing, plus hands-on practice in API testing, SQL validation and UI/API automation through three
-        self-built testing projects. Familiar with test case design, defect reporting, SDLC/STLC,
-        functional and regression testing. Seeking an entry-level QA / SQC position to apply testing skills
-        and grow in a professional software development environment.
-      </p>
+      <h2>Professional Summary</h2>
+      <p>Computer Science graduate with about 1 year of Full Stack Development experience at Cyphion, transitioning into Software QA and software testing. Practical knowledge of manual testing (functional, regression, smoke, sanity, exploratory), API testing with Postman, and basic SQL database validation. Familiar with SDLC/STLC, Agile/Scrum, Jira, and Git/GitHub. Python and SQL fundamentals, plus a developer's understanding of how software is built and debugged, which supports clear defect reports and communication with engineering teams.</p>
 
-      <h2>QA &amp; technical skills</h2>
-      <div class="skill-row"><strong>Test design</strong><span>Test cases, scenarios, equivalence partitioning, boundary values, decision tables, state transitions, negative testing, exploratory charters, smoke/regression suites</span></div>
-      <div class="skill-row"><strong>API testing</strong><span>REST APIs, Postman collections, Newman CLI runs, status codes, headers, payload validation, authentication and authorization errors</span></div>
-      <div class="skill-row"><strong>Automation</strong><span>Playwright (UI + API), reliable selectors, assertions, traces and screenshots, test isolation, GitHub Actions CI</span></div>
-      <div class="skill-row"><strong>Database</strong><span>SQL queries and joins, constraint and uniqueness checks, referential integrity, business-rule validation, persistence checks</span></div>
-      <div class="skill-row"><strong>Process</strong><span>SDLC/STLC, Agile ceremonies, risk-based testing, defect lifecycle, severity vs priority, test reports and release recommendations</span></div>
-      <div class="skill-row"><strong>Tools &amp; languages</strong><span>Playwright, Postman/Newman, Git/GitHub, GitHub Actions, JavaScript/TypeScript, Python, Node.js, Express, React, SQLite, MySQL, PostgreSQL, Docker</span></div>
+      <h2>Technical Skills</h2>
+      <div class="skill"><span class="skill-label">Manual Testing:</span> Functional, Regression, Smoke, Sanity, Exploratory, Positive/Negative, UI, End-to-End, Basic Compatibility Testing</div>
+<div class="skill"><span class="skill-label">Test Design:</span> Test Case Design, Test Scenario Creation, Requirements Analysis, Bug Reporting, Defect Life Cycle</div>
+<div class="skill"><span class="skill-label">Techniques (familiar with):</span> Boundary Value Analysis, Equivalence Partitioning, Decision Table Testing, Error Guessing</div>
+<div class="skill"><span class="skill-label">API Testing:</span> Postman, REST API testing, HTTP methods (GET, POST, PUT, PATCH, DELETE), status codes, JSON and request/response validation, basic negative testing</div>
+<div class="skill"><span class="skill-label">Database:</span> Basic SQL (SELECT, WHERE, ORDER BY, GROUP BY, basic JOIN concepts), basic database validation</div>
+<div class="skill"><span class="skill-label">Automation (project practice):</span> Playwright (API + UI test suites), Postman collections executed with Newman, SQL validation scripts, GitHub Actions CI runs and report artefacts</div>
+<div class="skill"><span class="skill-label">Tools:</span> Jira, Postman, Playwright, Git/GitHub, Chrome/Browser DevTools</div>
+<div class="skill"><span class="skill-label">Process:</span> SDLC, STLC, Agile/Scrum fundamentals</div>
+<div class="skill"><span class="skill-label">Programming:</span> Python (basic), SQL (basic), JavaScript</div>
 
-      <h2>QA portfolio projects</h2>
+      <h2>Professional Experience</h2>
+      
+    <div class="entry">
+      <div class="entry-head"><h3>Full Stack Developer | Cyphion</h3><span>~1 year</span></div>
+      <ul><li>Worked with frontend and backend components of web applications, gaining a working understanding of application behaviour and requirements</li><li>Debugged and investigated software issues, and validated fixes</li><li>Worked with APIs and databases, including request/response behaviour</li><li>Collaborated on software projects within the software development life cycle</li></ul>
+    </div>
 
-      <div class="project">
-        <h3>ShopSure — E-commerce QA and Test Automation</h3>
-        <p class="meta">Manual · API · UI · database testing · 2026</p>
-        <p>
-          Demo storefront (React + Express + SQLite) covering registration, catalog search/filter/sort,
-          cart quantity and stock rules, checkout pricing rules, order lifecycle and role-based admin
-          access. Produced 24 requirements, 101 manual test cases, 202 passing automated checks
-          (72 API · 31 UI · 23 SQL · 76 Postman assertions), a traceability matrix and an execution
-          report. Found and fixed three defects with retest and regression evidence.
-        </p>
-        <p class="tags">Playwright · Postman · Newman · SQL · Node.js · Express · React · SQLite</p>
+      <h2>QA &amp; Technical Projects</h2>
+      
+    <div class="entry">
+      <div class="entry-head">
+        <h3>ShopSure — E-commerce Quality Assurance and Test Automation</h3>
+        <span class="links"><a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/shopsure-qa">GitHub</a> <span class='sep'>|</span> <a href="https://portfolio-abdul-mujeer.vercel.app/projects/shopsure-qa/">Case study</a></span>
       </div>
+      <p class="muted">QA portfolio project (manual, API, UI and database testing)</p>
+      <ul><li>101 manual test cases and 24 requirements with acceptance criteria; boundary-value, decision-table and negative design</li><li>202 automated checks: 72 API tests, 31 UI tests, 23 SQL validation checks and 76 Postman assertions</li><li>Found and fixed 3 defects with documented reproduction steps, retest evidence and regression runs</li></ul>
+    </div>
 
-      <div class="project">
+    <div class="entry">
+      <div class="entry-head">
         <h3>PeopleCore — HRMS Workflow and Role-Based Access Testing</h3>
-        <p class="meta">Workflow · permissions · audit testing · 2026</p>
-        <p>
-          HR management system (Express + EJS + SQLite) covering employees, departments, attendance and
-          leave approval across administrator, HR, manager and employee roles. Tested workflow
-          transitions, permission boundaries (including direct API access), date and salary validation,
-          duplicate handling and audit history, with SQL consistency checks and automated regression suites.
-        </p>
-        <p class="tags">Playwright · Postman · SQL · Node.js · Express · EJS · SQLite</p>
+        <span class="links"><a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/peoplecore-qa">GitHub</a> <span class='sep'>|</span> <a href="https://portfolio-abdul-mujeer.vercel.app/projects/peoplecore-qa/">Case study</a></span>
       </div>
+      <p class="muted">QA portfolio project (workflows, permissions, database validation)</p>
+      <ul><li>69 manual test cases covering employee, attendance and leave workflows across four roles</li><li>189 automated checks: 58 API tests, 20 UI tests, 12 SQL checks and 96 Postman assertions</li><li>Tested a role/permission matrix including direct API access by under-privileged accounts; found and fixed 12 defects, including a critical missing authorization check on attendance creation</li></ul>
+    </div>
 
-      <div class="project">
+    <div class="entry">
+      <div class="entry-head">
         <h3>TaskFlow — REST API Quality Engineering and Regression Automation</h3>
-        <p class="meta">API-first testing · security · performance baseline · 2026</p>
-        <p>
-          API-first project management service (Express + SQLite) with projects, membership, tasks,
-          comments and activity history. Deep API coverage of CRUD operations, schema validation,
-          object-level permissions, cross-project isolation, pagination edges and security probes, plus a
-          local performance baseline and repeatable automated regression runs.
-        </p>
-        <p class="tags">Playwright · Postman · autocannon · Node.js · Express · SQLite</p>
+        <span class="links"><a href="https://github.com/abdul-mujeer/portfolio/tree/main/projects/taskflow-qa">GitHub</a> <span class='sep'>|</span> <a href="https://portfolio-abdul-mujeer.vercel.app/projects/taskflow-qa/">Case study</a></span>
+      </div>
+      <p class="muted">QA portfolio project (API-first testing, security and performance baseline)</p>
+      <ul><li>67 manual API test cases: CRUD, schema and type validation, invalid payloads, pagination and filtering edges</li><li>134 automated checks: 48 API tests, 10 UI tests, 22 SQL checks and 50 Postman assertions, plus a local performance baseline</li><li>Object-level permission and cross-project isolation testing; found and fixed 6 defects</li></ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <h3>Crypto AI Bot</h3>
+        <span class="links"></span>
+      </div>
+      <p class="muted">University Final Year Project — Kohat University of Science &amp; Technology (KUST)</p>
+      <ul><li>Built Crypto AI Bot as my Bachelor's Final Year Project: a software application integrating external APIs and handling application data</li><li>Debugged issues and validated application behaviour across different scenarios</li><li>Worked across frontend/backend interaction to understand how components exchange data</li></ul>
+    </div>
+
+      <h2>Education</h2>
+      <div class="entry">
+        <div class="entry-head"><h3>Bachelor of Science in Computer Science | Kohat University of Science &amp; Technology (KUST), Pakistan</h3><span>2020 – 2024</span></div>
+        <p class="muted">CGPA: 3.62 / 4.00</p>
       </div>
 
-      <h2>Experience</h2>
-      <div class="project">
-        <h3>Freelance Software Developer (Remote)</h3>
-        <p class="meta">2025 – 2026</p>
-        <p>
-          Collaborated with distributed client teams to build and optimize modern web applications using
-          Python and React. Developed REST APIs, integrated frontend components with backend services and
-          debugged production issues — the experience that motivated my move toward quality assurance.
-        </p>
-      </div>
-      <div class="project">
-        <h3>Full-Stack Developer — CYPHION</h3>
-        <p class="meta">2024 – 2025</p>
-        <p>
-          Built AI-powered web applications with Python, React, Flask, Django, Next.js and Node.js,
-          covering frontend and backend development, API integrations, database systems and cloud
-          deployments with a focus on performance and maintainability.
-        </p>
-      </div>
-      <div class="project">
-        <h3>AI-Crypto Trading Dashboard — personal project</h3>
-        <p class="meta">Current</p>
-        <p>Next.js dashboard providing market data, technical analysis and virtual trading capabilities.</p>
-      </div>
-
-      <h2>Education &amp; learning</h2>
-      <p><strong>Computer Science graduate</strong> — programming, databases, software engineering.</p>
-      <p>
-        Self-directed QA study: software testing lifecycle, test design techniques, defect management,
-        API testing with Postman/Newman, SQL validation, Playwright automation, Git/GitHub and CI with
-        GitHub Actions.
-      </p>
-
-      <h2>Other projects</h2>
-      <ul>
-        <li>AI-Powered Crypto Trading platform — Python, Flask, Next.js, GCP, Docker, JWT</li>
-        <li>AI Interview Preparation Platform — Python, FastAPI, Next.js, OpenAI API, MongoDB</li>
-        <li>Hybrid Legal Text Summarization — Python, NLTK, scikit-learn, Transformers</li>
-        <li>Real-Time Human Detection &amp; Pose Estimation — Python, YOLOv5, PyTorch</li>
-        <li>Face Recognition System — Python, Keras (CNN), TensorFlow</li>
-        <li>Responsive Shopify Clone — HTML, CSS, JavaScript</li>
-      </ul>
+      <h2>Certifications &amp; Training</h2>
+      
+    <div class="entry">
+      <div class="entry-head"><h3>QA — Manual, Automation &amp; Mobile Automation (Udemy, Lucky Trainings)</h3><span>In Progress</span></div>
+      <p class="muted">Online course covering manual testing, test automation, and mobile automation testing</p>
+    </div>
     </main>
   </body>
 </html>

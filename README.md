@@ -34,21 +34,42 @@ Portfolio case studies (generated from each project's own executed artefacts):
 .
 ├── src/                      # portfolio site (React 18 + TypeScript + Vite + GSAP + three.js)
 ├── public/
+│   ├── cv/                   # Qazi_Abdul_Mujeer_QA_CV.pdf (built by scripts/build-cv.mjs)
 │   ├── projects/<slug>/      # generated QA case-study pages
 │   ├── images/qa-projects/   # real application screenshots used as thumbnails
-│   └── resume.html           # printable résumé (generated from portfolio content)
+│   ├── images/tech/          # generated textures for the "My QA Toolbox" spheres
+│   └── resume.html           # the CV as a printable web page (same source as the PDF)
 ├── scripts/
-│   ├── build-project-pages.mjs   # case-study pages + metrics from real test-reports/summary.json
-│   └── verify-site.mjs           # Playwright verification of the built site
+│   ├── build-project-pages.mjs      # case-study pages + card metrics from real test-reports/summary.json
+│   ├── build-cv.mjs                 # CV: HTML + PDF (npm run build:cv)
+│   ├── generate-techstack-textures.mjs  # tool badges for the 3D toolbox
+│   ├── build-handover.mjs           # docs/HANDOVER.md from real artefacts
+│   └── verify-site.mjs              # Playwright verification of the built site
 ├── projects/
 │   ├── shopsure-qa/          # app + tests + QA documentation + evidence + reports
 │   ├── peoplecore-qa/
 │   └── taskflow-qa/
 ├── docs/
 │   ├── BUILD-PLAN.md         # how this portfolio was built, milestone by milestone
+│   ├── HANDOVER.md           # generated status, commands and open tasks
 │   └── PROJECT-STANDARD.md   # the shared engineering/QA contract for the three projects
 └── .github/workflows/        # CI: site verification + one workflow per QA project
 ```
+
+## Site content
+
+| Section | What it shows |
+|---------|---------------|
+| Hero | Name plus "Quality Assurance — Tester / Engineer" |
+| About | Entry-level QA/SQA positioning |
+| What I Do | Manual QA and Automation QA capability cards |
+| QA Skills & Tools | Six skill groups (design, API, UI automation, database, process, foundations) |
+| QA Projects | The three case-study cards with verified metrics |
+| Testing Approach | The five phases of the testing lifecycle plus capabilities |
+| Experience | Freelance software development, CYPHION, and current self-directed QA practice |
+| My QA Toolbox | 3D spheres with the tools actually used here (Postman, Playwright, SQL, Python, JavaScript, Jira, Git, DevTools) |
+| Education & Learning | BSc Computer Science (KUST, CGPA 3.62/4.00), final year project, Udemy QA course, portfolio projects |
+| Contact / Footer | Email, phone, location, social links and the CV download |
 
 ## Quick start (portfolio site)
 
@@ -58,6 +79,8 @@ npm run dev            # http://localhost:5173
 npm run build          # type-check + production build
 npm run verify:site    # Playwright verification of the built site (needs `npm run build` first)
 npm run build:projects # regenerate case-study pages + card metrics from each project's summary.json
+npm run build:cv       # regenerate the CV (HTML + PDF) from the data in scripts/build-cv.mjs
+npm run docs:handover  # regenerate docs/HANDOVER.md from real artefacts
 ```
 
 ## Running the QA projects

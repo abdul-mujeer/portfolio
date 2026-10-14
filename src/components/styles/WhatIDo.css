@@ -36,8 +36,8 @@
   height: 550px;
   margin-left: 200px;
   position: relative;
-  display: none;
-  overflow: hidden; /* ✅ removes extra line below AI-ML */
+  display: flex;
+  overflow: hidden; /* removes the extra line below the last card */
 }
 .what-content {
   width: 450px;

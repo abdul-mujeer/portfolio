@@ -87,23 +87,27 @@ const WhatIDo = () => {
             <div className="what-corner"></div>
 
             <div className="what-content-in">
-              <h3>Full-Stack</h3>
+              <h3>Manual QA</h3>
               <h4>Description</h4>
               <p>
-                Full Stack Developer experienced in Python (Django/Flask) and React/Next.js. Passionate about building scalable APIs, clean web apps, and efficient data solutions.
+                Designing and executing manual tests on real applications: test cases with
+                preconditions, steps and expected results; smoke, sanity, regression and exploratory
+                sessions; and defect reports with reproduction steps, severity and evidence.
               </p>
-              <h5>Languages & Libraries</h5>
+              <h5>Skills &amp; techniques</h5>
               <div className="what-content-flex">
-                <div className="what-tags">Python</div>
-                <div className="what-tags">Flask</div>
-                <div className="what-tags">Django</div>
-                <div className="what-tags">JavaScript</div>
-                <div className="what-tags">React</div>
-                <div className="what-tags">Css</div>
-                <div className="what-tags">Next.js</div>
-                <div className="what-tags">MySql</div>
-                <div className="what-tags">Postgresql</div>
-                <div className="what-tags">Bigquery</div>
+                <div className="what-tags">Test Case Design</div>
+                <div className="what-tags">Test Scenarios</div>
+                <div className="what-tags">Functional Testing</div>
+                <div className="what-tags">Regression Testing</div>
+                <div className="what-tags">Smoke &amp; Sanity</div>
+                <div className="what-tags">Exploratory Testing</div>
+                <div className="what-tags">Boundary Value Analysis</div>
+                <div className="what-tags">Equivalence Partitioning</div>
+                <div className="what-tags">Decision Tables</div>
+                <div className="what-tags">Negative Testing</div>
+                <div className="what-tags">Defect Life Cycle</div>
+                <div className="what-tags">Jira</div>
               </div>
               <div className="what-arrow"></div>
             </div>
@@ -127,21 +131,26 @@ const WhatIDo = () => {
             </div>
             <div className="what-corner"></div>
             <div className="what-content-in">
-              <h3>AI-ML</h3>
+              <h3>Automation QA</h3>
               <h4>Description</h4>
               <p>
-                Building intelligent, data-driven systems by leveraging Python's robust AI/ML ecosystem. Focused on statistical data processing, predictive modeling, and quantitative analysis.
+                Automating the critical paths of those projects: Playwright API and UI suites with
+                reliable selectors and explicit assertions, Postman collections executed through
+                Newman, SQL validation queries, and CI workflows that run everything and publish the
+                reports. Python and SQL at a basic level.
               </p>
-              <h5>Languages & Libraries</h5>
+              <h5>Tools &amp; languages</h5>
               <div className="what-content-flex">
-                <div className="what-tags">Python</div>
-                <div className="what-tags">Pandas</div>
-                <div className="what-tags">Numpy</div>
-                <div className="what-tags">Scikit-learn</div>
-                <div className="what-tags">Talib</div>
-                <div className="what-tags">CCXT</div>
-                <div className="what-tags">SciPy</div>
-                <div className="what-tags">PyTorch</div>
+                <div className="what-tags">Playwright</div>
+                <div className="what-tags">API Testing</div>
+                <div className="what-tags">Postman</div>
+                <div className="what-tags">Newman</div>
+                <div className="what-tags">SQL</div>
+                <div className="what-tags">JavaScript</div>
+                <div className="what-tags">Python (basic)</div>
+                <div className="what-tags">Git &amp; GitHub</div>
+                <div className="what-tags">GitHub Actions</div>
+                <div className="what-tags">Chrome DevTools</div>
               </div>
               <div className="what-arrow"></div>
             </div>

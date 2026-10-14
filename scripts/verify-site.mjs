@@ -58,6 +58,53 @@ async function waitForServer(timeoutMs = 30000) {
   return false;
 }
 
+/**
+ * Scrolls a section near the top of the viewport using real wheel events.
+ *
+ * GSAP's ScrollSmoother eases for ~1.7s and compounds wheel deltas, so measurements taken while it
+ * is still moving cause overshoot. Every step therefore waits until the rendered position has been
+ * unchanged for three consecutive polls before deciding what to do next.
+ */
+async function scrollSectionIntoView(page, selector, { attempts = 14, stepPx = 450 } = {}) {
+  const measure = () =>
+    page.evaluate((sel) => {
+      const element = document.querySelector(sel);
+      if (!element) return null;
+      const box = element.getBoundingClientRect();
+      return { top: Math.round(box.top), bottom: Math.round(box.bottom), viewport: window.innerHeight };
+    }, selector);
+
+  const waitForSettle = async (maxWaitMs = 7000) => {
+    let last = null;
+    let stable = 0;
+    const started = Date.now();
+    while (Date.now() - started < maxWaitMs) {
+      const current = await measure();
+      const top = current ? current.top : null;
+      if (last !== null && top !== null && Math.abs(top - last) <= 1) {
+        stable += 1;
+        if (stable >= 3) return current;
+      } else {
+        stable = 0;
+      }
+      last = top;
+      await page.waitForTimeout(350);
+    }
+    return measure();
+  };
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const rect = await measure();
+    if (!rect) return false;
+    if (rect.top >= -30 && rect.top <= 90 && rect.bottom > rect.viewport * 0.5) return true;
+
+    const remaining = rect.top - 40;
+    await page.mouse.wheel(0, Math.max(-stepPx, Math.min(stepPx, remaining)));
+    await waitForSettle();
+  }
+  return false;
+}
+
 let browser;
 try {
   if (!(await waitForServer())) throw new Error(`preview server did not start on ${BASE}`);
@@ -100,7 +147,6 @@ try {
     ["#qa-projects", "QA projects"],
     ["#testing", "Testing approach"],
     ["#career", "Experience"],
-    ["#work", "Work"],
     ["#education", "Education"],
     ["#contact", "Contact"],
     ["#footer", "Footer"],
@@ -132,7 +178,10 @@ try {
   record("SITE-04", "Navigation targets resolve to real sections", navValid, JSON.stringify(navTargets));
 
   const resumeHref = await page.locator(".resume-button").getAttribute("href");
-  record("SITE-05", "Résumé button points to the generated resume page (not '#')", resumeHref === "/resume.html", String(resumeHref));
+  record("SITE-05", "CV button points to the uploaded CV PDF", resumeHref === "/cv/Qazi_Abdul_Mujeer_QA_CV.pdf", String(resumeHref));
+
+  const cvResponse = await page.request.get(`${BASE}/cv/Qazi_Abdul_Mujeer_QA_CV.pdf`);
+  record("SITE-05b", "CV PDF is served and is a real PDF", cvResponse.status() === 200 && (await cvResponse.body()).slice(0, 4).toString() === "%PDF", `status ${cvResponse.status()}`);
 
   const footerLinks = await page.locator(".qa-footer a").count();
   record("SITE-06", "Footer navigation and social links render", footerLinks >= 10, `${footerLinks} links`);
@@ -150,6 +199,55 @@ try {
   await page.locator("#qa-projects").scrollIntoViewIfNeeded();
   await page.waitForTimeout(900);
   await page.screenshot({ path: path.join(EVIDENCE, "portfolio-qa-projects.jpg"), type: "jpeg", quality: 72, fullPage: false });
+
+  // Section evidence.
+  // GSAP's ScrollSmoother transforms the whole page, which makes both programmatic scrolling and
+  // element screenshots land unreliably. For evidence capture only, the transform is neutralised
+  // (the DOM, CSS and layout are untouched) so the screenshots show the real sections.
+  await page.addStyleTag({
+    content: "#smooth-wrapper { position: static !important; transform: none !important; height: auto !important; } #smooth-content { transform: none !important; }",
+  });
+
+  for (const [selector, file] of [
+    [".whatIDO", "portfolio-what-i-do.jpg"],
+    ["#education", "portfolio-education.jpg"],
+    ["#contact", "portfolio-contact.jpg"],
+    ["#career", "portfolio-career.jpg"],
+  ]) {
+    const target = page.locator(selector);
+    if ((await target.count()) === 0) continue;
+    await target.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(1200);
+    await page.screenshot({ path: path.join(EVIDENCE, file), type: "jpeg", quality: 72 });
+  }
+
+  // The "What I Do" cards must be visible with the QA content (they were display:none in the CSS).
+  const whatIdo = await page.evaluate(() => {
+    const box = document.querySelector(".what-box-in");
+    const cards = [...document.querySelectorAll(".what-content h3")].map((heading) => heading.textContent?.trim() ?? "");
+    return {
+      display: box ? getComputedStyle(box).display : "missing",
+      cards,
+      visible: box ? box.getBoundingClientRect().height > 0 : false,
+    };
+  });
+  record(
+    "SITE-17",
+    "What I Do cards are visible and list the QA capabilities",
+    whatIdo.display !== "none" && whatIdo.visible && whatIdo.cards.some((card) => /manual qa/i.test(card)) && whatIdo.cards.some((card) => /automation qa/i.test(card)),
+    `display=${whatIdo.display}, visible=${whatIdo.visible}, cards=${JSON.stringify(whatIdo.cards)}`
+  );
+
+  // QA toolbox (3D spheres with the generated tool textures)
+  const toolbox = page.locator(".techstack");
+  if (await toolbox.count()) {
+    await scrollSectionIntoView(page, ".techstack");
+    await page.waitForTimeout(8000); // the spheres start below the viewport and fall in with the physics
+    const canvasCount = await page.locator(".techstack canvas").count();
+    const active = await toolbox.getAttribute("data-active");
+    record("SITE-16", "QA toolbox renders a WebGL canvas and the sphere physics activates on scroll", canvasCount > 0 && active === "true", `canvases=${canvasCount}, data-active=${active}`);
+    await page.screenshot({ path: path.join(EVIDENCE, "portfolio-qa-toolbox.jpg"), type: "jpeg", quality: 72 });
+  }
 
   // Résumé page
   await page.goto(`${BASE}/resume.html`, { waitUntil: "domcontentloaded" });

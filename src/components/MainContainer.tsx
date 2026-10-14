@@ -12,7 +12,6 @@ import QASkills from "./QASkills";
 import SocialIcons from "./SocialIcons";
 import TestingApproach from "./TestingApproach";
 import WhatIDo from "./WhatIDo";
-import Work from "./Work";
 import setSplitText from "./utils/splitText";
 
 const TechStack = lazy(() => import("./TechStack"));
@@ -50,7 +49,6 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <QAProjects />
             <TestingApproach />
             <Career />
-            <Work />
             {isDesktopView && (
               <Suspense fallback={<div>Loading....</div>}>
                 <TechStack />

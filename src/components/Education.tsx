@@ -3,30 +3,35 @@ import "./styles/QASections.css";
 /**
  * Education and learning.
  *
- * Only information already published in this portfolio is stated. Specific institution, degree title
- * and dates are intentionally omitted until the owner of this portfolio supplies them — see the
- * QA-BUILD checklist in docs/BUILD-PLAN.md.
+ * Facts come from the owner's CV: BSc Computer Science at Kohat University of Science & Technology
+ * (KUST), 2020-2024, CGPA 3.62/4.00, the Bachelor's final year project (Crypto AI Bot) and the
+ * in-progress Udemy QA course. Nothing here is invented.
  */
 const learning = [
   {
-    period: "Foundations",
-    title: "Computer Science studies",
-    text: "Graduated in Computer Science, covering programming, data structures, databases, software engineering and operating systems — the base I build on for testing.",
+    period: "2020 – 2024",
+    title: "BSc Computer Science — Kohat University of Science & Technology (KUST), Pakistan",
+    text: "Bachelor of Science in Computer Science. CGPA 3.62 / 4.00. Coursework across programming, databases, software engineering and operating systems.",
+  },
+  {
+    period: "Final year project",
+    title: "Crypto AI Bot (Bachelor's Final Year Project, KUST)",
+    text: "Built a software application integrating external APIs and handling application data. Debugged issues, validated application behaviour across different scenarios and worked across frontend/backend interaction to understand how components exchange data — the work that led me toward testing.",
+  },
+  {
+    period: "In progress",
+    title: "QA — Manual, Automation & Mobile Automation (Udemy, Lucky Trainings)",
+    text: "Online course covering manual testing, test automation and mobile automation testing.",
   },
   {
     period: "Self-directed",
     title: "Software testing fundamentals (SDLC / STLC)",
-    text: "Studied the software development and testing lifecycles, test levels and types, test design techniques, defect lifecycle, severity vs priority and test documentation standards.",
-  },
-  {
-    period: "Practice",
-    title: "API, database and automation skills",
-    text: "Hands-on practice with REST API testing (Postman, Newman), SQL validation queries, Playwright automation for UI and API suites, Git/GitHub workflows and CI with GitHub Actions.",
+    text: "Test levels and types, test design techniques (boundary value analysis, equivalence partitioning, decision tables), the defect life cycle, severity vs priority and test documentation standards.",
   },
   {
     period: "Practice",
     title: "Three end-to-end QA portfolio projects",
-    text: "Requirements, test strategy, 200+ manual test cases, four automated suites per project, defect logs, traceability matrices and executed evidence — all published in the repository.",
+    text: "ShopSure, PeopleCore and TaskFlow: 60+ requirements with acceptance criteria, 237 manual test cases, Playwright API and UI suites, SQL validation checks, Postman/Newman collections, defect logs and executed evidence — all published with the source code.",
   },
 ];
 
@@ -39,8 +44,8 @@ const Education = () => {
           Education &amp; <span>learning</span>
         </h2>
         <p className="qa-lede">
-          Computer Science graduate with a Software Quality Assurance focus. The learning below is
-          either academic background or self-directed study — it is not claimed as employment.
+          Computer Science graduate moving into Software QA: university background, an in-progress QA
+          certification and three self-built testing projects that put the theory into practice.
         </p>
 
         <div className="qa-timeline">

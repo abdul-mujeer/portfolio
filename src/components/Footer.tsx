@@ -9,7 +9,6 @@ const navLinks = [
   { href: "#qa-projects", label: "QA projects" },
   { href: "#testing", label: "Testing approach" },
   { href: "#career", label: "Experience" },
-  { href: "#work", label: "Other projects" },
   { href: "#education", label: "Education" },
   { href: "#contact", label: "Contact" },
 ];
@@ -59,8 +58,8 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-            <a className="qa-footer-resume" href="/resume.html">
-              View résumé
+            <a className="qa-footer-resume" href="/cv/Qazi_Abdul_Mujeer_QA_CV.pdf" target="_blank" rel="noreferrer">
+              Download CV (PDF)
             </a>
           </div>
         </div>

@@ -156,22 +156,22 @@ export const qaSkillGroups: QASkillGroup[] = [
   },
   {
     title: "API & integration testing",
-    skills: ["REST API testing", "Postman collections", "Newman CLI runs", "Status codes, headers & schemas", "Authentication & authorization checks", "Error & validation envelopes", "Response-time awareness"],
+    skills: ["REST API testing", "Postman", "Newman CLI runs", "HTTP methods (GET, POST, PUT, PATCH, DELETE)", "Status codes", "JSON request & response validation", "Negative API testing", "Authentication & authorization checks"],
   },
   {
     title: "UI automation",
-    skills: ["Playwright (API + UI)", "Reliable selectors & web-first assertions", "Test isolation & data control", "Traces, screenshots & failure evidence", "Tagged smoke/regression subsets", "Cross-viewport checks"],
+    skills: ["Playwright (API + UI)", "Reliable selectors & explicit assertions", "Traces, screenshots & failure evidence", "Tagged smoke/regression subsets", "Test data setup & cleanup", "Cross-viewport checks"],
   },
   {
     title: "Database & data validation",
-    skills: ["SQL SELECT/JOIN queries", "Constraint & uniqueness checks", "Referential integrity", "Business-rule queries", "Persistence verification", "Test data seeding & cleanup"],
+    skills: ["SQL basics (SELECT, WHERE, ORDER BY, GROUP BY)", "JOIN concepts", "Constraint & uniqueness checks", "Referential integrity", "Business-rule queries", "Persistence verification"],
   },
   {
     title: "Process & reporting",
-    skills: ["SDLC / STLC", "Agile ceremonies", "Risk-based testing", "Defect lifecycle & bug reports", "Severity vs priority", "Test execution reports", "Release-readiness recommendations"],
+    skills: ["SDLC / STLC", "Agile / Scrum fundamentals", "Jira", "Risk-based testing", "Defect life cycle & bug reports", "Severity vs priority", "Test execution reports", "Release-readiness recommendations"],
   },
   {
     title: "Technical foundations",
-    skills: ["JavaScript / TypeScript", "Node.js & Express", "Python", "Git & GitHub", "CI with GitHub Actions", "Linux & Windows environments", "Chrome DevTools"],
+    skills: ["Python (basic)", "SQL (basic)", "JavaScript", "Git & GitHub", "GitHub Actions", "Chrome DevTools", "Windows & Linux environments"],
   },
 ];
