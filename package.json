@@ -1,13 +1,16 @@
 {
-  "name": "moncy-portfolio",
+  "name": "qam-qa-portfolio",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "verify:site": "node scripts/verify-site.mjs",
+    "verify:links": "node scripts/verify-links.mjs",
+    "build:projects": "node scripts/build-project-pages.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.1",
@@ -28,6 +31,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@playwright/test": "^1.50.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",

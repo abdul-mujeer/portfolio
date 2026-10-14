@@ -22,7 +22,34 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.npmrc
 
 backup/
 .env
+.env.*
+
+# ---------------------------------------------------------------------------
+# QA portfolio projects (projects/*): generated artefacts and local databases.
+# Source of truth is code + seed scripts; nothing below should ever be committed.
+# ---------------------------------------------------------------------------
+projects/**/node_modules/
+projects/**/.data/
+projects/**/app/server/data/
+projects/**/*.db
+projects/**/*.db-journal
+projects/**/*.db-wal
+projects/**/*.db-shm
+projects/**/test-results/
+projects/**/playwright-report/
+projects/**/test-reports/playwright/
+projects/**/test-reports/newman/*.json
+projects/**/coverage/
+projects/**/.env
+
+# Keep the small, human-readable evidence (screenshots, logs, reports, CSVs).
+!projects/**/test-evidence/**
+!projects/**/test-reports/*.json
+!projects/**/test-reports/*.md
+
+# TypeScript incremental build caches (generated)
+*.tsbuildinfo
+
