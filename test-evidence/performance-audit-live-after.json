@@ -1,0 +1,48 @@
+{
+  "label": "live-after",
+  "measuredAt": "2026-11-01T23:44:22.911Z",
+  "mode": "headed (GPU)",
+  "glRenderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3050 (0x00002582) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "viewport": "1440x900",
+  "deviceScaleFactor": 2,
+  "canvases": [
+    {
+      "css": "1440x900",
+      "buffer": "2160x1350",
+      "dpr": 1.5
+    },
+    {
+      "css": "1425x900",
+      "buffer": "2137x1350",
+      "dpr": 1.5
+    }
+  ],
+  "idle": {
+    "frames": 651,
+    "avgFps": 162.7,
+    "p95FrameMs": 6.2,
+    "jankyFrames": 0,
+    "worstFrameMs": 30.3
+  },
+  "toolboxOnScreen": {
+    "frames": 660,
+    "avgFps": 164.9,
+    "p95FrameMs": 6.2,
+    "jankyFrames": 0,
+    "worstFrameMs": 12.1
+  },
+  "idleCpu": {
+    "taskMs": 1401,
+    "scriptMs": 704
+  },
+  "longTasks": {
+    "count": 6,
+    "totalMs": 907,
+    "worstMs": 318
+  },
+  "heap": {
+    "afterLoadMb": 10.2,
+    "afterIdleMb": 10.3,
+    "afterScrollMb": 18.8
+  }
+}

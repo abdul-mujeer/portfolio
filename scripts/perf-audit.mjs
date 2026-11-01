@@ -130,6 +130,17 @@ const canvases = await page.evaluate(() =>
   }))
 );
 
+const toolboxStateAtIdle = await page.evaluate(() => {
+  const anchor = document.querySelector(".techstack-anchor");
+  const section = document.querySelector(".techstack");
+  return {
+    mounted: anchor?.getAttribute("data-mounted") ?? "no anchor",
+    active: anchor?.getAttribute("data-active") ?? null,
+    sectionTop: section ? Math.round(section.getBoundingClientRect().top) : null,
+    scrollY: Math.round(window.scrollY),
+  };
+});
+
 const glRenderer = await page.evaluate(() => {
   const canvas = document.querySelector("canvas");
   if (!canvas) return "no canvas";
@@ -160,6 +171,7 @@ const report = {
   viewport: "1440x900",
   deviceScaleFactor,
   canvases,
+  toolboxAtIdle: toolboxStateAtIdle,
   idle: stats(idleDeltas),
   toolboxOnScreen: stats(toolboxDeltas),
   idleCpu,

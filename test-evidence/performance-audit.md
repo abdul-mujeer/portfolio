@@ -1,20 +1,20 @@
-# Portfolio performance audit (local-final)
+# Portfolio performance audit (live-after-2)
 
-- Measured: 2026-11-01T23:42:03.891Z
+- Measured: 2026-11-01T23:45:36.503Z
 - Mode: headed (GPU)
 - WebGL renderer: ANGLE (NVIDIA, NVIDIA GeForce RTX 3050 (0x00002582) Direct3D11 vs_5_0 ps_5_0, D3D11)
 - Viewport: 1440x900 @ 2x device pixel ratio
 
 | Scenario | Avg FPS | p95 frame | Worst frame | Frames > 50 ms |
 |----------|--------:|----------:|------------:|---------------:|
-| Idle at the top | 165.1 | 6.1 ms | 6.2 ms | 0 / 661 |
-| 3D toolbox on screen | 165.1 | 6.1 ms | 6.2 ms | 0 / 661 |
+| Idle at the top | 165.2 | 6.2 ms | 6.2 ms | 0 / 661 |
+| 3D toolbox on screen | 165.1 | 6.2 ms | 6.2 ms | 0 / 661 |
 
-**Main-thread long tasks:** 6 tasks, 908 ms total, worst 300 ms.
+**Main-thread long tasks:** 6 tasks, 931 ms total, worst 330 ms.
 
-**CPU used while idle (5 s window):** 577 ms task time, 102 ms script time.
+**CPU used while idle (5 s window):** 937 ms task time, 176 ms script time.
 
-**JS heap:** 8.5 MB after load → 11.8 MB after idle → 17.3 MB after scrolling.
+**JS heap:** 10.5 MB after load → 10.4 MB after idle → 15.3 MB after scrolling.
 
 **WebGL canvases:** 1440x900 buffer 2160x1350 @1.5x
 
