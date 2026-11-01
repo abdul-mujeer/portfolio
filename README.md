@@ -9,9 +9,9 @@ This repository contains my personal portfolio plus **three complete, runnable s
 projects**. Each project ships a real demo application, a full QA lifecycle documentation package,
 automated test suites, executed evidence and a release report.
 
-I am a QA / SQA candidate: Computer Science graduate, self-taught in software testing, and
-the work below is **portfolio practice built on demo applications I wrote myself** — it is not commercial
-QA employment experience, and no number in it is estimated.
+I am a QA / SQA engineer with over two years of professional manual and API testing experience at
+Appearls and Cyphion. The three projects below are **portfolio practice built on demo applications I
+wrote myself** — they are not client work, and no number in them is estimated.
 
 | Project | Testing focus | Executed results (verified) | Source |
 |---------|---------------|------------------|--------|

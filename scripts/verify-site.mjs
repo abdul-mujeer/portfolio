@@ -258,6 +258,29 @@ try {
     `display=${whatIdo.display}, visible=${whatIdo.visible}, cards=${JSON.stringify(whatIdo.cards)}`
   );
 
+  // Experience section must reflect the CV: two SQA roles plus the self-directed portfolio entry.
+  const career = await page.evaluate(() => {
+    const boxes = [...document.querySelectorAll(".career-info-box")];
+    return {
+      count: boxes.length,
+      text: boxes.map((box) => (box.textContent ?? "").replace(/\s+/g, " ").trim()),
+    };
+  });
+  const careerText = career.text.join(" | ").toLowerCase();
+  record(
+    "SITE-19",
+    "Experience lists the CV roles (SQA Engineer at Cyphion and Appearls) and no stale entries",
+    career.count === 3 &&
+      (careerText.match(/sqa engineer/g) ?? []).length >= 2 &&
+      careerText.includes("cyphion") &&
+      careerText.includes("appearls") &&
+      careerText.includes("jun 2024") &&
+      careerText.includes("sep 2026") &&
+      !careerText.includes("full-stack developer") &&
+      !careerText.includes("freelance"),
+    `entries=${career.count}, hasCyphion=${careerText.includes("cyphion")}, hasAppearls=${careerText.includes("appearls")}, staleFreelance=${careerText.includes("freelance")}`
+  );
+
   // About section: QA positioning, proof-of-work links and no "entry-level" wording anywhere.
   const about = await page.evaluate(() => {
     const section = document.querySelector("#about");

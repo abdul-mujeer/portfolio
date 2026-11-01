@@ -44,8 +44,9 @@ const Education = () => {
           Education &amp; <span>learning</span>
         </h2>
         <p className="qa-lede">
-          Computer Science graduate moving into Software QA: university background, an in-progress QA
-          certification and three self-built testing projects that put the theory into practice.
+          Computer Science graduate now working as an SQA engineer: university background, an
+          in-progress QA certification and three self-built testing projects that put the theory into
+          practice.
         </p>
 
         <div className="qa-timeline">

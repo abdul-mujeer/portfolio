@@ -1,5 +1,10 @@
 import "./styles/Career.css";
 
+/**
+ * Experience timeline, kept in sync with the owner's CV.
+ * Professional roles are listed chronologically; the last entry is clearly labelled as self-directed
+ * portfolio work so it is never mistaken for employment.
+ */
 const Career = () => {
   return (
     <div className="career-section section-container" id="career">
@@ -12,42 +17,54 @@ const Career = () => {
           <div className="career-timeline">
             <div className="career-dot"></div>
           </div>
+
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Full-Stack Developer</h4>
+                <h4>SQA Engineer</h4>
                 <h5>CYPHION</h5>
               </div>
-              <h3>2024 2025</h3>
+              <h3 className="career-period">JUN 2024 — JUL 2025</h3>
             </div>
             <p>
-              At Cyphion, I worked as a Full Stack Developer, building scalable AI-powered web applications using modern technologies including Python, React, Flask, Django, Next.js, and Node.js. I handled both frontend and backend development, API integrations, database systems, and cloud-based deployments while focusing on performance, scalability, and clean architecture.
+              Created and executed test cases to verify application functionality, and validated fixes
+              through retesting and regression checks. I investigated and reported defects with clear
+              reproduction steps, expected versus actual results and supporting evidence, tested web
+              application workflows including API request/response behaviour and database validation,
+              and worked closely with developers to clarify requirements, confirm fixes and support
+              stable releases.
             </p>
           </div>
+
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>FREELANCE</h4>
-                <h5>SOFTWARE DEVELOPER (REMOTE)</h5>
+                <h4>SQA Engineer</h4>
+                <h5>APPEARLS</h5>
               </div>
-              <h3>2025 2026</h3>
+              <h3 className="career-period">JUL 2025 — SEP 2026</h3>
             </div>
             <p>
-              Collaborated with distributed client teams to build and optimize modern web applications leveraging Python and React. Developed high-performance RESTful APIs, seamlessly integrated dynamic frontend components with backend services, and systematically debugged production issues. Delivered clean, maintainable code on strict deadlines while maintaining clear technical communication across asynchronous development workflows.
+              Designed and executed test cases to verify functionality and quality across the
+              company's software products. I identified, documented and reported defects with clear
+              details so they could be reproduced and resolved, and helped ensure the quality and
+              reliability of software releases through consistent, structured testing.
             </p>
           </div>
+
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>QA PRACTICE &amp; TRAINING</h4>
-                <h5>MANUAL AND AUTOMATION TESTING (SELF-DIRECTED)</h5>
+                <h4>QA PORTFOLIO &amp; LEARNING</h4>
+                <h5>SELF-DIRECTED (NOT EMPLOYMENT)</h5>
               </div>
-              <h3>CURRENTLY</h3>
+              <h3 className="career-period">2026 — NOW</h3>
             </div>
             <p>
-              Building three end-to-end QA portfolio projects: requirements and acceptance criteria,
-              237 manual test cases, Playwright API and UI automation, SQL validation, Postman/Newman
-              collections and defect reports with retest evidence. Studying manual, automation and
+              Built and tested three end-to-end QA projects — ShopSure, PeopleCore and TaskFlow:
+              60 requirements with acceptance criteria, 237 manual test cases, 525 automated checks
+              (Playwright API and UI suites, SQL validation, Postman/Newman collections) and 18
+              defects found and fixed with retest evidence. Currently studying manual, automation and
               mobile automation testing through an in-progress Udemy QA course.
             </p>
           </div>

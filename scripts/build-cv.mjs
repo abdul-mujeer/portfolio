@@ -47,7 +47,7 @@ const taskflow = metricsFor("taskflow-qa");
 
 const cv = {
   name: "Qazi Abdul Mujeer",
-  title: "Junior QA Engineer | Software Tester",
+  title: "QA Engineer | Software Tester",
   contact: [
     "Karachi, Pakistan",
     "0316-2454316",
@@ -59,12 +59,12 @@ const cv = {
     { label: "Portfolio", href: LIVE },
   ],
   summary:
-    "Computer Science graduate with about 1 year of Full Stack Development experience at Cyphion, " +
-    "transitioning into Software QA and software testing. Practical knowledge of manual testing " +
-    "(functional, regression, smoke, sanity, exploratory), API testing with Postman, and basic SQL " +
-    "database validation. Familiar with SDLC/STLC, Agile/Scrum, Jira, and Git/GitHub. Python and SQL " +
-    "fundamentals, plus a developer's understanding of how software is built and debugged, which " +
-    "supports clear defect reports and communication with engineering teams.",
+    "SQA Engineer with over 2 years of professional experience in manual and API testing. Skilled in " +
+    "test case design, defect reporting, and functional, regression, smoke, sanity and exploratory " +
+    "testing, with hands-on experience in Postman, Playwright and SQL database validation. Familiar " +
+    "with SDLC/STLC, Agile/Scrum, Jira, and Git/GitHub. A software development background helps me " +
+    "find root causes faster, write clear and reproducible defect reports, and collaborate effectively " +
+    "with engineering teams.",
   skills: [
     ["Manual Testing", "Functional, Regression, Smoke, Sanity, Exploratory, Positive/Negative, UI, End-to-End, Basic Compatibility Testing"],
     ["Test Design", "Test Case Design, Test Scenario Creation, Requirements Analysis, Bug Reporting, Defect Life Cycle"],
@@ -78,14 +78,24 @@ const cv = {
   ],
   experience: [
     {
-      role: "Full Stack Developer",
-      org: "Cyphion",
-      period: "~1 year",
+      role: "SQA Engineer",
+      org: "Appearls",
+      period: "July 2025 – September 2026",
       bullets: [
-        "Worked with frontend and backend components of web applications, gaining a working understanding of application behaviour and requirements",
-        "Debugged and investigated software issues, and validated fixes",
-        "Worked with APIs and databases, including request/response behaviour",
-        "Collaborated on software projects within the software development life cycle",
+        "Designed and executed test cases to verify functionality and quality across the company's software products",
+        "Identified, documented and reported defects with clear details so they could be reproduced and resolved",
+        "Helped ensure the quality and reliability of software releases through consistent, structured testing",
+      ],
+    },
+    {
+      role: "SQA Engineer",
+      org: "Cyphion",
+      period: "June 2024 – July 2025",
+      bullets: [
+        "Created and executed test cases to verify application functionality, and validated fixes through retesting and regression checks",
+        "Investigated and reported defects with clear reproduction steps, expected versus actual results and supporting evidence",
+        "Tested web application workflows, including API request/response behavior and database validation, as part of the software development life cycle",
+        "Worked closely with developers to clarify requirements, confirm fixes and support stable releases",
       ],
     },
   ],

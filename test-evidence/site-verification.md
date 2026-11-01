@@ -1,8 +1,8 @@
 # Portfolio site verification
 
-- Executed: 2026-10-14T16:15:39.016Z
+- Executed: 2026-11-01T23:15:06.215Z
 - Command: `npm run verify:site` (production build served by `vite preview`, driven by Playwright Chromium)
-- Result: **27/27 checks passed**
+- Result: **28/28 checks passed**
 
 | ID | Check | Result | Detail |
 |----|-------|--------|--------|
@@ -25,6 +25,7 @@
 | SITE-08 | Meta description present | PASS | QA / SQA engineer portfolio: three complete software testing |
 | SITE-09 | Favicon declared | PASS | /favicon.svg |
 | SITE-17 | What I Do cards are visible and list the QA capabilities | PASS | display=flex, visible=true, cards=["Manual QA","Automation QA"] |
+| SITE-19 | Experience lists the CV roles (SQA Engineer at Cyphion and Appearls) and no stale entries | PASS | entries=3, hasCyphion=true, hasAppearls=true, staleFreelance=false |
 | SITE-18 | About section shows QA positioning, proof-of-work links and no 'entry-level' wording | PASS | case-study links=3, github links=3, entry-level wording=false, heading=Proof of work |
 | SITE-16 | QA toolbox renders a WebGL canvas and the sphere physics activates on scroll | PASS | canvases=1, data-active=true |
 | SITE-10 | Résumé page loads with the owner's name | PASS | Qazi Abdul Mujeer |

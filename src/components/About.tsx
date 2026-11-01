@@ -18,10 +18,11 @@ const About = () => {
         </p>
 
         <p className="about-detail">
-          Computer Science graduate (Kohat University of Science &amp; Technology, CGPA 3.62/4.00)
-          and former full-stack developer at Cyphion, where I built and debugged web applications.
-          That background is my advantage in QA: I trace a defect to the layer that causes it,
-          reproduce it through the API, and write a report an engineer can act on immediately.
+          Computer Science graduate (Kohat University of Science &amp; Technology, CGPA 3.62/4.00) and
+          SQA engineer with over two years of professional experience in manual and API testing at
+          Appearls and Cyphion. My software development background helps me find root causes faster:
+          I trace a defect to the layer that causes it, reproduce it through the API, and write a
+          report an engineer can act on immediately.
         </p>
 
         <p className="about-detail">
