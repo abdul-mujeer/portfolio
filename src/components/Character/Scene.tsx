@@ -30,9 +30,12 @@ const Scene = () => {
       const renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: true,
+        powerPreference: "high-performance",
       });
       renderer.setSize(container.width, container.height);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      // Cap the pixel ratio: on a 2x display the original code rendered 4x the pixels for a subtle
+      // idle animation, which is the single biggest GPU cost on laptops.
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1;
       canvasDiv.current.appendChild(renderer.domElement);
@@ -77,6 +80,7 @@ const Scene = () => {
 
       let mouse = { x: 0, y: 0 },
         interpolation = { x: 0.1, y: 0.2 };
+      let lastFrame = 0;
 
       const onMouseMove = (event: MouseEvent) => {
         handleMouseMove(event, (x, y) => (mouse = { x, y }));
@@ -106,8 +110,13 @@ const Scene = () => {
         landingDiv.addEventListener("touchstart", onTouchStart);
         landingDiv.addEventListener("touchend", onTouchEnd);
       }
-      const animate = () => {
+      const animate = (time: number) => {
         requestAnimationFrame(animate);
+        // The character only idles and turns its head slightly: 30fps is visually identical to 60fps
+        // here and halves the rendering cost. Skip entirely while the tab is in the background.
+        if (document.hidden) return;
+        if (time - lastFrame < 1000 / 30) return;
+        lastFrame = time;
         if (headBone) {
           handleHeadRotation(
             headBone,
@@ -125,7 +134,7 @@ const Scene = () => {
         }
         renderer.render(scene, camera);
       };
-      animate();
+      requestAnimationFrame(animate);
       return () => {
         clearTimeout(debounce);
         scene.clear();

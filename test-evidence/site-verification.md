@@ -1,6 +1,6 @@
 # Portfolio site verification
 
-- Executed: 2026-11-01T23:15:06.215Z
+- Executed: 2026-11-01T23:41:16.867Z
 - Command: `npm run verify:site` (production build served by `vite preview`, driven by Playwright Chromium)
 - Result: **28/28 checks passed**
 
@@ -24,10 +24,10 @@
 | SITE-07 | Page title reflects the QA positioning | PASS | Qazi Abdul Mujeer — QA / SQA Engineer Portfolio \| Manual & Automation Testing |
 | SITE-08 | Meta description present | PASS | QA / SQA engineer portfolio: three complete software testing |
 | SITE-09 | Favicon declared | PASS | /favicon.svg |
+| SITE-16 | QA toolbox mounts, renders a WebGL canvas and activates while on screen | PASS | mounted=true, canvases=1, data-active=true |
 | SITE-17 | What I Do cards are visible and list the QA capabilities | PASS | display=flex, visible=true, cards=["Manual QA","Automation QA"] |
 | SITE-19 | Experience lists the CV roles (SQA Engineer at Cyphion and Appearls) and no stale entries | PASS | entries=3, hasCyphion=true, hasAppearls=true, staleFreelance=false |
 | SITE-18 | About section shows QA positioning, proof-of-work links and no 'entry-level' wording | PASS | case-study links=3, github links=3, entry-level wording=false, heading=Proof of work |
-| SITE-16 | QA toolbox renders a WebGL canvas and the sphere physics activates on scroll | PASS | canvases=1, data-active=true |
 | SITE-10 | Résumé page loads with the owner's name | PASS | Qazi Abdul Mujeer |
 | SITE-11 | ShopSure case study renders with executed metrics | PASS | 6 metric cards |
 | SITE-12 | Mobile viewport renders the project cards | PASS | 3 cards |

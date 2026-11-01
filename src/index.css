@@ -100,6 +100,13 @@ body {
   margin-bottom: -100px;
 }
 
+/* Stable wrapper around the deferred 3D toolbox. It spans the section so the IntersectionObserver
+   reports the section's real visibility (the smooth-scroll wrapper clips anything outside the
+   viewport, so a small anchor would go out of view before the section does). */
+.techstack-anchor {
+  width: 100%;
+}
+
 .techstack h2 {
   font-size: 80px;
   text-align: center;

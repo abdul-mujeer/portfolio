@@ -1,67 +1,54 @@
-import {
-  FaGithub,
-  FaInstagram,
-  FaLinkedinIn,
-} from "react-icons/fa6";
-import { SiLeetcode } from "react-icons/si"; // ✅ LeetCode icon
-import "./styles/SocialIcons.css";
+import { FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
+import { SiLeetcode } from "react-icons/si";
 import { TbNotes } from "react-icons/tb";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import HoverLinks from "./HoverLinks";
+import "./styles/SocialIcons.css";
 
+/**
+ * Fixed social rail.
+ *
+ * The original version started one requestAnimationFrame loop per icon that ran forever and pushed
+ * every frame id into an array (unbounded growth). This version moves the hovered icon directly on
+ * pointer movement and lets CSS ease it back — no idle animation loop at all.
+ */
 const SocialIcons = () => {
-  const animFrames = useRef<number[]>([]);
-  const listeners = useRef<{ handler: (e: MouseEvent) => void }[]>([]);
-
   useEffect(() => {
-    const social = document.getElementById("social") as HTMLElement;
+    const social = document.getElementById("social");
+    if (!social) return;
 
-    social.querySelectorAll("span").forEach((item) => {
-      const elem = item as HTMLElement;
-      const link = elem.querySelector("a") as HTMLElement;
+    const icons = Array.from(social.querySelectorAll("span")).map((item) => ({
+      wrapper: item as HTMLElement,
+      link: item.querySelector("a") as HTMLElement | null,
+    }));
 
-      const rect = elem.getBoundingClientRect();
-      let mouseX = rect.width / 2;
-      let mouseY = rect.height / 2;
-      let currentX = 0;
-      let currentY = 0;
+    const reset = () => {
+      icons.forEach(({ link }) => {
+        if (!link) return;
+        link.style.setProperty("--siLeft", "50%");
+        link.style.setProperty("--siTop", "50%");
+      });
+    };
 
-      const updatePosition = () => {
-        currentX += (mouseX - currentX) * 0.1;
-        currentY += (mouseY - currentY) * 0.1;
+    const onMouseMove = (event: MouseEvent) => {
+      for (const { wrapper, link } of icons) {
+        if (!link) continue;
+        const rect = wrapper.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const inside = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+        link.style.setProperty("--siLeft", inside ? `${x}px` : "50%");
+        link.style.setProperty("--siTop", inside ? `${y}px` : "50%");
+      }
+    };
 
-        link.style.setProperty("--siLeft", `${currentX}px`);
-        link.style.setProperty("--siTop", `${currentY}px`);
+    social.addEventListener("mousemove", onMouseMove, { passive: true });
+    social.addEventListener("mouseleave", reset);
+    reset();
 
-        const id = requestAnimationFrame(updatePosition);
-        animFrames.current.push(id);
-      };
-
-      const onMouseMove = (e: MouseEvent) => {
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        if (x < 40 && x > 10 && y < 40 && y > 5) {
-          mouseX = x;
-          mouseY = y;
-        } else {
-          mouseX = rect.width / 2;
-          mouseY = rect.height / 2;
-        }
-      };
-
-      document.addEventListener("mousemove", onMouseMove);
-      listeners.current.push({ handler: onMouseMove });
-
-      updatePosition();
-    });
-
-    // ✅ Proper cleanup — runs when component unmounts
     return () => {
-      animFrames.current.forEach(cancelAnimationFrame);
-      listeners.current.forEach(({ handler }) =>
-        document.removeEventListener("mousemove", handler)
-      );
+      social.removeEventListener("mousemove", onMouseMove);
+      social.removeEventListener("mouseleave", reset);
     };
   }, []);
 
@@ -69,22 +56,22 @@ const SocialIcons = () => {
     <div className="icons-section">
       <div className="social-icons" data-cursor="icons" id="social">
         <span>
-          <a href="https://github.com/abdul-mujeer" target="_blank" rel="noreferrer">
+          <a href="https://github.com/abdul-mujeer" target="_blank" rel="noreferrer" aria-label="GitHub">
             <FaGithub />
           </a>
         </span>
         <span>
-          <a href="https://www.linkedin.com/in/qazi-abdul-mujeer/" target="_blank" rel="noreferrer">
+          <a href="https://www.linkedin.com/in/qazi-abdul-mujeer/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
             <FaLinkedinIn />
           </a>
         </span>
         <span>
-          <a href="https://leetcode.com/u/Abdul_Mujeer/" target="_blank" rel="noreferrer">
+          <a href="https://leetcode.com/u/Abdul_Mujeer/" target="_blank" rel="noreferrer" aria-label="LeetCode">
             <SiLeetcode />
           </a>
         </span>
         <span>
-          <a href="https://www.instagram.com/abdul__mujeer/" target="_blank" rel="noreferrer">
+          <a href="https://www.instagram.com/abdul__mujeer/" target="_blank" rel="noreferrer" aria-label="Instagram">
             <FaInstagram />
           </a>
         </span>

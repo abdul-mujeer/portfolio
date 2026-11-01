@@ -240,6 +240,37 @@ try {
   // Contact sit above the current position and ScrollSmoother ignores upward wheel deltas here, so
   // their content is verified by the DOM checks (SITE-17/SITE-18) instead of by a screenshot.
   await captureSection("#career", "portfolio-career.jpg");
+
+  // QA toolbox (3D spheres with the generated tool textures) — checked while approaching it from
+  // above, since the smoother ignores upward wheel deltas. The scene is deferred until it is near
+  // and it stops rendering off screen, so bring it into frame before asserting.
+  const toolbox = page.locator(".techstack");
+  if (await toolbox.count()) {
+    for (let attempt = 0; attempt < 8; attempt += 1) {
+      const rect = await page.evaluate(() => {
+        const element = document.querySelector(".techstack");
+        if (!element) return null;
+        const box = element.getBoundingClientRect();
+        return { top: Math.round(box.top), bottom: Math.round(box.bottom), viewport: window.innerHeight };
+      });
+      if (!rect) break;
+      if (rect.top <= 80 && rect.bottom > rect.viewport * 0.5) break;
+      await page.mouse.wheel(0, Math.max(-600, Math.min(600, rect.top - 40)));
+      await page.waitForTimeout(1600);
+    }
+    await page.waitForTimeout(4000);
+    const canvasCount = await page.locator(".techstack canvas").count();
+    const active = await page.locator(".techstack-anchor").getAttribute("data-active");
+    const mounted = await page.locator(".techstack-anchor").getAttribute("data-mounted");
+    record(
+      "SITE-16",
+      "QA toolbox mounts, renders a WebGL canvas and activates while on screen",
+      mounted === "true" && canvasCount > 0 && active === "true",
+      `mounted=${mounted}, canvases=${canvasCount}, data-active=${active}`
+    );
+    await page.screenshot({ path: path.join(EVIDENCE, "portfolio-qa-toolbox.jpg"), type: "jpeg", quality: 72 });
+  }
+
   await captureSection("#education", "portfolio-education.jpg");
 
   const whatIdo = await page.evaluate(() => {
@@ -301,17 +332,6 @@ try {
     about.hasSection && about.caseStudyLinks >= 3 && about.githubLinks >= 3 && !about.mentionsEntryLevel,
     `case-study links=${about.caseStudyLinks}, github links=${about.githubLinks}, entry-level wording=${about.mentionsEntryLevel}, heading=${about.proofHeading}`
   );
-
-  // QA toolbox (3D spheres with the generated tool textures)
-  const toolbox = page.locator(".techstack");
-  if (await toolbox.count()) {
-    await scrollSectionIntoView(page, ".techstack");
-    await page.waitForTimeout(8000); // the spheres start below the viewport and fall in with the physics
-    const canvasCount = await page.locator(".techstack canvas").count();
-    const active = await toolbox.getAttribute("data-active");
-    record("SITE-16", "QA toolbox renders a WebGL canvas and the sphere physics activates on scroll", canvasCount > 0 && active === "true", `canvases=${canvasCount}, data-active=${active}`);
-    await page.screenshot({ path: path.join(EVIDENCE, "portfolio-qa-toolbox.jpg"), type: "jpeg", quality: 72 });
-  }
 
   // Résumé page
   await page.goto(`${BASE}/resume.html`, { waitUntil: "domcontentloaded" });

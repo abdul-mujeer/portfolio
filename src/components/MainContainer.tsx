@@ -1,4 +1,4 @@
-import { lazy, PropsWithChildren, Suspense, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -10,11 +10,10 @@ import Navbar from "./Navbar";
 import QAProjects from "./QAProjects";
 import QASkills from "./QASkills";
 import SocialIcons from "./SocialIcons";
+import TechStackSection from "./TechStackSection";
 import TestingApproach from "./TestingApproach";
 import WhatIDo from "./WhatIDo";
 import setSplitText from "./utils/splitText";
-
-const TechStack = lazy(() => import("./TechStack"));
 
 const MainContainer = ({ children }: PropsWithChildren) => {
   const [isDesktopView, setIsDesktopView] = useState<boolean>(
@@ -49,11 +48,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <QAProjects />
             <TestingApproach />
             <Career />
-            {isDesktopView && (
-              <Suspense fallback={<div>Loading....</div>}>
-                <TechStack />
-              </Suspense>
-            )}
+            {isDesktopView && <TechStackSection />}
             <Education />
             <Contact />
             <Footer />

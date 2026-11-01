@@ -1,8 +1,7 @@
 import * as THREE from "three";
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
-import { EffectComposer, N8AO } from "@react-three/postprocessing";
 import {
   BallCollider,
   Physics,
@@ -30,7 +29,7 @@ const textures = imageUrls.map((url) => textureLoader.load(url));
 
 const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
 
-const spheres = [...Array(30)].map(() => ({
+const spheres = [...Array(14)].map(() => ({
   scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
 }));
 
@@ -128,26 +127,14 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
   );
 }
 
-const TechStack = () => {
-  const [isActive, setIsActive] = useState(false);
+/**
+ * @param active true while the section is near the viewport. When false the WebGL loop is stopped
+ *               entirely (`frameloop="never"`), so the 3D scene costs nothing while the visitor is
+ *               reading other sections.
+ */
+const TechStack = ({ active }: { active: boolean }) => {
+  const isActive = active;
 
-  useEffect(() => {
-    // GSAP's ScrollSmoother transforms the page instead of natively scrolling it, which makes
-    // window scroll events and absolute scroll maths unreliable. IntersectionObserver works on the
-    // rendered position, so it activates the sphere physics reliably.
-    const section = document.querySelector(".techstack");
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) setIsActive(true);
-      },
-      // Start roughly one viewport early so the spheres have settled by the time the user arrives.
-      { rootMargin: "100% 0px 100% 0px" }
-    );
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
   const materials = useMemo(() => {
     return textures.map(
       (texture) =>
@@ -169,7 +156,9 @@ const TechStack = () => {
 
       <Canvas
         shadows
-        gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
+        frameloop={isActive ? "always" : "never"}
+        dpr={[1, 1.5]}
+        gl={{ alpha: true, stencil: false, depth: false, antialias: false, powerPreference: "high-performance" }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
         onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
         className="tech-canvas"
@@ -200,9 +189,6 @@ const TechStack = () => {
           environmentIntensity={0.5}
           environmentRotation={[0, 4, 2]}
         />
-        <EffectComposer enableNormalPass={false}>
-          <N8AO color="#0f002c" aoRadius={2} intensity={1.15} />
-        </EffectComposer>
       </Canvas>
     </div>
   );
